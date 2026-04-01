@@ -1,18 +1,11 @@
 <header>
-    <nav class="flex items-center justify-between">
+    <nav class="flex items-center justify-between px-4 py-2">
         <div id="logo">Logo</div>
         <ul id="nav-items" class="flex mx-auto gap-4">
             @for (navItem of navItems; track navItem.routerLink) {
                 <app-nav-item [label]="navItem.label" [routerLink]="navItem.routerLink"/>
             }
         </ul>
-        <div id="account-dropdown">
-            <button id="dropdown-button" class="button">Account</button>
-            <div id="dropdown-content">
-                <a href="#">Account Info</a>
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
+        <app-account-dropdown [currentUser]="currentUser"/>
     </nav>
 </header>
