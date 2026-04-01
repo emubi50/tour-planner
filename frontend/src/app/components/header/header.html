@@ -2,9 +2,9 @@
     <nav class="flex items-center justify-between">
         <div id="logo">Logo</div>
         <ul id="nav-items" class="flex mx-auto gap-4">
-            <li>Tours</li>
-            <li>My Tours</li>
-            <li>Create Tour</li>
+            @for (navItem of navItems; track navItem.routerLink) {
+                <app-nav-item [label]="navItem.label" [routerLink]="navItem.routerLink"/>
+            }
         </ul>
         <div id="account-dropdown">
             <button id="dropdown-button" class="button">Account</button>
