@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 
 @Component({
   selector: 'app-account-dropdown',
@@ -8,4 +8,7 @@ import { Component, input } from '@angular/core';
 })
 export class AccountDropdown {
   currentUser = input();
+
+  isDropdownOpen = signal(false);
+  toggleDropdown() { this.isDropdownOpen.update(v => !v); }
 }

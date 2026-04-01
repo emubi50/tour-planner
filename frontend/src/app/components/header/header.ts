@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NavItem } from './nav-item/nav-item';
 import { AccountDropdown } from './account-dropdown/account-dropdown';
 
@@ -16,4 +16,7 @@ export class Header {
     { label: 'Create Tours', routerLink: '/create' },
   ]
   currentUser = "GigaChad420";
+
+  isMenuOpen = signal(false);
+  toggleMenu() { this.isMenuOpen.update(v => !v); }
 }

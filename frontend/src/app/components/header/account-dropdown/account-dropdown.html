@@ -1,9 +1,9 @@
-<div class="inline-block relative group">
-    <div class="flex gap-2">
+<div class="block w-full relative group">
+    <div class="flex gap-2 justify-center md:justify-start" (click)="toggleDropdown()">
         <button>{{ currentUser() }}</button>
         <img src="https://placehold.co/10x10" alt="" class="size-8 rounded-full"/>
     </div>
-    <div class="absolute hidden group-hover:block">
+    <div class="w-full text-center md:text-left absolute" [class.hidden]="!isDropdownOpen()">
         <a href="#">Account Info</a><br>
         <a href="#">Settings</a><br>
         <a href="#">Logout</a>
