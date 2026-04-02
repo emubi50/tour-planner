@@ -1,39 +1,12 @@
 <header>
-    <nav class="flex items-center justify-between px-4 py-2">
-        <div id="logo">Logo</div>
-
-        <!--desktop nav-->
-        <ul id="nav-items" class="hidden md:flex mx-auto gap-4">
-            @for (navItem of navItems; track navItem.routerLink) {
-                <app-nav-item [label]="navItem.label" [routerLink]="navItem.routerLink"/>
-            }
-        </ul>
-        <div class="hidden md:block">
-            <app-account-dropdown [currentUser]="currentUser"/>
-        </div>
-
-        <!--mobile nav-->
-        <button class="md:hidden flex flex-col gap-1.5 p-2" (click)="toggleMenu()">
-            <span class="block w-6 h-0.5 bg-current transition-all duration-300"
-            [class.rotate-45]="isMenuOpen()"
-            [class.translate-y-2]="isMenuOpen()"></span>
-      <span class="block w-6 h-0.5 bg-current transition-all duration-300"
-            [class.opacity-0]="isMenuOpen()"></span>
-      <span class="block w-6 h-0.5 bg-current transition-all duration-300"
-            [class.-rotate-45]="isMenuOpen()"
-            [class.-translate-y-2]="isMenuOpen()"></span>
-        </button>
-
-    </nav>
-
-        @if (isMenuOpen()) {
-            <div class="md:hidden flex flex-col px-4 pb-4 gap-4">
-                <ul class="flex flex-col gap-2 items-center">
-                    @for (navItem of navItems; track navItem.routerLink) {
-                        <app-nav-item [label]="navItem.label" [routerLink]="navItem.routerLink"/>
-                    }
-                </ul>
-                <app-account-dropdown [currentUser]="currentUser"/>
-            </div>
-        }
+  <nav
+    class="relative flex flex-col md:flex-row items-center md:justify-between gap-2 m-2"
+  >
+    <div class="flex gap-2">
+      <a routerLink="/"> <img src="https://placehold.co/40x40" alt="" /></a>
+    </div>
+    <app-navbar />
+    <app-account-dropdown [currentUser]="currentUser()" />
+  </nav>
+  <hr />
 </header>

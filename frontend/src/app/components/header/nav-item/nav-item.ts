@@ -10,6 +10,6 @@ import { RouterLink } from '@angular/router';
 })
 export class NavItem {
   label = input('NavItem');
-  routerLink = input('routerLink');
+  routerLink = input('/');
   isActive = input(true);
 }

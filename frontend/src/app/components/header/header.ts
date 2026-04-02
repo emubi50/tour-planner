@@ -1,22 +1,15 @@
 import { Component, signal } from '@angular/core';
-import { NavItem } from './nav-item/nav-item';
+import { RouterLink } from '@angular/router';
+import { Navbar } from './navbar/navbar';
 import { AccountDropdown } from './account-dropdown/account-dropdown';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NavItem, AccountDropdown],
+  imports: [RouterLink, Navbar, AccountDropdown],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
-  navItems = [
-    { label: 'Tours', routerLink: '/tours' },
-    { label: 'My Tours', routerLink: '/my' },
-    { label: 'Create Tours', routerLink: '/create' },
-  ]
-  currentUser = "GigaChad420";
-
-  isMenuOpen = signal(false);
-  toggleMenu() { this.isMenuOpen.update(v => !v); }
+  currentUser = signal<string>('');
 }

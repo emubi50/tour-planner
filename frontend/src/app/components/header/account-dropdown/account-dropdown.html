@@ -1,10 +1,20 @@
-<div class="block w-full relative group">
-    <div class="flex gap-2 justify-center md:justify-start" (click)="toggleDropdown()">
-        <button>{{ currentUser() }}</button>
-        <img src="https://placehold.co/10x10" alt="" class="size-8 rounded-full"/>
-    </div>
-    <div class="w-full text-center md:text-left absolute" [class.hidden]="!isDropdownOpen()">
-        <a href="#">Account Info</a><br>
-        <a href="#">Settings</a><br>
-        <a href="#">Logout</a>
-    </div>
+@if (currentUser() == undefined || currentUser() == "") {
+  <a href="#" class="flex w-full gap-2">
+    <p>Login</p>
+    <img src="https://placehold.co/20x20" alt="" />
+  </a>
+} @else {
+  <div class="relative">
+    <button class="flex w-full gap-2" (click)="toggle()">
+      <p>{{ currentUser() }}</p>
+      <img src="https://placehold.co/20x20" alt="" />
+    </button>
+    @if (isOpen()) {
+      <div class="md:absolute md:right-0">
+        <a href="#" class="block text-center md:text-right">Account Info</a>
+        <a href="#" class="block text-center md:text-right">Settings</a>
+        <a href="#" class="block text-center md:text-right">Logout</a>
+      </div>
+    }
+  </div>
+}
