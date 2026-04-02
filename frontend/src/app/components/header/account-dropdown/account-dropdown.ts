@@ -14,4 +14,7 @@ export class AccountDropdown {
   toggle() {
     this.isOpen.update((booleanValue) => !booleanValue);
   }
+  logout() {
+    this.currentUser.apply('');
+  }
 }

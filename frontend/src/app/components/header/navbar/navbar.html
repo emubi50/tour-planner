@@ -1,40 +1,5 @@
-<div>
-  <!-- Desktop Navigation -->
-  <ul class="hidden md:flex gap-2">
-    @for (navItem of navItems; track navItem.routerLink) {
-      <app-nav-item [label]="navItem.label" [routerLink]="navItem.routerLink" />
-    }
-  </ul>
-
-  <!-- Mobile Navigation Toggle -->
-  <button class="md:hidden flex flex-col gap-1.5 p-2" (click)="toggleMenu()">
-    <span
-      class="block w-6 h-0.5 bg-current transition-all duration-300"
-      [class.rotate-45]="isMenuOpen()"
-      [class.translate-y-2]="isMenuOpen()"
-    ></span>
-    <span
-      class="block w-6 h-0.5 bg-current transition-all duration-300"
-      [class.opacity-0]="isMenuOpen()"
-    ></span>
-    <span
-      class="block w-6 h-0.5 bg-current transition-all duration-300"
-      [class.-rotate-45]="isMenuOpen()"
-      [class.-translate-y-2]="isMenuOpen()"
-    ></span>
-  </button>
-
-  <!-- Mobile Navigation Menu -->
-  @if (isMenuOpen()) {
-    <div class="absolute md:hidden flex flex-col px-4 pb-4 gap-4">
-      <ul class="flex flex-col gap-2 items-center bg-white w-full">
-        @for (navItem of navItems; track navItem.routerLink) {
-          <app-nav-item
-            [label]="navItem.label"
-            [routerLink]="navItem.routerLink"
-          />
-        }
-      </ul>
-    </div>
+<ul class="flex flex-col md:flex-row gap-2 items-center bg-white w-full">
+  @for (item of navItems; track item.routerLink) {
+    <app-nav-item [label]="item.label" [routerLink]="item.routerLink" />
   }
-</div>
+</ul>
