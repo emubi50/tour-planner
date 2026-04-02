@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { NavItem } from '../nav-item/nav-item';
 
 @Component({
@@ -8,10 +8,15 @@ import { NavItem } from '../nav-item/nav-item';
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  items = [
+  navItems = [
     { label: 'Tours', routerLink: 'tours' },
     { label: 'My Tours', routerLink: 'my-tours' },
     { label: 'Create Tour', routerLink: 'create' },
+    { label: 'Go to TourShort Test', routerLink: 'tourShortTest' },
   ];
-  vertical = input<boolean>(false);
+
+  isMenuOpen = signal(false);
+  toggleMenu() {
+    this.isMenuOpen.update((v) => !v);
+  }
 }
