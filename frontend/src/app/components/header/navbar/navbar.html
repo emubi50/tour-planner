@@ -1,4 +1,4 @@
-<ul class="flex flex-col md:flex-row gap-2">
+<ul class="flex flex-col md:flex-row gap-2 items-center bg-white w-full">
   @for (item of items; track item.routerLink) {
     <app-nav-item [label]="item.label" [routerLink]="item.routerLink" />
   }
