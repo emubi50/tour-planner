@@ -1,0 +1,25 @@
+<div
+  [ngClass]="reverse() ? 'flex-row-reverse' : 'flex-row'"
+  class="flex text-lg md:text-xl gap-0.5 md:gap-2 items-center"
+>
+  <div id="star-container" class="relative flex">
+    <!-- Gray stars -->
+    <div class="flex text-gray-300">
+      @for (iter of [0, 1, 2, 3, 4]; track iter) {
+        <span> ★ </span>
+      }
+    </div>
+    <!-- Yellow overlay -->
+    <div
+      class="flex text-yellow-400 absolute top-0 left-0 overflow-hidden whitespace-nowrap"
+      [style.width.%]="(normalizedRating / 5) * 100"
+    >
+      @for (iter of [0, 1, 2, 3, 4]; track iter) {
+        <span> ★ </span>
+      }
+    </div>
+  </div>
+  <span class="text-gray-500 text-xs md:text-base"
+    >{{ normalizedRating }}/5</span
+  >
+</div>
