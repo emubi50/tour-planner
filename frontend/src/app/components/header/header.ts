@@ -12,7 +12,7 @@ import { AccountDropdown } from './account-dropdown/account-dropdown';
 })
 export class Header {
   currentUser = signal<string>('');
-  isMenuOpen = signal<boolean>(true);
+  isMenuOpen = signal<boolean>(false);
   toggleMenu() {
     this.isMenuOpen.update((booleanValue) => !booleanValue);
   }
