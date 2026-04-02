@@ -1,9 +1,10 @@
 import { Component, input, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account-dropdown',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './account-dropdown.html',
   styleUrl: './account-dropdown.css',
 })
