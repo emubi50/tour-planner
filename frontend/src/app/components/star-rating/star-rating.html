@@ -4,14 +4,14 @@
 >
   <div id="star-container" class="relative flex">
     <!-- Gray stars -->
-    <div class="flex text-gray-300">
+    <div class="flex text-gray-300 select-none">
       @for (iter of [0, 1, 2, 3, 4]; track iter) {
         <span> ★ </span>
       }
     </div>
     <!-- Yellow overlay -->
     <div
-      class="flex text-yellow-400 absolute top-0 left-0 overflow-hidden whitespace-nowrap"
+      class="flex text-yellow-400 absolute top-0 left-0 overflow-hidden whitespace-nowrap select-none"
       [style.width.%]="(normalizedRating / 5) * 100"
     >
       @for (iter of [0, 1, 2, 3, 4]; track iter) {
