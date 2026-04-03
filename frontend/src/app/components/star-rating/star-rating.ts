@@ -15,4 +15,9 @@ export class StarRating {
   get normalizedRating() {
     return Math.max(0, Math.min(5, this.rating()));
   }
+
+  get normalizedRatingString() {
+    const rating = this.normalizedRating;
+    return rating.toFixed(1);
+  }
 }
