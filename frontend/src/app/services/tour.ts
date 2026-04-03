@@ -58,6 +58,22 @@ export class TourService {
   private toursSubject = new BehaviorSubject<Tour[]>([...this._toursInit]);
   tours$ = this.toursSubject.asObservable();
 
+  constructor() {
+    for (let i = 0; i < 10; i++) {
+      this.addTour({
+        id: 0,
+        name: 'Tour name field',
+        description: 'Tour description field',
+        duration: 60 * 60, // in seconds
+        distance: 10000, // in meters
+        start: 'Tour start field',
+        end: 'Tour end field',
+        tags: ['Tour tag field'],
+        rating: 3.0,
+      });
+    }
+  }
+
   getTourById(id: number): Tour | undefined {
     return this.toursSubject.value.find((t) => t.id === id);
   }
