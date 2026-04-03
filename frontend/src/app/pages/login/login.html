@@ -1,0 +1,38 @@
+<div class="flex flex-col justify-center px-6 py-12s">
+  <h1 class="flex justify-center">Login</h1>
+  <form action="#" method="POST" class="mx-auto w-full">
+    <div class="flex flex-col justify-center w-full max-w-sm mx-auto">
+      <label for="username">Username</label>
+      <div class="w-full border rounded-md">
+        <input
+          id="username"
+          type="string"
+          name="username"
+          class="w-sm rounded-md"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col justify-center w-full max-w-sm mx-auto">
+      <label for="password">Password</label>
+      <div class="w-full border rounded-md">
+        <input
+          id="password"
+          type="password"
+          name="password"
+          class="w-sm rounded-md"
+        />
+      </div>
+    </div>
+    <button
+      type="submit"
+      class="flex flex-col justify-center max-w-sm mx-auto rounded-md border"
+    >
+      Sign in
+    </button>
+  </form>
+
+  <p class="flex flex-row justify-center gap-2">
+    Don't have an account yet?
+    <a routerLink="/registration">Register here!</a>
+  </p>
+</div>
