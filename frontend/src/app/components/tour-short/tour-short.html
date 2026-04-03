@@ -1,11 +1,11 @@
 <div
-  class="border rounded px-2 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col gap-0.5 overflow-hidden"
+  class="border rounded px-2 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col gap-0.5 md:gap-2 overflow-hidden"
 >
   <div id="line 1" class="flex items-center gap-4">
     <p
       class="text-sm md:text-lg font-semibold md:font-normal overflow-hidden text-nowrap text-ellipsis"
     >
-      {{ tour.name }}
+      {{ tour().name }}
     </p>
     <img
       src="https://www.iconpacks.net/icons/1/free-bicycle-icon-1054-thumb.png"
@@ -18,7 +18,7 @@
       id="tag-list"
       class="flex gap-1 items-center overflow-x-scroll text-sm"
     >
-      @for (tag of tour.tags; track tag) {
+      @for (tag of tour().tags; track tag) {
         <span
           class="bg-indigo-100 text-gray-700 rounded-full border border-indigo-600 px-1.5 md:px-2.5 py-0 md:py-0.5"
         >
@@ -30,16 +30,16 @@
       id="duration-and-distance"
       class="flex items-center gap-1 ml-auto text-sm md:text-base"
     >
-      <app-duration [duration]="durationInHours" />
+      <app-duration [duration]="durationInHours()" />
       |
-      <app-distance [distance]="distanceInKm" />
+      <app-distance [distance]="distanceInKm()" />
     </div>
   </div>
   <div id="line 3" class="flex flex-row-reverse items-center gap-2 md:gap-4">
-    <app-star-rating [rating]="tour.rating"></app-star-rating>
-    <div class="flex gap-1 text-sm md:text-base w-full">
-      <app-location-start [location]="tour.start" />
-      <app-location-end [location]="tour.end" />
+    <app-star-rating [rating]="tour().rating"></app-star-rating>
+    <div class="flex gap-1 text-sm md:text-base w-full overflow-hidden">
+      <app-location-start class="w-1/2" [location]="tour().start" />
+      <app-location-end class="w-1/2" [location]="tour().end" />
     </div>
   </div>
 </div>

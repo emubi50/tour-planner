@@ -12,7 +12,7 @@ export class Navbar {
     { label: 'Tours', routerLink: 'tours' },
     { label: 'My Tours', routerLink: 'my-tours' },
     { label: 'Create Tour', routerLink: 'create' },
-    { label: 'Go to TourShort Test', routerLink: 'tourShortTest' },
+    { label: 'Go to Tour List Test', routerLink: 'tourListTest' },
   ];
 
   isMenuOpen = signal(false);

@@ -33,7 +33,9 @@
 
   <!--mobile nav-->
   @if (isMenuOpen()) {
-    <div class="md:hidden absolute border-b w-full flex flex-col gap-2">
+    <div
+      class="md:hidden absolute border-b w-full flex flex-col gap-2 z-10 bg-white"
+    >
       <app-navbar />
       <app-account-dropdown [currentUser]="currentUser()" />
     </div>
