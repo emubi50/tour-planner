@@ -1,5 +1,9 @@
 <div class="flex flex-col w-full md:w-120 overflow-y-scroll h-full">
+  <div class="px-4 py-2 flex gap-8 border">
+    <span class="text-2xl font-bold"> X </span>
+    <h2 class="text-2xl text-center w-full">Tours</h2>
+  </div>
   @for (tour of tours | async; track tour.id) {
-    <app-tour-short [tour]="tour" />
+    <app-tour-short [tour]="tour" (click)="onClick(tour.id)" tappable />
   }
 </div>

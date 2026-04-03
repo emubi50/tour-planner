@@ -16,6 +16,12 @@ export class TourList {
   // Not yet implemented
   width = input<number>(140);
 
+  onClickFn = input<(id: number) => void>();
+
+  get onClick() {
+    return this.onClickFn() ?? (() => {});
+  }
+
   constructor(private tourService: TourService) {
     this.tours = this.tourService.tours$;
   }
