@@ -11,7 +11,7 @@ export class Navbar {
   navItems = [
     { label: 'Tours', routerLink: 'tours' },
     { label: 'My Tours', routerLink: 'my-tours' },
-    { label: 'Create Tour', routerLink: 'create' },
+    { label: 'Create Tour', routerLink: 'tours/new' },
     { label: 'Go to Tour List Test', routerLink: 'tourListTest' },
   ];
 
