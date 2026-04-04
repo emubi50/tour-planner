@@ -4,7 +4,7 @@ import { Duration } from '../DataDisplay/Tour/duration/duration';
 import { Distance } from '../DataDisplay/Tour/distance/distance';
 import { LocationStart } from '../DataDisplay/Tour/Location/location-start/location-start';
 import { LocationEnd } from '../DataDisplay/Tour/Location/location-end/location-end';
-import { Tour } from '../../services/tour';
+import { ITour } from '../../services/tour';
 import { TagList } from '../tag-list/tag-list';
 
 @Component({
@@ -22,7 +22,7 @@ import { TagList } from '../tag-list/tag-list';
   styleUrl: './tour-short.css',
 })
 export class TourShort {
-  tour = input.required<Tour>();
+  tour = input.required<ITour>();
 
   durationInHours = computed(() => {
     const tour = this.tour();

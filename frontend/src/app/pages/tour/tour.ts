@@ -1,7 +1,7 @@
 import { Component, computed, Signal, signal } from '@angular/core';
 import { TourService } from '../../services/tour';
 import { TourList } from '../../components/tour-list/tour-list';
-import { Tour } from '../../services/tour';
+import { ITour } from '../../services/tour';
 import { TagList } from '../../components/tag-list/tag-list';
 import { Distance } from '../../components/DataDisplay/Tour/distance/distance';
 import { Duration } from '../../components/DataDisplay/Tour/duration/duration';
@@ -26,7 +26,7 @@ import { StarRating } from '../../components/star-rating/star-rating';
 })
 export class TourPage {
   selectedTour = signal<number | null>(null);
-  tour: Signal<Tour | null | undefined> = computed(() => {
+  tour: Signal<ITour | null | undefined> = computed(() => {
     const id = this.selectedTour();
     return id !== null ? this.tourService.getTourById(id) : null;
   });

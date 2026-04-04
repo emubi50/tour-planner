@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class TourService {
   //#region Init Tour data definition
-  private readonly _toursInit: Tour[] = [
+  private readonly _toursInit: ITour[] = [
     {
       id: 0,
       name: "From Vienna's beauties to Salzburg's wonders over the boat - a scenic tour through Austria",
@@ -55,13 +55,12 @@ export class TourService {
   ];
   //#endregion
 
-  private toursSubject = new BehaviorSubject<Tour[]>([...this._toursInit]);
+  private toursSubject = new BehaviorSubject<ITour[]>([...this._toursInit]);
   tours$ = this.toursSubject.asObservable();
 
   constructor() {
     for (let i = 0; i < 10; i++) {
       this.addTour({
-        id: 0,
         name: 'Tour name field',
         description: 'Tour description field',
         duration: 60 * 60, // in seconds
@@ -74,20 +73,46 @@ export class TourService {
     }
   }
 
-  getTourById(id: number): Tour | undefined {
+  getTourById(id: number): ITour | undefined {
     return this.toursSubject.value.find((t) => t.id === id);
   }
 
-  addTour(tour: Tour): void {
+  addTour(tour: ITourCreate): void {
     const maxId = Math.max(...this.toursSubject.value.map((t) => t.id), 0);
     const newTour = { ...tour, id: maxId + 1 };
 
     this.toursSubject.next([...this.toursSubject.value, newTour]);
   }
+
+  updateTour(updatedTour: ITour): void {
+    const tours = this.toursSubject.value;
+    const index = tours.findIndex((t) => t.id === updatedTour.id);
+    if (index !== -1) {
+      tours[index] = updatedTour;
+      this.toursSubject.next([...tours]);
+    }
+  }
+
+  deleteTour(id: number): void {
+    const tours = this.toursSubject.value.filter((t) => t.id !== id);
+    this.toursSubject.next([...tours]);
+  }
 }
 
-export interface Tour {
+export interface ITour {
   id: number;
+  name: string;
+  description: string;
+  duration: number; // in seconds
+  distance: number; // in meters
+  start: string;
+  end: string;
+  tags: string[];
+  rating: number; // from 0 to 5
+}
+
+// Copy from interface Tour but without id
+export interface ITourCreate {
   name: string;
   description: string;
   duration: number; // in seconds
