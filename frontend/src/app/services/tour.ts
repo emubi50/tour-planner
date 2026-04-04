@@ -26,7 +26,7 @@ export class TourService {
       distance: 15000, // in meters
       start: 'Beijing, China',
       end: 'Beijing, China',
-      tags: ['Historical', 'Cultural', 'Adventure'],
+      tags: ['Historical', 'Cultural', 'Adventure', 'Scenic', 'Long', 'Wall'],
       rating: 4.5,
     },
     {

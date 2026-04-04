@@ -5,11 +5,19 @@ import { Distance } from '../DataDisplay/Tour/distance/distance';
 import { LocationStart } from '../DataDisplay/Tour/Location/location-start/location-start';
 import { LocationEnd } from '../DataDisplay/Tour/Location/location-end/location-end';
 import { Tour } from '../../services/tour';
+import { TagList } from '../tag-list/tag-list';
 
 @Component({
   selector: 'app-tour-short',
   standalone: true,
-  imports: [StarRating, Duration, Distance, LocationStart, LocationEnd],
+  imports: [
+    StarRating,
+    Duration,
+    Distance,
+    LocationStart,
+    LocationEnd,
+    TagList,
+  ],
   templateUrl: './tour-short.html',
   styleUrl: './tour-short.css',
 })

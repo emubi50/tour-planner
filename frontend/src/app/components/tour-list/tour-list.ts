@@ -1,4 +1,10 @@
-import { Component, input } from '@angular/core';
+import {
+  Component,
+  input,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { TourService } from '../../services/tour';
 import { TourShort } from '../tour-short/tour-short';
@@ -24,5 +30,16 @@ export class TourList {
 
   constructor(private tourService: TourService) {
     this.tours = this.tourService.tours$;
+  }
+
+  isListOpen = signal<boolean>(true);
+  stateCallback = input<(val: boolean) => void>();
+
+  toggleList() {
+    this.isListOpen.update((isOpen) => !isOpen);
+    let cb;
+    if ((cb = this.stateCallback())) {
+      cb(this.isListOpen());
+    }
   }
 }

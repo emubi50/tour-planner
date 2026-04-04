@@ -1,22 +1,63 @@
 <div class="flex h-full w-full">
-  <app-tour-list [onClickFn]="setTourFn" class="w-full md:w-120" />
-  @if (selectedTour() != null) {
+  <app-tour-list
+    [onClickFn]="setTourFn"
+    [stateCallback]="stateCallback"
+    class="w-full md:w-120"
+    [class.!w-0]="!isListOpen()"
+  />
+  @if (selectedTour() != null && tour() != null) {
     <div class="flex flex-col w-full p-4">
-      <div id="map-container" class="w-full h-120 mb-4 mx-auto bg-amber-200">
+      <div
+        id="map-container"
+        class="lg:max-w-[80vw] w-full h-40 md:h-60 lg:h-80 xl-2:h-120 mb-4 mx-auto bg-amber-200 overflow-hidden border-2 border-gray-300 rounded-lg shadow-md"
+      >
         <img
           src="https://img.freepik.com/free-vector/black-white-town-navigation-map_23-2148309836.jpg"
           alt="Tour image"
-          class="max-w-full max-h-full mx-auto"
+          class="w-full object-cover select-none"
+          draggable="false"
         />
       </div>
-      <div class="flex">
-        <div class="flex flex-col w-2/3 bg-red-300 gap-4">
-          <h1 class="font-semibold text-2xl text-gray-700">
-            {{ tour()?.name }}
+      <div class="flex flex-col md:flex-row">
+        <div class="flex flex-col w-full md:w-6/10 bg-red-300/10 gap-4 p-2">
+          <h1 class="font-semibold lg:text-xl xl-2:text-2xl text-gray-700">
+            {{ tour()!.name }}
           </h1>
-          <p class="text-gray-500 text-xl">{{ tour()?.description }}</p>
+          <p class="text-gray-500 lg:text-lg xl-2:text-xl">
+            {{ tour()!.description }}
+          </p>
         </div>
-        <div class="flex w-1/3 bg-cyan-700"></div>
+        <div class="flex flex-col gap-2 w-full md:w-4/10 bg-cyan-700/10 p-2">
+          <div class="flex items-center justify-between">
+            <div class="flex gap-2 items-center">
+              <img
+                src="https://www.iconpacks.net/icons/1/free-bicycle-icon-1054-thumb.png"
+                alt="Tour Image"
+                class="w-8 h-8 object-cover rounded"
+              />
+              <p>Bike</p>
+            </div>
+            <app-star-rating [rating]="tour()!.rating" />
+          </div>
+          <app-tag-list
+            class="flex flex-wrap gap-1 items-center text-sm text-gray-700"
+            [tags]="tour()!.tags"
+          />
+          <div
+            id="duration-and-distance"
+            class="flex items-center gap-1 text-sm md:text-base"
+          >
+            <app-duration [duration]="durationInHours()" />
+            |
+            <app-distance [distance]="distanceInKm()" />
+          </div>
+          <div
+            class="flex flex-col gap-2 text-sm md:text-base w-full overflow-hidden"
+          >
+            <app-location-start class="w-full" [location]="tour()!.start" />
+            <app-location-end class="w-full" [location]="tour()!.end" />
+          </div>
+        </div>
       </div>
     </div>
   } @else {
