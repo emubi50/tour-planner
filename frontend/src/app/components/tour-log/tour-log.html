@@ -1,6 +1,6 @@
 <div class="w-full flex flex-col border border-gray-400 rounded p-2">
   <div class="flex justify-between items-center">
-    <span>{{ tourLog().date | date: "medium" }}</span>
+    <span class="text-gray-500">{{ tourLog().date | date: "short" }}</span>
     <app-star-rating [rating]="tourLog().rating"></app-star-rating>
   </div>
   <p>{{ tourLog().comment }}</p>
