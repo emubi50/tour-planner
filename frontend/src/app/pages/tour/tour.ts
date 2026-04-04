@@ -8,12 +8,15 @@ import { Duration } from '../../components/DataDisplay/Tour/duration/duration';
 import { LocationEnd } from '../../components/DataDisplay/Tour/Location/location-end/location-end';
 import { LocationStart } from '../../components/DataDisplay/Tour/Location/location-start/location-start';
 import { StarRating } from '../../components/star-rating/star-rating';
+import { TourLogService } from '../../services/tour-log';
+import { TourLog } from '../../components/tour-log/tour-log';
 
 @Component({
   selector: 'app-tour',
   standalone: true,
   imports: [
     TourList,
+    TourLog,
     TagList,
     Distance,
     Duration,
@@ -55,5 +58,16 @@ export class TourPage {
     return (tour.distance / 1000).toFixed(2);
   });
 
-  constructor(private tourService: TourService) {}
+  // TourLog stuff
+
+  tourLogs = computed(() => {
+    const tour = this.tour();
+    if (!tour) return [];
+    return this.tourLogService.getTourLogsByTourId(tour.id);
+  });
+
+  constructor(
+    private tourService: TourService,
+    private tourLogService: TourLogService,
+  ) {}
 }

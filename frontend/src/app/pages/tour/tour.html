@@ -6,10 +6,10 @@
     [class.!w-0]="!isListOpen()"
   />
   @if (selectedTour() != null && tour() != null) {
-    <div class="flex flex-col w-full p-4">
+    <div class="flex flex-col w-full p-4 overflow-y-auto h-full">
       <div
         id="map-container"
-        class="lg:max-w-[80vw] w-full h-40 md:h-60 lg:h-80 xl-2:h-120 mb-4 mx-auto bg-amber-200 overflow-hidden border-2 border-gray-300 rounded-lg shadow-md"
+        class="shrink-0 lg:max-w-[80vw] w-full h-40 md:h-60 lg:h-80 xl-2:h-120 mb-4 mx-auto bg-amber-200 overflow-hidden border-2 border-gray-300 rounded-lg shadow-md"
       >
         <img
           src="https://img.freepik.com/free-vector/black-white-town-navigation-map_23-2148309836.jpg"
@@ -57,6 +57,14 @@
             <app-location-start class="w-full" [location]="tour()!.start" />
             <app-location-end class="w-full" [location]="tour()!.end" />
           </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-4 mt-4">
+        <h2 class="font-semibold text-lg text-gray-700">Tour Logs</h2>
+        <div class="flex flex-col gap-4">
+          @for (tourLog of tourLogs(); track tourLog.id) {
+            <app-tour-log [tourLog]="tourLog"></app-tour-log>
+          }
         </div>
       </div>
     </div>

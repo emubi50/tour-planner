@@ -29,7 +29,7 @@ export class TourList {
   }
 
   constructor(private tourService: TourService) {
-    this.tours = this.tourService.tours$;
+    this.tours = this.tourService.tours;
   }
 
   isListOpen = signal<boolean>(true);

@@ -1,0 +1,15 @@
+<div class="w-full flex flex-col border border-gray-400 rounded p-2">
+  <div class="flex justify-between items-center">
+    <span>{{ tourLog().date | date: "medium" }}</span>
+    <app-star-rating [rating]="tourLog().rating"></app-star-rating>
+  </div>
+  <p>{{ tourLog().comment }}</p>
+  <div class="flex justify-between items-center">
+    <app-duration [duration]="tourLog().duration"></app-duration>
+    <app-distance [distance]="tourLog().distance"></app-distance>
+    <app-label-value-set
+      [label]="'Difficulty'"
+      [value]="tourLog().difficulty"
+    ></app-label-value-set>
+  </div>
+</div>

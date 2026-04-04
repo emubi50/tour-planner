@@ -56,7 +56,7 @@ export class TourService {
   //#endregion
 
   private toursSubject = new BehaviorSubject<ITour[]>([...this._toursInit]);
-  tours$ = this.toursSubject.asObservable();
+  tours = this.toursSubject.asObservable();
 
   constructor() {
     for (let i = 0; i < 10; i++) {
@@ -74,11 +74,14 @@ export class TourService {
   }
 
   getTourById(id: number): ITour | undefined {
-    return this.toursSubject.value.find((t) => t.id === id);
+    return this.toursSubject.value.find((tour) => tour.id === id);
   }
 
   addTour(tour: ITourCreate): void {
-    const maxId = Math.max(...this.toursSubject.value.map((t) => t.id), 0);
+    const maxId = Math.max(
+      ...this.toursSubject.value.map((tour) => tour.id),
+      0,
+    );
     const newTour = { ...tour, id: maxId + 1 };
 
     this.toursSubject.next([...this.toursSubject.value, newTour]);
@@ -86,7 +89,7 @@ export class TourService {
 
   updateTour(updatedTour: ITour): void {
     const tours = this.toursSubject.value;
-    const index = tours.findIndex((t) => t.id === updatedTour.id);
+    const index = tours.findIndex((tour) => tour.id === updatedTour.id);
     if (index !== -1) {
       tours[index] = updatedTour;
       this.toursSubject.next([...tours]);
@@ -94,7 +97,7 @@ export class TourService {
   }
 
   deleteTour(id: number): void {
-    const tours = this.toursSubject.value.filter((t) => t.id !== id);
+    const tours = this.toursSubject.value.filter((tour) => tour.id !== id);
     this.toursSubject.next([...tours]);
   }
 }
