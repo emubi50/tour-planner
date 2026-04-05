@@ -12,6 +12,9 @@ export class StarRating {
   rating = input<number>(0);
   reverse = input<boolean>(false);
 
+  hideStars = input<boolean>(false);
+  hideText = input<boolean>(false);
+
   get normalizedRating() {
     return Math.max(0, Math.min(5, this.rating()));
   }

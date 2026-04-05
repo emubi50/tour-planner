@@ -28,7 +28,10 @@
     </div>
   </div>
   <div id="line 3" class="flex flex-row-reverse items-center gap-2 md:gap-4">
-    <app-star-rating [rating]="tour().rating"></app-star-rating>
+    <app-star-rating
+      [rating]="tour().rating"
+      [hideText]="true"
+    ></app-star-rating>
     <div class="flex gap-1 text-sm md:text-base w-full overflow-hidden">
       <app-location-start class="w-1/2" [location]="tour().start" />
       <app-location-end class="w-1/2" [location]="tour().end" />
