@@ -19,13 +19,10 @@ export class EditTour {
   private activatedRouter = inject(ActivatedRoute);
   private tourService = inject(TourService);
 
-  tourId = -1;
+  private tourId: number = -1;
 
-  constructor() {
-    this.activatedRouter.params.subscribe((params) => {
-      this.tourId = Number.parseInt(params['tourId']);
-    });
-  }
+  tourData!: ITour;
+  tourForm!: FormGroup;
 
   transportTypeOptions: string[] = [
     'Bicycle',
@@ -34,22 +31,30 @@ export class EditTour {
     'Public transport',
   ];
 
-  tourData: ITour = this.tourService.getTourById(this.tourId)!;
+  ngOnInit() {
+    this.activatedRouter.params.subscribe((params) => {
+      this.tourId = Number.parseInt(params['tourId']);
+    });
 
-  tourForm = new FormGroup({
-    name: new FormControl(this.tourData.name, [
-      Validators.required,
-      Validators.maxLength(200),
-    ]),
-    description: new FormControl(this.tourData.description, [
-      Validators.required,
-      Validators.maxLength(500),
-    ]),
-    transportType: new FormControl('Bicycle', [Validators.required]),
-    startLocation: new FormControl(this.tourData.start, [Validators.required]),
-    endLocation: new FormControl(this.tourData.end, [Validators.required]),
-    tags: new FormControl(this.tourData.tags),
-  });
+    this.tourData = this.tourService.getTourById(this.tourId)!;
+
+    this.tourForm = new FormGroup({
+      name: new FormControl(this.tourData.name, [
+        Validators.required,
+        Validators.maxLength(200),
+      ]),
+      description: new FormControl(this.tourData.description, [
+        Validators.required,
+        Validators.maxLength(500),
+      ]),
+      transportType: new FormControl('Bicycle', [Validators.required]),
+      startLocation: new FormControl(this.tourData.start, [
+        Validators.required,
+      ]),
+      endLocation: new FormControl(this.tourData.end, [Validators.required]),
+      tags: new FormControl(this.tourData.tags),
+    });
+  }
 
   get name() {
     return this.tourForm.get('name');
