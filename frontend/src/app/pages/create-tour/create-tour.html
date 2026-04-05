@@ -21,7 +21,9 @@
       placeholder="Tour description"
       rows="4"
       [class]="
-        name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+        description?.touched && description?.invalid
+          ? 'border-red-500'
+          : 'border-gray-300'
       "
       class="text-gray-500 lg:text-lg 2xl:text-xl bg-transparent border rounded p-1 focus:outline-none focus:border-gray-500 placeholder-gray-400 resize-none"
     ></textarea>
@@ -39,7 +41,7 @@
           name="transport-type"
           formControlName="transportType"
           [class]="
-            name?.touched && name?.invalid
+            transportType?.touched && transportType?.invalid
               ? 'border-red-500'
               : 'border-gray-300'
           "
@@ -51,18 +53,6 @@
           }
         </select>
       </div>
-
-      <div
-        id="duration-and-distance"
-        class="flex items-center gap-1 text-sm md:text-base"
-      >
-        <p>
-          Duration: 4:00 h
-          <span> | </span>
-          Distance: 12.00 km
-        </p>
-        <!--values would be calculated by an external api-->
-      </div>
     </div>
 
     <input
@@ -70,10 +60,7 @@
       name="tags"
       formControlName="tags"
       placeholder="Tags (comma-separated)"
-      [class]="
-        name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
-      "
-      class="text-sm text-gray-700 bg-transparent border-b focus:outline-none focus:border-gray-500 placeholder-gray-400"
+      class="text-sm text-gray-700 bg-transparent border-b border-gray-300 focus:outline-none focus:border-gray-500 placeholder-gray-400"
     />
 
     <div
@@ -85,7 +72,9 @@
         formControlName="startLocation"
         placeholder="Start location"
         [class]="
-          name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+          startLocation?.touched && startLocation?.invalid
+            ? 'border-red-500'
+            : 'border-gray-300'
         "
         class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
       />
@@ -95,7 +84,9 @@
         formControlName="endLocation"
         placeholder="End location"
         [class]="
-          name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+          endLocation?.touched && endLocation?.invalid
+            ? 'border-red-500'
+            : 'border-gray-300'
         "
         class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
       />
