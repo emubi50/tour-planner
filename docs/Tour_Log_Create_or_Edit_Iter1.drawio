@@ -1,0 +1,79 @@
+<mxfile host="65bd71144e">
+    <diagram id="gRdq8OOm9pYpJG2X9CRR" name="Page-1">
+        <mxGraphModel dx="898" dy="1298" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="22" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="40" width="440" height="620" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="Create/Edit Tour Log" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="210" y="70" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="120" width="400" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Date" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="130" width="360" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Comment" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="170" width="360" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="340" width="400" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="Ratings" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="400" width="360" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="Distance" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="440" width="360" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="Duration" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="480" width="360" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="Create/Edit Tour Log (Button)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="60" y="550" width="400" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Delete Tour Log (Button)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="160" y="600" width="220" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="720" width="680" height="240" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="Difficulty" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="360" width="360" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="Difficulty" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="760" width="280" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="Ratings" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="440" y="760" width="280" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" value="Duration" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="440" y="860" width="280" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="Distance" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="860" width="280" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="" style="endArrow=classic;html=1;entryX=0.817;entryY=-0.006;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="636" y="441.44" as="sourcePoint"/>
+                        <mxPoint x="635.56" y="720" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="50" value="" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="27">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="410" y="600" as="sourcePoint"/>
+                        <mxPoint x="640" y="440" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" value="Desktop View" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="640" y="680" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" value="Mobile View" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="490" y="400" width="110" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

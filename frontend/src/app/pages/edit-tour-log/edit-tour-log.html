@@ -1,1 +1,99 @@
-<p>edit-tour-log works!</p>
+<form
+  [formGroup]="tourLogForm"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col items-center align-middle"
+>
+  <h1 class="font-bold text-2xl text-gray-700 my-8">Edit tour log</h1>
+  <div class="flex flex-col w-full md:w-3/5 bg-red-300/10 gap-4 p-2">
+    <input
+      type="date"
+      formControlName="date"
+      [class]="
+        date?.touched && date?.invalid ? 'border-red-500' : 'border-gray-300'
+      "
+      class="text-gray-700 bg-transparent border-b focus:outline-none focus:border-gray-500"
+    />
+    <textarea
+      formControlName="comment"
+      placeholder="Comment"
+      rows="4"
+      [class]="
+        comment?.touched && comment?.invalid
+          ? 'border-red-500'
+          : 'border-gray-300'
+      "
+      class="text-gray-500 lg:text-lg 2xl:text-xl bg-transparent border rounded p-1 focus:outline-none focus:border-gray-500 placeholder-gray-400 resize-none"
+    ></textarea>
+  </div>
+  <div class="flex flex-col gap-2 w-full md:w-3/5 bg-cyan-700/10 p-2">
+    <div
+      class="flex flex-col md:flex-row gap-2 text-sm md:text-base w-full overflow-hidden"
+    >
+      <input
+        type="number"
+        formControlName="difficulty"
+        placeholder="Difficulty (1-10)"
+        min="1"
+        max="10"
+        step="1"
+        [class]="
+          distance?.touched && distance?.invalid
+            ? 'border-red-500'
+            : 'border-gray-300'
+        "
+        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
+      />
+      <input
+        type="number"
+        formControlName="rating"
+        placeholder="Rating (0-5)"
+        [class]="
+          rating?.touched && rating?.invalid
+            ? 'border-red-500'
+            : 'border-gray-300'
+        "
+        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
+      />
+    </div>
+    <div
+      class="flex flex-col md:flex-row gap-2 text-sm md:text-base w-full overflow-hidden"
+    >
+      <input
+        type="number"
+        formControlName="distance"
+        placeholder="Distance (meters)"
+        [class]="
+          distance?.touched && distance?.invalid
+            ? 'border-red-500'
+            : 'border-gray-300'
+        "
+        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
+      />
+      <input
+        type="number"
+        formControlName="duration"
+        placeholder="Duration (seconds)"
+        [class]="
+          duration?.touched && duration?.invalid
+            ? 'border-red-500'
+            : 'border-gray-300'
+        "
+        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
+      />
+    </div>
+  </div>
+  <button
+    type="submit"
+    [disabled]="!tourLogForm.valid && tourLogForm.pristine"
+    class="mt-2 w-3/5 bg-cyan-700 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-cyan-800 text-white text-sm font-semibold py-2 px-4 rounded transition-colors"
+  >
+    Save Tour Log
+  </button>
+  <button
+    type="button"
+    class="mt-2 w-3/10 bg-red-700 hover:bg-red-800 text-white text-sm font-semibold py-2 px-4 rounded transition-colors"
+    (click)="deleteTourLog()"
+  >
+    Delete
+  </button>
+</form>

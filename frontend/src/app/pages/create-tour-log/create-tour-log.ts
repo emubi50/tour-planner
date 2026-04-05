@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -16,7 +16,8 @@ import { ITourLogCreate } from '../../interfaces/TourLog';
   styleUrl: './create-tour-log.css',
 })
 export class CreateTourLog {
-  private activatedRouter = inject(ActivatedRoute);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
   private tourLogService = inject(TourLogService);
 
   tourId!: number;
@@ -26,16 +27,27 @@ export class CreateTourLog {
   ratingOptions = [1, 2, 3, 4, 5];
 
   ngOnInit() {
-    this.activatedRouter.params.subscribe((params) => {
+    this.activatedRoute.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
 
       this.tourLogForm = new FormGroup({
         date: new FormControl('', [Validators.required]),
-        comment: new FormControl('', [Validators.required]),
-        difficulty: new FormControl('', [Validators.required]),
-        distance: new FormControl('', [Validators.required]),
-        duration: new FormControl('', [Validators.required]),
-        rating: new FormControl('', [Validators.required]),
+        comment: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(500),
+        ]),
+        difficulty: new FormControl('', [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(10),
+        ]),
+        distance: new FormControl('', [Validators.required, Validators.min(0)]),
+        duration: new FormControl('', [Validators.required, Validators.min(0)]),
+        rating: new FormControl('', [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(5),
+        ]),
       });
     });
   }
@@ -83,5 +95,7 @@ export class CreateTourLog {
     };
 
     this.tourLogService.addTourLog(newTourLog);
+    this.tourLogForm.reset();
+    this.router.navigate(['/tours']);
   }
 }
