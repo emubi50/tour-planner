@@ -5,11 +5,21 @@ import { DatePipe } from '@angular/common';
 import { LabelValueSet } from '../DataDisplay/label-value-set/label-value-set';
 import { Duration } from '../DataDisplay/Tour/duration/duration';
 import { Distance } from '../DataDisplay/Tour/distance/distance';
+import { LucideSquarePen } from '@lucide/angular';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-tour-log',
   standalone: true,
-  imports: [StarRating, DatePipe, LabelValueSet, Duration, Distance],
+  imports: [
+    StarRating,
+    DatePipe,
+    LabelValueSet,
+    Duration,
+    Distance,
+    LucideSquarePen,
+    RouterLink,
+  ],
   templateUrl: './tour-log.html',
   styleUrl: './tour-log.css',
 })

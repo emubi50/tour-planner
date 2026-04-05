@@ -1,6 +1,16 @@
 <div class="w-full flex flex-col border border-gray-400 rounded p-2">
   <div class="flex justify-between items-center">
-    <span class="text-gray-500">{{ tourLog().date | date: "short" }}</span>
+    <div class="flex items-center gap-2">
+      <a
+        [routerLink]="['/edit-log', tourLog().id]"
+        class="text-gray-500 hover:text-gray-800 transition-colors duration-300"
+      >
+        <svg lucideSquarePen size="18"></svg>
+      </a>
+      <span class="text-gray-500 align-middle">{{
+        tourLog().date | date: "short"
+      }}</span>
+    </div>
     <app-star-rating [rating]="tourLog().rating"></app-star-rating>
   </div>
   <p class="max-h-24 overflow-y-auto">{{ tourLog().comment }}</p>
