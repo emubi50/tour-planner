@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormGroup,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { TourService } from '../../services/tour';
 
 @Component({
   selector: 'app-create-tour',
@@ -13,21 +14,14 @@ import {
   styleUrl: './create-tour.css',
 })
 export class CreateTour {
+  private tourService = inject(TourService);
+
   transportTypeOptions: string[] = [
     'Bicycle',
     'Walking',
     'Bus',
     'Public transport',
   ];
-
-  tour = {
-    name: 'Tour name',
-    description: 'Tour description',
-    transportType: this.transportTypeOptions[0],
-    startLocation: 'Tour start location',
-    endLocation: 'Tour end location',
-    tags: 'tag 1,tag 2',
-  };
 
   tourForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(200)]),
@@ -63,5 +57,31 @@ export class CreateTour {
 
   onSubmit() {
     console.warn(this.tourForm.value);
+
+    if (this.tourForm.invalid) {
+      this.tourForm.markAllAsTouched();
+      return;
+    }
+
+    this.tourService.addTour({
+      name: this.tourForm.value.name!,
+      description: this.tourForm.value.description!,
+      start: this.tourForm.value.startLocation!,
+      end: this.tourForm.value.endLocation!,
+      tags:
+        this.tourForm.value.tags
+          ?.split(',')
+          .map((t) => t.trim())
+          .filter((t) => t.length > 0) ?? [],
+
+      // values computed
+      duration: 0,
+      distance: 0,
+
+      // rating not part of creation
+      rating: 0,
+    });
+
+    this.tourForm.reset();
   }
 }
