@@ -68,6 +68,16 @@ export class TourLogService {
       duration: 120 * 60,
       rating: 3.5,
     },
+    {
+      id: 6,
+      tourId: 4,
+      date: new Date(),
+      comment: 'Ich liebe Auto fahren brumm brumm auto',
+      difficulty: 1,
+      distance: 10000,
+      duration: 60 * 60,
+      rating: 5.0,
+    },
   ];
   //#endregion
 

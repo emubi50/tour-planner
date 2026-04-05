@@ -27,16 +27,15 @@
             {{ tour()!.description }}
           </p>
         </div>
-        <div class="flex flex-col gap-2 w-full md:w-4/10 bg-cyan-700/10 p-2">
-          <div class="flex items-center justify-between">
-            <div class="flex gap-2 items-center">
-              <img
-                src="https://www.iconpacks.net/icons/1/free-bicycle-icon-1054-thumb.png"
-                alt="Tour Image"
-                class="w-8 h-8 object-cover rounded"
-              />
-              <p>Bike</p>
-            </div>
+        <div
+          class="flex flex-col gap-2 lg:gap-4 w-full md:w-4/10 bg-cyan-700/10 p-2"
+        >
+          <div class="flex items-center justify-between flex-wrap-reverse">
+            <app-transport-icon
+              [transportType]="tour()!.transportType"
+              [showText]="true"
+              class="h-8"
+            />
             <app-star-rating [rating]="tour()!.rating" />
           </div>
           <app-tag-list

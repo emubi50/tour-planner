@@ -7,10 +7,9 @@
     >
       {{ tour().name }}
     </p>
-    <img
-      src="https://www.iconpacks.net/icons/1/free-bicycle-icon-1054-thumb.png"
-      alt="Tour Image"
-      class="w-8 h-8 object-cover rounded ml-auto"
+    <app-transport-icon
+      [transportType]="tour().transportType"
+      class="w-7 h-7 lg:w-8 lg:h-8 rounded ml-auto"
     />
   </div>
   <div id="line 2" class="flex items-center gap-2 md:gap-4">
