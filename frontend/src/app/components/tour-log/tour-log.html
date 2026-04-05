@@ -5,11 +5,12 @@
         [routerLink]="['/edit-log', tourLog().id]"
         class="text-gray-500 hover:text-gray-800 transition-colors duration-300"
       >
-        <svg lucideSquarePen size="18"></svg>
+        <svg lucideSquarePen size="20"></svg>
       </a>
-      <span class="text-gray-500 align-middle">{{
-        tourLog().date | date: "short"
-      }}</span>
+      <span
+        class="text-gray-500 leading-none inline-block translate-y-[-0.1em]"
+        >{{ tourLog().date | date: "short" }}</span
+      >
     </div>
     <app-star-rating [rating]="tourLog().rating"></app-star-rating>
   </div>
