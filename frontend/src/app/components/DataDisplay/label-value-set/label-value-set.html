@@ -1,4 +1,10 @@
 <div class="flex items-center gap-1">
-  <span [ngClass]="labelClasses()">{{ Label }}</span>
-  <span [ngClass]="valueClasses()">{{ value() }}</span>
+  <ng-content select="[label]"></ng-content>
+  @if (label() != "") {
+    <span [ngClass]="labelClasses()">{{ Label }}</span>
+  }
+  <ng-content select="[value]"></ng-content>
+  @if (value() != "") {
+    <span [ngClass]="valueClasses()">{{ value() }}</span>
+  }
 </div>

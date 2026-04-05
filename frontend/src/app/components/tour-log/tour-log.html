@@ -7,10 +7,9 @@
       >
         <svg lucideSquarePen size="20"></svg>
       </a>
-      <span
-        class="text-gray-500 leading-none inline-block translate-y-[-0.1em]"
-        >{{ tourLog().date | date: "short" }}</span
-      >
+      <span class="text-gray-500 centered-text">{{
+        tourLog().date | date: "short"
+      }}</span>
     </div>
     <app-star-rating [rating]="tourLog().rating"></app-star-rating>
   </div>

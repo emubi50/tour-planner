@@ -1,18 +1,12 @@
-import {
-  Component,
-  input,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import { Component, input, signal } from '@angular/core';
 import { TourService } from '../../services/tour';
 import { TourShort } from '../tour-short/tour-short';
+import { LucideMapPinned } from '@lucide/angular';
 
 @Component({
   selector: 'app-tour-list',
   standalone: true,
-  imports: [TourShort],
+  imports: [TourShort, LucideMapPinned],
   templateUrl: './tour-list.html',
   styleUrl: './tour-list.css',
 })

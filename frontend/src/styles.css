@@ -1,2 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+.centered-text {
+  line-height: 1;
+  display: inline-block;
+  transform: translateY(-0.1em);
+}

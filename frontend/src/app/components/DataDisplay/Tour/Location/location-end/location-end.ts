@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
 import { LabelValueSet } from '../../../label-value-set/label-value-set';
+import { LucideFlagTriangleRight } from '@lucide/angular';
 
 @Component({
   selector: 'app-location-end',
   standalone: true,
-  imports: [LabelValueSet],
+  imports: [LabelValueSet, LucideFlagTriangleRight],
   templateUrl: './location-end.html',
   styleUrl: './location-end.css',
 })

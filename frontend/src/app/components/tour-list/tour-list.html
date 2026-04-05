@@ -1,7 +1,10 @@
 <div class="flex flex-col w-full md:w-120 h-full" [class.!w-0]="!isListOpen()">
   @if (!isListOpen()) {
-    <button class="absolute top-20 z-10 p-2" (click)="toggleList()">
-      <img src="https://placehold.co/40x40" alt="" />
+    <button
+      class="flex items-center absolute top-20 z-10 p-2 m-2 shadow bg-gray-100 border border-gray-300 rounded-full"
+      (click)="toggleList()"
+    >
+      <svg lucideMapPinned size="40"></svg>
     </button>
   } @else {
     <div class="flex flex-col w-full overflow-y-auto h-full">

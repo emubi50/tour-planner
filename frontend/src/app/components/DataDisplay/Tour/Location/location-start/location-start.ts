@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
 import { LabelValueSet } from '../../../label-value-set/label-value-set';
+import { LucideMapPin } from '@lucide/angular';
 
 @Component({
   selector: 'app-location-start',
   standalone: true,
-  imports: [LabelValueSet],
+  imports: [LabelValueSet, LucideMapPin],
   templateUrl: './location-start.html',
   styleUrl: './location-start.css',
 })

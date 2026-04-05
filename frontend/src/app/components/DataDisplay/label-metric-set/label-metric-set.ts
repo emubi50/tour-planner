@@ -10,8 +10,8 @@ import { twMerge } from 'tailwind-merge';
   styleUrl: './label-metric-set.css',
 })
 export class LabelMetricSet {
-  label = input<string>('Label');
-  value = input<string | number>('Value');
+  label = input<string>('');
+  value = input<string | number>('');
   metric = input.required<string>();
 
   omitColon = input<boolean>(false);

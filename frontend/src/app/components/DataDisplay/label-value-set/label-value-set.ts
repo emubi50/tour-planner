@@ -10,8 +10,8 @@ import { twMerge } from 'tailwind-merge';
   styleUrl: './label-value-set.css',
 })
 export class LabelValueSet {
-  label = input<string>('Label');
-  value = input<string | number>('Value');
+  label = input<string>('');
+  value = input<string | number>('');
 
   omitColon = input<boolean>(false);
 
