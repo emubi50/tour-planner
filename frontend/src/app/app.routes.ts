@@ -10,14 +10,22 @@ import { EditTourLog } from './pages/edit-tour-log/edit-tour-log';
 import { TourList } from './components/tour-list/tour-list';
 
 export const routes: Routes = [
-  { path: '', component: Home },
-  { path: 'login', component: Login },
-  { path: 'registration', component: Registration },
-  { path: 'tours', component: TourPage },
-  { path: 'tours/new', component: CreateTour },
-  { path: 'tours/:tourId', component: EditTour },
-  { path: 'tours/:tourId/logs/new', component: CreateTourLog },
-  { path: 'tours/:tourId/logs/:tourLogId', component: EditTourLog },
-  { path: 'tourListTest', component: TourList },
+  { path: '', component: Home, title: 'Home Page' },
+  { path: 'login', component: Login, title: 'Login' },
+  { path: 'registration', component: Registration, title: 'Registration' },
+  { path: 'tours', component: TourPage, title: 'Tours' },
+  { path: 'tours/new', component: CreateTour, title: 'Create Tour' },
+  { path: 'tours/:tourId', component: EditTour, title: 'Edit Tour' },
+  {
+    path: 'tours/:tourId/logs/new',
+    component: CreateTourLog,
+    title: 'Create Tour Log',
+  },
+  {
+    path: 'tours/:tourId/logs/:tourLogId',
+    component: EditTourLog,
+    title: 'Edit Tour Log',
+  },
+  { path: 'tourListTest', component: TourList, title: 'Tour List Test' },
   { path: '**', redirectTo: '' },
 ];
