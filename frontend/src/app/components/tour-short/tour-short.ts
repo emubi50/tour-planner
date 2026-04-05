@@ -4,7 +4,7 @@ import { Duration } from '../DataDisplay/Tour/duration/duration';
 import { Distance } from '../DataDisplay/Tour/distance/distance';
 import { LocationStart } from '../DataDisplay/Tour/Location/location-start/location-start';
 import { LocationEnd } from '../DataDisplay/Tour/Location/location-end/location-end';
-import { ITour } from '../../services/tour';
+import { ITour } from '../../interfaces/Tour';
 import { TagList } from '../tag-list/tag-list';
 
 @Component({
