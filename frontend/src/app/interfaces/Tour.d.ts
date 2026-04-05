@@ -7,6 +7,8 @@
  * that update's the rating on the moment a tour log is added/edited/deleted.
  */
 
+import { TransportType } from '../enums/TransportType';
+
 export interface ITour {
   id: number;
   name: string;
@@ -16,6 +18,7 @@ export interface ITour {
   start: string;
   end: string;
   tags: string[];
+  transportType: TransportType;
   rating: number; // from 0 to 5
 }
 
@@ -25,4 +28,5 @@ export interface ITourCreate {
   start: string;
   end: string;
   tags: string[];
+  transportType: TransportType;
 }

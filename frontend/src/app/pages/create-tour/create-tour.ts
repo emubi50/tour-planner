@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { TourService } from '../../services/tour';
+import { TransportType } from '../../enums/TransportType';
 
 @Component({
   selector: 'app-create-tour',
@@ -73,6 +74,7 @@ export class CreateTour {
           ?.split(',')
           .map((t) => t.trim())
           .filter((t) => t.length > 0) ?? [],
+      transportType: TransportType.BIKE, // TODO: map from form value
     });
 
     this.tourForm.reset();

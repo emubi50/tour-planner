@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ITour, ITourCreate } from '../interfaces/Tour';
-import { Duration } from '../components/DataDisplay/Tour/duration/duration';
 import { TourLogService } from './tour-log';
+import { TransportType } from '../enums/TransportType';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +19,7 @@ export class TourService {
       start: 'Vienna, Austria',
       end: 'Salzburg, Austria',
       tags: ['Scenic', 'Fast', 'City'],
+      transportType: TransportType.PUBLIC,
       rating: 0,
     },
     {
@@ -30,6 +31,7 @@ export class TourService {
       start: 'Beijing, China',
       end: 'Beijing, China',
       tags: ['Historical', 'Cultural', 'Adventure', 'Scenic', 'Long', 'Wall'],
+      transportType: TransportType.WALK,
       rating: 0,
     },
     {
@@ -41,6 +43,7 @@ export class TourService {
       start: 'Grand Canyon Village, Arizona, USA',
       end: 'Grand Canyon Village, Arizona, USA',
       tags: ['Nature', 'Adventure', 'Scenic'],
+      transportType: TransportType.BIKE,
       rating: 0,
     },
     {
@@ -53,6 +56,7 @@ export class TourService {
       start: 'Vienna, Austria',
       end: 'Salzburg, Austria',
       tags: ['Boring', 'Nature', 'City'],
+      transportType: TransportType.WALK,
       rating: 0,
     },
   ];
@@ -72,6 +76,7 @@ export class TourService {
         start: 'Tour start field',
         end: 'Tour end field',
         tags: ['Tour tag field'],
+        transportType: TransportType.BIKE,
       });
     }
   }
