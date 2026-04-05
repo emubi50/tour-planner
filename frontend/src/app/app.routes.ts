@@ -13,7 +13,7 @@ export const routes: Routes = [
   { path: 'registration', component: Registration },
   { path: 'tours', component: TourPage },
   { path: 'tours/new', component: CreateTour },
-  { path: 'tours/:id', component: EditTour },
+  { path: 'tours/:tourId', component: EditTour },
   { path: 'tourListTest', component: TourList },
   { path: '**', redirectTo: '' },
 ];
