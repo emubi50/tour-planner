@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { TourService } from '../../services/tour';
 import { ITour } from '../../interfaces/Tour';
+import { TransportType } from '../../enums/TransportType';
 
 @Component({
   selector: 'app-edit-tour',
@@ -31,12 +32,15 @@ export class EditTour {
     'Public transport',
   ];
 
+  transportTypeFormValue = TransportType.BIKE;
+
   ngOnInit() {
     this.activatedRouter.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
     });
 
     this.tourData = this.tourService.getTourById(this.tourId)!;
+    this.transportTypeFormValue = this.tourData.transportType;
 
     this.tourForm = new FormGroup({
       name: new FormControl(this.tourData.name, [
@@ -84,8 +88,36 @@ export class EditTour {
       return;
     }
 
-    // TODO: update any changed fields in tourData
+    switch (this.tourForm.value.TransportType) {
+      case 'Bicycle':
+        this.transportTypeFormValue = TransportType.BIKE;
+        break;
+      case 'Walking':
+        this.transportTypeFormValue = TransportType.WALK;
+        break;
+      case 'Bus':
+        this.transportTypeFormValue = TransportType.CAR;
+        break;
+      case 'Public transport':
+        this.transportTypeFormValue = TransportType.PUBLIC;
+        break;
+      default:
+        break;
+    }
 
-    this.tourService.updateTour(this.tourData);
+    const updatedTour: ITour = {
+      id: this.tourData.id,
+      name: this.tourForm.value.name ?? this.tourData.name,
+      description: this.tourForm.value.description ?? this.tourData.description,
+      start: this.tourForm.value.startLocation ?? this.tourData.start,
+      end: this.tourForm.value.endLocation ?? this.tourData.end,
+      tags: this.tourForm.value.tags ?? this.tourData.tags,
+      transportType: this.transportTypeFormValue,
+      duration: this.tourData.duration,
+      distance: this.tourData.distance,
+      rating: this.tourData.rating,
+    };
+
+    this.tourService.updateTour(updatedTour);
   }
 }

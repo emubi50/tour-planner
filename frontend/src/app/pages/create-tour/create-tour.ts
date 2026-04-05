@@ -24,6 +24,8 @@ export class CreateTour {
     'Public transport',
   ];
 
+  transportTypeFormValue = TransportType.BIKE;
+
   tourForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     description: new FormControl('', [
@@ -64,6 +66,23 @@ export class CreateTour {
       return;
     }
 
+    switch (this.tourForm.value.transportType) {
+      case 'Bicycle':
+        this.transportTypeFormValue = TransportType.BIKE;
+        break;
+      case 'Walking':
+        this.transportTypeFormValue = TransportType.WALK;
+        break;
+      case 'Bus':
+        this.transportTypeFormValue = TransportType.CAR;
+        break;
+      case 'Public Transport':
+        this.transportTypeFormValue = TransportType.PUBLIC;
+        break;
+      default:
+        break;
+    }
+
     this.tourService.addTour({
       name: this.tourForm.value.name!,
       description: this.tourForm.value.description!,
@@ -74,7 +93,7 @@ export class CreateTour {
           ?.split(',')
           .map((t) => t.trim())
           .filter((t) => t.length > 0) ?? [],
-      transportType: TransportType.BIKE, // TODO: map from form value
+      transportType: this.transportTypeFormValue,
     });
 
     this.tourForm.reset();
