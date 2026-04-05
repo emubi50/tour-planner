@@ -3,8 +3,8 @@
     <span class="text-gray-500">{{ tourLog().date | date: "short" }}</span>
     <app-star-rating [rating]="tourLog().rating"></app-star-rating>
   </div>
-  <p>{{ tourLog().comment }}</p>
-  <div class="flex justify-between items-center">
+  <p class="max-h-24 overflow-y-auto">{{ tourLog().comment }}</p>
+  <div class="flex justify-between items-center text-sm md:text-base">
     <app-duration [duration]="durationInHours()"></app-duration>
     <app-distance [distance]="distanceInKm()"></app-distance>
     <app-label-value-set

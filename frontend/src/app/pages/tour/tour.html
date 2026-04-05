@@ -73,16 +73,23 @@
           </div>
         </div>
       </div>
-      @if (tourLogs() != null && tourLogs().length > 0) {
-        <div class="flex flex-col gap-4 mt-4">
-          <h2 class="font-semibold text-lg text-gray-700">Tour Logs</h2>
-          <div class="flex flex-col gap-4">
-            @for (tourLog of tourLogs(); track tourLog.id) {
-              <app-tour-log [tourLog]="tourLog"></app-tour-log>
-            }
+      <div class="flex flex-col mt-4 gap-4">
+        <h2 class="font-semibold text-center text-xl xl:text-2xl text-gray-700">
+          Tour Logs
+        </h2>
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center justify-center">
+            <a
+              [routerLink]="['/add-log', tour()!.id]"
+              class="border border-gray-400 hover:border-gray-600 hover:bg-gray-50 px-2 py-6 rounded-2xl w-full lg:w-3/5 text-xl font-semibold text-center"
+              >Add a new Log</a
+            >
           </div>
+          @for (tourLog of tourLogs(); track tourLog.id) {
+            <app-tour-log [tourLog]="tourLog"></app-tour-log>
+          }
         </div>
-      }
+      </div>
     </div>
   } @else {
     <p>No tour is selected</p>

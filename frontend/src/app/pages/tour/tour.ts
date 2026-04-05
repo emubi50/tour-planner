@@ -10,6 +10,7 @@ import { LocationEnd } from '../../components/DataDisplay/Tour/Location/location
 import { LocationStart } from '../../components/DataDisplay/Tour/Location/location-start/location-start';
 import { StarRating } from '../../components/star-rating/star-rating';
 import { TourLog } from '../../components/tour-log/tour-log';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-tour',
@@ -23,6 +24,7 @@ import { TourLog } from '../../components/tour-log/tour-log';
     LocationStart,
     LocationEnd,
     StarRating,
+    RouterLink,
   ],
   templateUrl: './tour.html',
   styleUrl: './tour.css',
