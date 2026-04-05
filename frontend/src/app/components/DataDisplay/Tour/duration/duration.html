@@ -1,7 +1,13 @@
 <app-label-metric-set
-  [label]="'Duration'"
   [value]="duration()"
   [metric]="'h'"
   [labelClass]="labelClass()"
   [valueClass]="valueClass()"
-/>
+>
+  <svg
+    label
+    lucideTimer
+    size="24"
+    class="text-gray-500 shrink-0 w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
+  ></svg>
+</app-label-metric-set>
