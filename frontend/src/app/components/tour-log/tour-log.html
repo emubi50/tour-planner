@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-2">
       <a
-        [routerLink]="['/edit-log', tourLog().id]"
+        [routerLink]="['/tours', tourLog()!.tourId, 'logs', tourLog()!.id]"
         class="text-gray-500 hover:text-gray-800 transition-colors duration-300"
       >
         <svg lucideSquarePen size="20"></svg>
