@@ -1,0 +1,21 @@
+<div class="flex items-center gap-2">
+  @if (!hideIcon()) {
+    @switch (transportType()) {
+      @case (TransportType.BIKE) {
+        <svg lucideBike size="32" class="text-gray-500"></svg>
+      }
+      @case (TransportType.WALK) {
+        <svg lucideFootprints size="32" class="text-gray-500"></svg>
+      }
+      @case (TransportType.CAR) {
+        <svg lucideCar size="32" class="text-gray-500"></svg>
+      }
+      @case (TransportType.PUBLIC) {
+        <svg lucideBus size="32" class="text-gray-500"></svg>
+      }
+    }
+  }
+  @if (showText()) {
+    <span>{{ typeText }}</span>
+  }
+</div>

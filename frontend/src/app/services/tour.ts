@@ -12,31 +12,40 @@ export class TourService {
   private readonly _toursInit: ITour[] = [
     {
       id: 0,
-      name: "From Vienna's beauties to Salzburg's wonders over the boat - a scenic tour through Austria",
+      name: 'From Vienna to Salzburg type beat Tour',
       description: 'This is the first tour.',
       duration: 240 * 60, // in seconds
       distance: 12000, // in meters
       start: 'Vienna, Austria',
       end: 'Salzburg, Austria',
-      tags: ['Scenic', 'Fast', 'City'],
+      tags: ['Scenic', 'Austria', 'City'],
       transportType: TransportType.PUBLIC,
       rating: 0,
     },
     {
       id: 1,
-      name: 'The Great Wall of China - a historical tour through the ancient wonders',
+      name: 'The Great Wall of China walking tour',
       description: 'This is the second tour.',
       duration: 360 * 60, // in seconds
       distance: 15000, // in meters
       start: 'Beijing, China',
       end: 'Beijing, China',
-      tags: ['Historical', 'Cultural', 'Adventure', 'Scenic', 'Long', 'Wall'],
+      tags: [
+        'Historical',
+        'Cultural',
+        'Adventure',
+        'Scenic',
+        'Long',
+        'Wall',
+        'China',
+        'Yessir',
+      ],
       transportType: TransportType.WALK,
       rating: 0,
     },
     {
       id: 2,
-      name: 'The Grand Canyon - a breathtaking tour through the natural wonders of the world',
+      name: 'The Grand Canyon biking tour',
       description: 'This is the third tour.',
       duration: 180 * 60, // in seconds
       distance: 8000, // in meters
@@ -53,10 +62,22 @@ export class TourService {
         'This is the fourth tour. It is really really boring, the title does not lie.',
       duration: 120 * 60, // in seconds
       distance: 5000, // in meters
-      start: 'Vienna, Austria',
-      end: 'Salzburg, Austria',
+      start: 'Grass field somewhere in the middle of Austria',
+      end: 'Grass field somewhere in the middle of Austria',
       tags: ['Boring', 'Nature', 'City'],
       transportType: TransportType.WALK,
+      rating: 0,
+    },
+    {
+      id: 4,
+      name: 'Autofahr Tour ab dafür 🤙🤙',
+      description: 'AHHHHHHH TOUR NOCH EINE',
+      duration: 60 * 60, // in seconds
+      distance: 10000, // in meters
+      start: 'Eine Garage, Vienna, Austria',
+      end: 'Eine Garage, Vienna, Austria',
+      tags: ['Auto', 'City', 'Auto', 'Auto', 'Auto :)'],
+      transportType: TransportType.CAR,
       rating: 0,
     },
   ];

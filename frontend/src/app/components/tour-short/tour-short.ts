@@ -6,6 +6,7 @@ import { LocationStart } from '../DataDisplay/Tour/Location/location-start/locat
 import { LocationEnd } from '../DataDisplay/Tour/Location/location-end/location-end';
 import { ITour } from '../../interfaces/Tour';
 import { TagList } from '../tag-list/tag-list';
+import { TransportIcon } from '../transport-icon/transport-icon';
 
 @Component({
   selector: 'app-tour-short',
@@ -17,6 +18,7 @@ import { TagList } from '../tag-list/tag-list';
     LocationStart,
     LocationEnd,
     TagList,
+    TransportIcon,
   ],
   templateUrl: './tour-short.html',
   styleUrl: './tour-short.css',

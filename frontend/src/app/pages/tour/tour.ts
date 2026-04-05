@@ -11,6 +11,7 @@ import { LocationStart } from '../../components/DataDisplay/Tour/Location/locati
 import { StarRating } from '../../components/star-rating/star-rating';
 import { TourLog } from '../../components/tour-log/tour-log';
 import { RouterLink } from '@angular/router';
+import { TransportIcon } from '../../components/transport-icon/transport-icon';
 
 @Component({
   selector: 'app-tour',
@@ -25,6 +26,7 @@ import { RouterLink } from '@angular/router';
     LocationEnd,
     StarRating,
     RouterLink,
+    TransportIcon,
   ],
   templateUrl: './tour.html',
   styleUrl: './tour.css',
