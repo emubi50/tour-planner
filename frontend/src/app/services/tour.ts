@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ITour, ITourCreate } from '../interfaces/Tour';
 import { Duration } from '../components/DataDisplay/Tour/duration/duration';
+import { TourLogService } from './tour-log';
 
 @Injectable({
   providedIn: 'root',
@@ -58,9 +59,12 @@ export class TourService {
   //#endregion
 
   private toursSubject = new BehaviorSubject<ITour[]>([...this._toursInit]);
+  // Does not have rating aggregation
+  // Use getTours() instead pleeeeaaase
+  // Would need to make a pipe out of this or smth idk
   tours = this.toursSubject.asObservable();
 
-  constructor() {
+  constructor(private tourLogService: TourLogService) {
     for (let i = 0; i < 10; i++) {
       this.addTour({
         name: 'Tour name field',
@@ -72,8 +76,20 @@ export class TourService {
     }
   }
 
+  getTours(): ITour[] {
+    return this.toursSubject.value.map((tour) => {
+      tour.rating = this.tourLogService.getRatingAvgByTourId(tour.id);
+      return tour;
+    });
+  }
+
   getTourById(id: number): ITour | undefined {
-    return this.toursSubject.value.find((tour) => tour.id === id);
+    const tour = this.toursSubject.value.find((tour) => tour.id === id);
+    if (!tour) {
+      return undefined;
+    }
+    tour.rating = this.tourLogService.getRatingAvgByTourId(tour.id);
+    return tour;
   }
 
   addTour(tour: ITourCreate): void {

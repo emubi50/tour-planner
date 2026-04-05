@@ -12,7 +12,7 @@ import { TourShort } from '../tour-short/tour-short';
 @Component({
   selector: 'app-tour-list',
   standalone: true,
-  imports: [AsyncPipe, TourShort],
+  imports: [TourShort],
   templateUrl: './tour-list.html',
   styleUrl: './tour-list.css',
 })
@@ -29,7 +29,7 @@ export class TourList {
   }
 
   constructor(private tourService: TourService) {
-    this.tours = this.tourService.tours;
+    this.tours = this.tourService.getTours();
   }
 
   isListOpen = signal<boolean>(true);

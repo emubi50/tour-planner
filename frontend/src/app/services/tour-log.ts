@@ -82,6 +82,13 @@ export class TourLogService {
     );
   }
 
+  getRatingAvgByTourId(tourId: number): number {
+    const tourLogs = this.getTourLogsByTourId(tourId);
+    if (tourLogs.length === 0) return 0;
+    const totalRating = tourLogs.reduce((sum, log) => sum + log.rating, 0);
+    return totalRating / tourLogs.length;
+  }
+
   addTourLog(tourLog: ITourLogCreate): void {
     const newTourLog: ITourLog = {
       id: this.tourLogsSubject.value.length
