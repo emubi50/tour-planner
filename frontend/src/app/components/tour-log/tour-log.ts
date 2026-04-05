@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { ITourLog } from '../../services/tour-log';
 import { StarRating } from '../star-rating/star-rating';
 import { DatePipe } from '@angular/common';
@@ -15,4 +15,16 @@ import { Distance } from '../DataDisplay/Tour/distance/distance';
 })
 export class TourLog {
   tourLog = input.required<ITourLog>();
+
+  durationInHours = computed(() => {
+    const tourLog = this.tourLog();
+    if (!tourLog) return '00:00';
+    return (tourLog.duration / 3600).toFixed(2).replace('.', ':');
+  });
+
+  distanceInKm = computed(() => {
+    const tourLog = this.tourLog();
+    if (!tourLog) return '0.00';
+    return (tourLog.distance / 1000).toFixed(2);
+  });
 }

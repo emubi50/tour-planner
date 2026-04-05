@@ -1,4 +1,4 @@
 <div class="flex items-center gap-1">
-  <span class="text-gray-500">{{ Label }}</span>
-  <span class="text-nowrap overflow-hidden text-ellipsis">{{ value() }}</span>
+  <span [ngClass]="labelClasses()">{{ Label }}</span>
+  <span [ngClass]="valueClasses()">{{ value() }}</span>
 </div>

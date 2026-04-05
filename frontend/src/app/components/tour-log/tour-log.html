@@ -5,8 +5,8 @@
   </div>
   <p>{{ tourLog().comment }}</p>
   <div class="flex justify-between items-center">
-    <app-duration [duration]="tourLog().duration"></app-duration>
-    <app-distance [distance]="tourLog().distance"></app-distance>
+    <app-duration [duration]="durationInHours()"></app-duration>
+    <app-distance [distance]="distanceInKm()"></app-distance>
     <app-label-value-set
       [label]="'Difficulty'"
       [value]="tourLog().difficulty"

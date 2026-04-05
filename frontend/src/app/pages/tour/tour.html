@@ -47,15 +47,29 @@
             id="duration-and-distance"
             class="flex items-center gap-1 text-sm md:text-base"
           >
-            <app-duration [duration]="durationInHours()" />
+            <app-duration
+              [duration]="durationInHours()"
+              [labelClass]="'text-black'"
+            />
             |
-            <app-distance [distance]="distanceInKm()" />
+            <app-distance
+              [distance]="distanceInKm()"
+              [labelClass]="'text-black'"
+            />
           </div>
           <div
             class="flex flex-col gap-2 text-sm md:text-base w-full overflow-hidden"
           >
-            <app-location-start class="w-full" [location]="tour()!.start" />
-            <app-location-end class="w-full" [location]="tour()!.end" />
+            <app-location-start
+              class="w-full"
+              [location]="tour()!.start"
+              [labelClass]="'text-black'"
+            />
+            <app-location-end
+              class="w-full"
+              [location]="tour()!.end"
+              [labelClass]="'text-black'"
+            />
           </div>
         </div>
       </div>
