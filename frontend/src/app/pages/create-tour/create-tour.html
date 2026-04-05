@@ -1,17 +1,29 @@
-<form class="flex flex-col items-center align-middle">
+<form
+  [formGroup]="tourForm"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col items-center align-middle"
+>
   <h1 class="font-bold text-2xl text-gray-700 my-8">Create a new tour</h1>
   <div class="flex flex-col w-full md:w-3/5 bg-red-300/10 gap-4 p-2">
     <input
       type="text"
       name="name"
+      formControlName="name"
       placeholder="Tour name"
-      class="font-semibold lg:text-xl 2xl:text-2xl text-gray-700 bg-transparent border-b border-gray-300 focus:outline-none focus:border-gray-500 placeholder-gray-400"
+      [class]="
+        name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+      "
+      class="font-semibold lg:text-xl 2xl:text-2xl text-gray-700 bg-transparent border-b focus:outline-none focus:border-gray-500 placeholder-gray-400"
     />
     <textarea
       name="description"
+      formControlName="description"
       placeholder="Tour description"
       rows="4"
-      class="text-gray-500 lg:text-lg 2xl:text-xl bg-transparent border border-gray-300 rounded p-1 focus:outline-none focus:border-gray-500 placeholder-gray-400 resize-none"
+      [class]="
+        name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+      "
+      class="text-gray-500 lg:text-lg 2xl:text-xl bg-transparent border rounded p-1 focus:outline-none focus:border-gray-500 placeholder-gray-400 resize-none"
     ></textarea>
   </div>
 
@@ -24,14 +36,19 @@
           class="w-8 h-8 object-cover rounded"
         />
         <select
-          name="transportType"
-          class="bg-transparent border-b border-gray-300 focus:outline-none focus:border-gray-500 text-gray-700"
+          name="transport-type"
+          formControlName="transportType"
+          [class]="
+            name?.touched && name?.invalid
+              ? 'border-red-500'
+              : 'border-gray-300'
+          "
+          class="bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700"
         >
-          <option value="">Transport type</option>
-          <option value="bicycle">Bicycle</option>
-          <option value="walking">Walking</option>
-          <option value="car">Car</option>
-          <option value="public">Public transport</option>
+          <option value="" disabled>Transport type</option>
+          @for (type of transportTypeOptions; track type) {
+            <option [value]="type">{{ type }}</option>
+          }
         </select>
       </div>
 
@@ -51,8 +68,12 @@
     <input
       type="text"
       name="tags"
+      formControlName="tags"
       placeholder="Tags (comma-separated)"
-      class="text-sm text-gray-700 bg-transparent border-b border-gray-300 focus:outline-none focus:border-gray-500 placeholder-gray-400"
+      [class]="
+        name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+      "
+      class="text-sm text-gray-700 bg-transparent border-b focus:outline-none focus:border-gray-500 placeholder-gray-400"
     />
 
     <div
@@ -60,23 +81,32 @@
     >
       <input
         type="text"
-        name="start"
+        name="start-location"
+        formControlName="startLocation"
         placeholder="Start location"
-        class="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
+        [class]="
+          name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+        "
+        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
       />
       <input
         type="text"
-        name="end"
+        name="end-location"
+        formControlName="endLocation"
         placeholder="End location"
-        class="w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
+        [class]="
+          name?.touched && name?.invalid ? 'border-red-500' : 'border-gray-300'
+        "
+        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
       />
     </div>
-
-    <button
-      type="submit"
-      class="mt-2 w-full bg-cyan-700 hover:bg-cyan-800 text-white text-sm font-semibold py-2 px-4 rounded transition-colors"
-    >
-      Create Tour
-    </button>
   </div>
+
+  <button
+    type="submit"
+    [disabled]="!tourForm.valid"
+    class="mt-2 w-3/5 bg-cyan-700 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-cyan-800 text-white text-sm font-semibold py-2 px-4 rounded transition-colors"
+  >
+    Create Tour
+  </button>
 </form>
