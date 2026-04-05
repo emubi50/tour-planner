@@ -76,12 +76,23 @@ export class TourLogService {
   ]);
   tourLogs = this.tourLogsSubject.asObservable();
 
+  /**
+   * Gets all tour logs for the specified tour ID.
+   * @param tourId The ID of the tour to get logs for
+   * @returns An array of all tour logs belonging to the specified tour
+   */
   getTourLogsByTourId(tourId: number): ITourLog[] {
     return this.tourLogsSubject.value.filter(
       (tourLog) => tourLog.tourId === tourId,
     );
   }
 
+  /**
+   * Gets the average rating for a tour by its ID.
+   * @param tourId The ID of the tour to get the average rating for
+   * @returns The average value of all ratings for the specified tour
+   * @returns 0 if there are no tour logs for the specified tour ID
+   */
   getRatingAvgByTourId(tourId: number): number {
     const tourLogs = this.getTourLogsByTourId(tourId);
     if (tourLogs.length === 0) return 0;
@@ -89,17 +100,26 @@ export class TourLogService {
     return totalRating / tourLogs.length;
   }
 
+  /**
+   * Adds a tour log to the list.
+   * @param tourLog The tour log creation data
+   */
   addTourLog(tourLog: ITourLogCreate): void {
+    const maxId = Math.max(
+      ...this.tourLogsSubject.value.map((tourLog) => tourLog.id),
+      0,
+    );
     const newTourLog: ITourLog = {
-      id: this.tourLogsSubject.value.length
-        ? Math.max(...this.tourLogsSubject.value.map((tourLog) => tourLog.id)) +
-          1
-        : 0,
+      id: maxId + 1,
       ...tourLog,
     };
     this.tourLogsSubject.next([...this.tourLogsSubject.value, newTourLog]);
   }
 
+  /**
+   * Updates a tour log in the list.
+   * @param updatedTourLog The updated tour log data
+   */
   updateTourLog(updatedTourLog: ITourLog): void {
     const tourLogs = this.tourLogsSubject.value;
     const index = tourLogs.findIndex(
@@ -111,6 +131,10 @@ export class TourLogService {
     }
   }
 
+  /**
+   * Removes a tour log from the list by its ID.
+   * @param id The ID of the tour log to remove
+   */
   deleteTourLog(id: number): void {
     const tourLogs = this.tourLogsSubject.value.filter(
       (tourLog) => tourLog.id !== id,

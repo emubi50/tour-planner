@@ -76,6 +76,10 @@ export class TourService {
     }
   }
 
+  /**
+   * Gets all tours and propagates the average ratings using the TourLogService.
+   * @returns An array of all tours
+   */
   getTours(): ITour[] {
     return this.toursSubject.value.map((tour) => {
       tour.rating = this.tourLogService.getRatingAvgByTourId(tour.id);
@@ -83,6 +87,11 @@ export class TourService {
     });
   }
 
+  /**
+   * Gets a tour by its ID and propagates the average rating using the TourLogService.
+   * @param id The tour's ID
+   * @returns The tour object, or undefined if not found
+   */
   getTourById(id: number): ITour | undefined {
     const tour = this.toursSubject.value.find((tour) => tour.id === id);
     if (!tour) {
@@ -92,6 +101,10 @@ export class TourService {
     return tour;
   }
 
+  /**
+   * Adds a tour to the list.
+   * @param tour The tour creation data
+   */
   addTour(tour: ITourCreate): void {
     const maxId = Math.max(
       ...this.toursSubject.value.map((tour) => tour.id),
@@ -110,6 +123,10 @@ export class TourService {
     this.toursSubject.next([...this.toursSubject.value, newTour]);
   }
 
+  /**
+   * Updates a tour in the list.
+   * @param updatedTour The new data of the tour
+   */
   updateTour(updatedTour: ITour): void {
     const tours = this.toursSubject.value;
     const index = tours.findIndex((tour) => tour.id === updatedTour.id);
@@ -119,6 +136,10 @@ export class TourService {
     }
   }
 
+  /**
+   * Removes a tour from the list by its ID.
+   * @param id The ID of the tour to remove
+   */
   deleteTour(id: number): void {
     const tours = this.toursSubject.value.filter((tour) => tour.id !== id);
     this.toursSubject.next([...tours]);
