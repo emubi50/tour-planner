@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ITour, ITourCreate } from '../interfaces/Tour';
+import { Duration } from '../components/DataDisplay/Tour/duration/duration';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class TourService {
       start: 'Vienna, Austria',
       end: 'Salzburg, Austria',
       tags: ['Scenic', 'Fast', 'City'],
-      rating: 4.3,
+      rating: 0,
     },
     {
       id: 1,
@@ -28,7 +29,7 @@ export class TourService {
       start: 'Beijing, China',
       end: 'Beijing, China',
       tags: ['Historical', 'Cultural', 'Adventure', 'Scenic', 'Long', 'Wall'],
-      rating: 4.5,
+      rating: 0,
     },
     {
       id: 2,
@@ -39,7 +40,7 @@ export class TourService {
       start: 'Grand Canyon Village, Arizona, USA',
       end: 'Grand Canyon Village, Arizona, USA',
       tags: ['Nature', 'Adventure', 'Scenic'],
-      rating: 4.8,
+      rating: 0,
     },
     {
       id: 3,
@@ -51,7 +52,7 @@ export class TourService {
       start: 'Vienna, Austria',
       end: 'Salzburg, Austria',
       tags: ['Boring', 'Nature', 'City'],
-      rating: 1.7,
+      rating: 0,
     },
   ];
   //#endregion
@@ -64,12 +65,9 @@ export class TourService {
       this.addTour({
         name: 'Tour name field',
         description: 'Tour description field',
-        duration: 60 * 60, // in seconds
-        distance: 10000, // in meters
         start: 'Tour start field',
         end: 'Tour end field',
         tags: ['Tour tag field'],
-        rating: 3.0,
       });
     }
   }
@@ -83,7 +81,15 @@ export class TourService {
       ...this.toursSubject.value.map((tour) => tour.id),
       0,
     );
-    const newTour = { ...tour, id: maxId + 1 };
+
+    // Brainrot handling of 'computed' values because... no bi- backend :c
+    const newTour = {
+      ...tour,
+      id: maxId + 1,
+      rating: 0,
+      duration: 0,
+      distance: 0,
+    };
 
     this.toursSubject.next([...this.toursSubject.value, newTour]);
   }

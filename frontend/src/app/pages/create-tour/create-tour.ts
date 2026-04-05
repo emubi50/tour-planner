@@ -73,13 +73,6 @@ export class CreateTour {
           ?.split(',')
           .map((t) => t.trim())
           .filter((t) => t.length > 0) ?? [],
-
-      // values computed
-      duration: 0,
-      distance: 0,
-
-      // rating not part of creation
-      rating: 0,
     });
 
     this.tourForm.reset();
