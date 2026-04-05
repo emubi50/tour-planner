@@ -90,6 +90,14 @@
           }
         </div>
       </div>
+      <div class="flex justify-end mt-12">
+        <a
+          [routerLink]="['/tours', tour()!.id]"
+          class="bg-amber-300 hover:bg-amber-400 font-bold py-2 px-6 rounded-xl absolute bottom-4 right-4"
+        >
+          Edit
+        </a>
+      </div>
     </div>
   } @else {
     <p>No tour is selected</p>
