@@ -1,5 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -17,7 +17,8 @@ import { TransportType } from '../../enums/TransportType';
   styleUrl: './edit-tour.css',
 })
 export class EditTour {
-  private activatedRouter = inject(ActivatedRoute);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
   private tourService = inject(TourService);
 
   private tourId: number = -1;
@@ -35,7 +36,7 @@ export class EditTour {
   transportTypeFormValue = TransportType.BIKE;
 
   ngOnInit() {
-    this.activatedRouter.params.subscribe((params) => {
+    this.activatedRoute.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
     });
 
@@ -119,5 +120,12 @@ export class EditTour {
     };
 
     this.tourService.updateTour(updatedTour);
+    this.tourForm.markAsPristine();
+    this.tourForm.markAsUntouched();
+  }
+
+  deleteTour(): void {
+    this.tourService.deleteTour(this.tourId);
+    this.router.navigate(['/tours']);
   }
 }

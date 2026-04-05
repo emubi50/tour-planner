@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -15,6 +16,7 @@ import { TransportType } from '../../enums/TransportType';
   styleUrl: './create-tour.css',
 })
 export class CreateTour {
+  private router = inject(Router);
   private tourService = inject(TourService);
 
   transportTypeOptions: string[] = [
@@ -97,5 +99,6 @@ export class CreateTour {
     });
 
     this.tourForm.reset();
+    this.router.navigate(['/tours']);
   }
 }
