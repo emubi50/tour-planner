@@ -1,14 +1,14 @@
 import { Component, computed, Signal, signal } from '@angular/core';
 import { TourService } from '../../services/tour';
+import { TourLogService } from '../../services/tour-log';
+import { ITour } from '../../interfaces/Tour';
 import { TourList } from '../../components/tour-list/tour-list';
-import { ITour } from '../../services/tour';
 import { TagList } from '../../components/tag-list/tag-list';
 import { Distance } from '../../components/DataDisplay/Tour/distance/distance';
 import { Duration } from '../../components/DataDisplay/Tour/duration/duration';
 import { LocationEnd } from '../../components/DataDisplay/Tour/Location/location-end/location-end';
 import { LocationStart } from '../../components/DataDisplay/Tour/Location/location-start/location-start';
 import { StarRating } from '../../components/star-rating/star-rating';
-import { TourLogService } from '../../services/tour-log';
 import { TourLog } from '../../components/tour-log/tour-log';
 
 @Component({

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ITourLog, ITourLogCreate } from '../interfaces/TourLog';
 
 @Injectable({
   providedIn: 'root',
@@ -109,26 +110,4 @@ export class TourLogService {
     );
     this.tourLogsSubject.next([...tourLogs]);
   }
-}
-
-export interface ITourLog {
-  id: number;
-  tourId: number;
-  date: Date;
-  comment: string;
-  difficulty: number;
-  distance: number;
-  duration: number;
-  rating: number;
-}
-
-// Copy of ITourLog without id
-export interface ITourLogCreate {
-  tourId: number;
-  date: Date;
-  comment: string;
-  difficulty: number;
-  distance: number;
-  duration: number;
-  rating: number;
 }

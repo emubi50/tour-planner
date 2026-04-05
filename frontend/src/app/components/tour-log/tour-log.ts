@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { ITourLog } from '../../services/tour-log';
+import { ITourLog } from '../../interfaces/TourLog';
 import { StarRating } from '../star-rating/star-rating';
 import { DatePipe } from '@angular/common';
 import { LabelValueSet } from '../DataDisplay/label-value-set/label-value-set';
