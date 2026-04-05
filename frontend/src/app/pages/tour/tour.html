@@ -59,14 +59,16 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col gap-4 mt-4">
-        <h2 class="font-semibold text-lg text-gray-700">Tour Logs</h2>
-        <div class="flex flex-col gap-4">
-          @for (tourLog of tourLogs(); track tourLog.id) {
-            <app-tour-log [tourLog]="tourLog"></app-tour-log>
-          }
+      @if (tourLogs() != null && tourLogs().length > 0) {
+        <div class="flex flex-col gap-4 mt-4">
+          <h2 class="font-semibold text-lg text-gray-700">Tour Logs</h2>
+          <div class="flex flex-col gap-4">
+            @for (tourLog of tourLogs(); track tourLog.id) {
+              <app-tour-log [tourLog]="tourLog"></app-tour-log>
+            }
+          </div>
         </div>
-      </div>
+      }
     </div>
   } @else {
     <p>No tour is selected</p>
