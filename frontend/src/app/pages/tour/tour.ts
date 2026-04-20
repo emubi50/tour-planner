@@ -12,6 +12,7 @@ import { StarRating } from '../../components/star-rating/star-rating';
 import { TourLog } from '../../components/tour-log/tour-log';
 import { RouterLink } from '@angular/router';
 import { TransportIcon } from '../../components/transport-icon/transport-icon';
+import { MapFacadeService } from '../../services/map-facade';
 
 @Component({
   selector: 'app-tour',
@@ -41,6 +42,7 @@ export class TourPage {
   get setTourFn() {
     return (id: number) => {
       this.selectedTour.set(id);
+      this.mapFacadeService.initMap('map');
     };
   }
 
@@ -73,5 +75,6 @@ export class TourPage {
   constructor(
     private tourService: TourService,
     private tourLogService: TourLogService,
+    private mapFacadeService: MapFacadeService,
   ) {}
 }
