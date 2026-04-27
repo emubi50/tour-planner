@@ -6,7 +6,7 @@ namespace TourPlanner.Models
 {
     public class TourLog
     {
-        public required int Id { get; set; }
+        public int Id { get; set; }
         public required int TourId { get; set; }
 
         public required DateTime DateAndTime { get; set; }
@@ -15,5 +15,7 @@ namespace TourPlanner.Models
         public required int TotalDistance { get; set; }
         public required int TotalTime { get; set; }
         public required int Rating { get; set; }
+
+        public Tour Tour { get; set; } = null!;
     }
 }

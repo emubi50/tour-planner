@@ -7,24 +7,26 @@ namespace TourPlanner.Dal.InMemoryRepositories
     {
         private readonly List<Tour> _tours = [];
 
-        public IEnumerable<Tour> GetAllTours()
+        public async Task<List<Tour>> GetAllAsync()
         {
-            return _tours?.ToArray() ?? Enumerable.Empty<Tour>();
+            return _tours;
         }
 
-        public Tour? GetTourById(int tourId)
+        public async Task<Tour?> GetByIdAsync(int tourId)
         {
-            return GetAllTours().FirstOrDefault(tour => tour.Id == tourId);
+            return _tours.FirstOrDefault(t => t.Id == tourId);
         }
 
-        public void InsertTour(Tour tour)
+        public async Task AddAsync(Tour tour)
         {
             _tours.Add(tour);
         }
 
-        public void UpdateTour(Tour tour)
+        public async Task UpdateAsync(Tour tour)
         {
-            Tour updateTour = GetTourById(tour.Id) ?? throw new KeyNotFoundException($"Tou with ID {tour.Id} not found");
+            Tour updateTour =
+                await GetByIdAsync(tour.Id)
+                ?? throw new KeyNotFoundException($"Tou with ID {tour.Id} not found");
 
             updateTour.Name = tour.Name;
             updateTour.Description = tour.Description;
@@ -35,18 +37,15 @@ namespace TourPlanner.Dal.InMemoryRepositories
             updateTour.EstimatedTime = tour.EstimatedTime;
         }
 
-        public bool DeleteTour(int tourId)
+        public async Task DeleteAsync(int tourId)
         {
-            bool found = false;
-
-            Tour? tour = _tours.FirstOrDefault(t => t.Id == tourId);
+            Tour? tour = await GetByIdAsync(tourId);
             if (tour != null)
             {
-                found = true;
                 _tours.Remove(tour);
+                return;
             }
-
-            return found;
+            throw new KeyNotFoundException($"Tour with id {tourId} not found.");
         }
     }
 }

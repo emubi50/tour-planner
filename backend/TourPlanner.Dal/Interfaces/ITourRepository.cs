@@ -7,10 +7,10 @@ namespace TourPlanner.Dal.Interfaces
 {
     public interface ITourRepository
     {
-        IEnumerable<Tour> GetAllTours();
-        Tour? GetTourById(int tourId);
-        void InsertTour(Tour tour);
-        void UpdateTour(Tour tour);
-        bool DeleteTour(int tourId);
+        Task<List<Tour>> GetAllAsync();
+        Task<Tour?> GetByIdAsync(int tourId);
+        Task AddAsync(Tour tour);
+        Task UpdateAsync(Tour tour);
+        Task DeleteAsync(int tourId);
     }
 }

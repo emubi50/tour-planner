@@ -10,24 +10,25 @@ namespace TourPlanner.Dal.InMemoryRepositories
     {
         private readonly List<TourLog> _tourLogs = [];
 
-        public IEnumerable<TourLog> GetAllTourLogs()
+        public async Task<List<TourLog>> GetAllByTourIdAsync(int tourId)
         {
-            return _tourLogs.ToArray() ?? Enumerable.Empty<TourLog>();
+            return _tourLogs.Where(t => t.TourId == tourId).ToList();
         }
 
-        public TourLog? GetTourLogById(int tourLogId)
+        public async Task<TourLog?> GetByIdAsync(int tourLogId)
         {
-            return GetAllTourLogs().FirstOrDefault(t => t.Id == tourLogId);
+            return _tourLogs.FirstOrDefault(t => t.Id == tourLogId);
         }
 
-        public void InsertTourLog(TourLog tourLog)
+        public async Task AddAsync(TourLog tourLog)
         {
             _tourLogs.Add(tourLog);
         }
 
-        public void UpdateTourLog(TourLog tourLog)
+        public async Task UpdateAsync(TourLog tourLog)
         {
-            TourLog updateTourLog = GetTourLogById(tourLog.Id) ?? throw new KeyNotFoundException();
+            TourLog updateTourLog =
+                await GetByIdAsync(tourLog.Id) ?? throw new KeyNotFoundException();
 
             updateTourLog.DateAndTime = tourLog.DateAndTime;
             updateTourLog.Comment = tourLog.Comment;
@@ -37,19 +38,15 @@ namespace TourPlanner.Dal.InMemoryRepositories
             updateTourLog.Rating = tourLog.Rating;
         }
 
-        public bool DeleteTourLog(int tourLogId)
+        public async Task DeleteAsync(int tourLogId)
         {
-            bool found = false;
-
-            TourLog? tourLog = GetAllTourLogs().FirstOrDefault(t => t.Id == tourLogId);
-
+            TourLog? tourLog = await GetByIdAsync(tourLogId);
             if (tourLog != null)
             {
-                found = true;
                 _tourLogs.Remove(tourLog);
+                return;
             }
-
-            return found;
+            throw new KeyNotFoundException($"TourLog with id {tourLogId} not found.");
         }
     }
 }

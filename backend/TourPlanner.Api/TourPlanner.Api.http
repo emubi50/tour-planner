@@ -4,3 +4,25 @@ GET {{TourPlanner.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET {{TourPlanner.Api_HostAddress}}/api/tours
+Accept: application/json
+
+###
+
+POST {{TourPlanner.Api_HostAddress}}/api/tours
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "name": "Added Tour",
+  "description": "A great tour",
+  "from": "City A",
+  "to": "City B",
+  "transportType": "Walking",
+  "distance": 2000,
+  "estimatedTime": 120,
+  "logs": []
+}
+
+###
