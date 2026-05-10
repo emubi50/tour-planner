@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using TourPlanner.Dal;
 
 namespace TourPlanner.Api
@@ -7,7 +8,11 @@ namespace TourPlanner.Api
     {
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var builder = WebApplication.CreateBuilder(
+                new WebApplicationOptions { Args = args, WebRootPath = "public" }
+            );
+
+            builder.WebHost.UseWebRoot("public");
 
             // Add db context + repos
 
@@ -30,12 +35,28 @@ namespace TourPlanner.Api
                 Bll.Interfaces.ITourLogService,
                 Bll.Services.TourLogService
             >();
+            builder.Services.AddScoped<
+                Bll.Interfaces.IContactService,
+                Bll.Services.ContactService
+            >();
 
             builder.Services.AddControllers();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles(
+                new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(
+                        Path.Combine(Directory.GetCurrentDirectory(), "public")
+                    ),
+                }
+            );
+
+            app.MapFallbackToFile("index.html");
 
             app.UseAuthorization();
 

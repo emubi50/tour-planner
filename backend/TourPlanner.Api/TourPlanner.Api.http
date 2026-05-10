@@ -26,3 +26,41 @@ Content-Type: application/json
 }
 
 ###
+
+GET {{TourPlanner.Api_HostAddress}}/api/contacts
+Accept: application/json
+
+###
+
+GET {{TourPlanner.Api_HostAddress}}/api/contacts/0
+Accept: application/json
+
+###
+
+POST {{TourPlanner.Api_HostAddress}}/api/contacts
+Content-Type: application/json
+
+{
+  "FirstName": "John",
+  "LastName": "Pork",
+  "Email": "jonh.pork@gmail.com",
+  "PhoneNumber": "+43696112233"
+}
+
+###
+
+PUT {{TourPlanner.Api_HostAddress}}/api/contacts/0
+Content-Type: application/json
+{
+  "Id": 0,
+  "FirstName": "John",
+  "LastName": "Pork",
+  "Email": "jonh.pork@gmail.com",
+  "PhoneNumber": "+43676445566"
+}
+
+###
+
+DELETE {{TourPlanner.Api_HostAddress}}/api/contacts/0
+
+###
