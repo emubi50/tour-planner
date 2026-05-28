@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using TourPlanner.Dal;
 
 namespace TourPlanner.Api
@@ -14,10 +15,27 @@ namespace TourPlanner.Api
 
             builder.WebHost.UseWebRoot("public");
 
+            // Health checks
+
+            builder.Services.AddHealthChecks();
+
             // Add db context + repos
 
-            builder.Services.AddDbContext<TourPlannerDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DBConn"))
+            builder
+                .Services.AddOptions<Configuration.DatabaseOptions>()
+                .Bind(builder.Configuration.GetSection("ConnectionStrings"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
+            builder.Services.AddDbContext<TourPlannerDbContext>(
+                (serviceProvider, options) =>
+                {
+                    Configuration.DatabaseOptions dbOptions = serviceProvider
+                        .GetRequiredService<IOptions<Configuration.DatabaseOptions>>()
+                        .Value;
+
+                    options.UseNpgsql(dbOptions.DBConn);
+                }
             );
 
             builder.Services.AddScoped<
@@ -61,6 +79,8 @@ namespace TourPlanner.Api
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHealthChecks("/health");
 
             app.Run();
         }

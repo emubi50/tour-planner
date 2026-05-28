@@ -11,7 +11,7 @@ import { LucideMapPinned } from '@lucide/angular';
   styleUrl: './tour-list.css',
 })
 export class TourList {
-  private tours: any;
+  tours: any;
 
   // Not yet implemented
   width = input<number>(140);
