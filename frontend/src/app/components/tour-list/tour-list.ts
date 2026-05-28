@@ -11,7 +11,7 @@ import { LucideMapPinned } from '@lucide/angular';
   styleUrl: './tour-list.css',
 })
 export class TourList {
-  readonly tours;
+  private tours: any;
 
   // Not yet implemented
   width = input<number>(140);
@@ -23,7 +23,9 @@ export class TourList {
   }
 
   constructor(private tourService: TourService) {
-    this.tours = this.tourService.getTours();
+    this.tourService.getToursServer().subscribe((tours) => {
+      this.tours = signal(tours);
+    });
   }
 
   isListOpen = signal<boolean>(true);

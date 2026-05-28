@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ITour, ITourCreate } from '../interfaces/Tour';
 import { TourLogService } from './tour-log';
 import { TransportType } from '../enums/TransportType';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -89,6 +90,8 @@ export class TourService {
   // Would need to make a pipe out of this or smth idk
   tours = this.toursSubject.asObservable();
 
+  private http = inject(HttpClient);
+
   constructor(private tourLogService: TourLogService) {
     for (let i = 0; i < 10; i++) {
       this.addTour({
@@ -111,6 +114,10 @@ export class TourService {
       tour.rating = this.tourLogService.getRatingAvgByTourId(tour.id);
       return tour;
     });
+  }
+
+  getToursServer(): Observable<ITour[]> {
+    return this.http.get<ITour[]>('http://localhost:5044/api/tours');
   }
 
   /**
