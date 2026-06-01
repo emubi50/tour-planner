@@ -28,7 +28,7 @@ export class TourShort {
 
   durationInHours = computed(() => {
     const tour = this.tour();
-    return (tour.duration / 3600).toFixed(2).replace('.', ':');
+    return (tour.estimatedTime / 3600).toFixed(2).replace('.', ':');
   });
 
   distanceInKm = computed(() => {

@@ -85,20 +85,22 @@ export class CreateTour {
         break;
     }
 
-    this.tourService.addTour({
-      name: this.tourForm.value.name!,
-      description: this.tourForm.value.description!,
-      start: this.tourForm.value.startLocation!,
-      end: this.tourForm.value.endLocation!,
-      tags:
-        this.tourForm.value.tags
-          ?.split(',')
-          .map((t) => t.trim())
-          .filter((t) => t.length > 0) ?? [],
-      transportType: this.transportTypeFormValue,
-    });
-
-    this.tourForm.reset();
-    this.router.navigate(['/tours']);
+    this.tourService
+      .addTourServer({
+        name: this.tourForm.value.name!,
+        description: this.tourForm.value.description!,
+        from: this.tourForm.value.startLocation!,
+        to: this.tourForm.value.endLocation!,
+        tags:
+          this.tourForm.value.tags
+            ?.split(',')
+            .map((t) => t.trim())
+            .filter((t) => t.length > 0) ?? [],
+        transportType: this.transportTypeFormValue,
+      })
+      .subscribe(() => {
+        this.tourForm.reset();
+        this.router.navigate(['/tours']);
+      });
   }
 }

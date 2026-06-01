@@ -53,10 +53,8 @@ export class EditTour {
         Validators.maxLength(500),
       ]),
       transportType: new FormControl('Bicycle', [Validators.required]),
-      startLocation: new FormControl(this.tourData.start, [
-        Validators.required,
-      ]),
-      endLocation: new FormControl(this.tourData.end, [Validators.required]),
+      startLocation: new FormControl(this.tourData.from, [Validators.required]),
+      endLocation: new FormControl(this.tourData.to, [Validators.required]),
       tags: new FormControl(this.tourData.tags),
     });
   }
@@ -110,11 +108,11 @@ export class EditTour {
       id: this.tourData.id,
       name: this.tourForm.value.name ?? this.tourData.name,
       description: this.tourForm.value.description ?? this.tourData.description,
-      start: this.tourForm.value.startLocation ?? this.tourData.start,
-      end: this.tourForm.value.endLocation ?? this.tourData.end,
+      from: this.tourForm.value.startLocation ?? this.tourData.from,
+      to: this.tourForm.value.endLocation ?? this.tourData.to,
       tags: this.tourForm.value.tags ?? this.tourData.tags,
       transportType: this.transportTypeFormValue,
-      duration: this.tourData.duration,
+      estimatedTime: this.tourData.estimatedTime,
       distance: this.tourData.distance,
       rating: this.tourData.rating,
     };

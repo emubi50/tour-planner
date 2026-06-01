@@ -15,10 +15,10 @@ export class TourService {
       id: 0,
       name: 'From Vienna to Salzburg type beat Tour',
       description: 'This is the first tour.',
-      duration: 240 * 60, // in seconds
+      estimatedTime: 240 * 60, // in seconds
       distance: 12000, // in meters
-      start: 'Vienna, Austria',
-      end: 'Salzburg, Austria',
+      from: 'Vienna, Austria',
+      to: 'Salzburg, Austria',
       tags: ['Scenic', 'Austria', 'City'],
       transportType: TransportType.PUBLIC,
       rating: 0,
@@ -27,10 +27,10 @@ export class TourService {
       id: 1,
       name: 'The Great Wall of China walking tour',
       description: 'This is the second tour.',
-      duration: 360 * 60, // in seconds
+      estimatedTime: 360 * 60, // in seconds
       distance: 15000, // in meters
-      start: 'Beijing, China',
-      end: 'Beijing, China',
+      from: 'Beijing, China',
+      to: 'Beijing, China',
       tags: [
         'Historical',
         'Cultural',
@@ -48,10 +48,10 @@ export class TourService {
       id: 2,
       name: 'The Grand Canyon biking tour',
       description: 'This is the third tour.',
-      duration: 180 * 60, // in seconds
+      estimatedTime: 180 * 60, // in seconds
       distance: 8000, // in meters
-      start: 'Grand Canyon Village, Arizona, USA',
-      end: 'Grand Canyon Village, Arizona, USA',
+      from: 'Grand Canyon Village, Arizona, USA',
+      to: 'Grand Canyon Village, Arizona, USA',
       tags: ['Nature', 'Adventure', 'Scenic'],
       transportType: TransportType.BIKE,
       rating: 0,
@@ -61,10 +61,10 @@ export class TourService {
       name: 'A really boring tour through grass fields in the middle of Austria',
       description:
         'This is the fourth tour. It is really really boring, the title does not lie.',
-      duration: 120 * 60, // in seconds
+      estimatedTime: 120 * 60, // in seconds
       distance: 5000, // in meters
-      start: 'Grass field somewhere in the middle of Austria',
-      end: 'Grass field somewhere in the middle of Austria',
+      from: 'Grass field somewhere in the middle of Austria',
+      to: 'Grass field somewhere in the middle of Austria',
       tags: ['Boring', 'Nature', 'City'],
       transportType: TransportType.WALK,
       rating: 0,
@@ -73,10 +73,10 @@ export class TourService {
       id: 4,
       name: 'Autofahr Tour ab dafür 🤙🤙',
       description: 'AHHHHHHH TOUR NOCH EINE',
-      duration: 60 * 60, // in seconds
+      estimatedTime: 60 * 60, // in seconds
       distance: 10000, // in meters
-      start: 'Eine Garage, Vienna, Austria',
-      end: 'Eine Garage, Vienna, Austria',
+      from: 'Eine Garage, Vienna, Austria',
+      to: 'Eine Garage, Vienna, Austria',
       tags: ['Auto', 'City', 'Auto', 'Auto', 'Auto :)'],
       transportType: TransportType.CAR,
       rating: 0,
@@ -97,8 +97,8 @@ export class TourService {
       this.addTour({
         name: 'Tour name field',
         description: 'Tour description field',
-        start: 'Tour start field',
-        end: 'Tour end field',
+        from: 'Tour start field',
+        to: 'Tour end field',
         tags: ['Tour tag field'],
         transportType: TransportType.BIKE,
       });
@@ -149,11 +149,22 @@ export class TourService {
       ...tour,
       id: maxId + 1,
       rating: 0,
-      duration: 0,
+      estimatedTime: 0,
       distance: 0,
     };
 
     this.toursSubject.next([...this.toursSubject.value, newTour]);
+  }
+
+  addTourServer(tour: ITourCreate): Observable<ITour> {
+    const newTour = {
+      ...tour,
+      userId: 0,
+      estimatedTime: 0,
+      distance: 0,
+    };
+
+    return this.http.post<ITour>('/api/tours', newTour);
   }
 
   /**

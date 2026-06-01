@@ -13,10 +13,10 @@ export interface ITour {
   id: number;
   name: string;
   description: string;
-  duration: number; // in seconds
+  estimatedTime: number; // in seconds
   distance: number; // in meters
-  start: string;
-  end: string;
+  from: string;
+  to: string;
   tags: string[];
   transportType: TransportType;
   rating: number; // from 0 to 5
@@ -25,8 +25,8 @@ export interface ITour {
 export interface ITourCreate {
   name: string;
   description: string;
-  start: string;
-  end: string;
+  from: string;
+  to: string;
   tags: string[];
   transportType: TransportType;
 }

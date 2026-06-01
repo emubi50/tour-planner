@@ -23,7 +23,7 @@ namespace TourPlanner.Dal.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     From = table.Column<string>(type: "text", nullable: false),
                     To = table.Column<string>(type: "text", nullable: false),
-                    TransportType = table.Column<string>(type: "text", nullable: false),
+                    TransportType = table.Column<int>(type: "integer", nullable: false),
                     Distance = table.Column<int>(type: "integer", nullable: false),
                     EstimatedTime = table.Column<int>(type: "integer", nullable: false)
                 },

@@ -12,8 +12,8 @@ using TourPlanner.Dal;
 namespace TourPlanner.Dal.Migrations
 {
     [DbContext(typeof(TourPlannerDbContext))]
-    [Migration("20260427135001_changedItRequired")]
-    partial class changedItRequired
+    [Migration("20260601004854_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,9 +55,8 @@ namespace TourPlanner.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TransportType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("TransportType")
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

@@ -9,7 +9,7 @@
         public required string Description { get; set; }
         public required string From { get; set; }
         public required string To { get; set; }
-        public required string TransportType { get; set; }
+        public required TransportType TransportType { get; set; }
         public required int Distance { get; set; }
         public required int EstimatedTime { get; set; }
 

@@ -12,7 +12,7 @@
         <button class="text-2xl font-bold" (click)="toggleList()">X</button>
         <h2 class="text-2xl text-center w-full">Tours</h2>
       </div>
-      @for (tour of tours; track tour.id) {
+      @for (tour of tours(); track tour.id) {
         <app-tour-short [tour]="tour" (click)="onClick(tour.id)" tappable />
       }
     </div>

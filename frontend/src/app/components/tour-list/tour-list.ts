@@ -2,6 +2,7 @@ import { Component, input, signal } from '@angular/core';
 import { TourService } from '../../services/tour';
 import { TourShort } from '../tour-short/tour-short';
 import { LucideMapPinned } from '@lucide/angular';
+import { ITour } from '../../interfaces/Tour';
 
 @Component({
   selector: 'app-tour-list',
@@ -11,7 +12,7 @@ import { LucideMapPinned } from '@lucide/angular';
   styleUrl: './tour-list.css',
 })
 export class TourList {
-  tours: any;
+  tours = signal<ITour[]>([]);
 
   // Not yet implemented
   width = input<number>(140);
@@ -24,7 +25,7 @@ export class TourList {
 
   constructor(private tourService: TourService) {
     this.tourService.getToursServer().subscribe((tours) => {
-      this.tours = signal(tours);
+      this.tours.set(tours);
     });
   }
 

@@ -52,9 +52,8 @@ namespace TourPlanner.Dal.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TransportType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("TransportType")
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
