@@ -62,6 +62,12 @@ namespace TourPlanner.Api
 
             var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<TourPlannerDbContext>();
+                dbContext.Database.Migrate();
+            }
+
             // Configure the HTTP request pipeline.
 
             app.UseDefaultFiles();
