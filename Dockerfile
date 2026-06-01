@@ -14,6 +14,8 @@ WORKDIR /app
 
 COPY backend/ .
 
+RUN dotnet ef migrations add InitialCreate
+
 RUN dotnet publish TourPlanner.Api -c Release -o /publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS backend
