@@ -117,7 +117,7 @@ export class TourService {
   }
 
   getToursServer(): Observable<ITour[]> {
-    return this.http.get<ITour[]>('http://localhost:5044/api/tours');
+    return this.http.get<ITour[]>('/api/tours');
   }
 
   /**
