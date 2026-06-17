@@ -1,4 +1,4 @@
-import { Component, computed, Signal, signal } from '@angular/core';
+import { Component, computed, effect, Signal, signal } from '@angular/core';
 import { TourService } from '../../services/tour';
 import { TourLogService } from '../../services/tour-log';
 import { ITour } from '../../interfaces/Tour';
@@ -13,6 +13,8 @@ import { TourLog } from '../../components/tour-log/tour-log';
 import { RouterLink } from '@angular/router';
 import { TransportIcon } from '../../components/transport-icon/transport-icon';
 import { MapFacadeService } from '../../services/map-facade';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
 
 @Component({
   selector: 'app-tour',
@@ -33,10 +35,19 @@ import { MapFacadeService } from '../../services/map-facade';
   styleUrl: './tour.css',
 })
 export class TourPage {
-  selectedTour = signal<number | null>(null);
-  tour: Signal<ITour | null | undefined> = computed(() => {
-    const id = this.selectedTour();
-    return id !== null ? this.tourService.getTourById(id) : null;
+  readonly selectedTour = signal<number | null>(null);
+  readonly tour = signal<ITour | null>(null);
+
+  tourEffect = effect(() => {
+    const tourId = this.selectedTour();
+    if (tourId === null) {
+      this.tour.set(null);
+      return;
+    }
+
+    this.tourService
+      .getTourByIdServer(tourId)
+      .subscribe((tour) => this.tour.set(tour));
   });
 
   get setTourFn() {

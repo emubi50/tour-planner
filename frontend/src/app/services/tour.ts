@@ -134,6 +134,10 @@ export class TourService {
     return tour;
   }
 
+  getTourByIdServer(id: number): Observable<ITour> {
+    return this.http.get<ITour>(`/api/tours/${id}`);
+  }
+
   /**
    * Adds a tour to the list.
    * @param tour The tour creation data
