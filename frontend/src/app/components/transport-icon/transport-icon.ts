@@ -5,7 +5,7 @@ import {
   LucideCar,
   LucideFootprints,
 } from '@lucide/angular';
-import { TransportType } from '../../enums/TransportType';
+import { TransportType, TransportTypeText } from '../../enums/TransportType';
 
 @Component({
   selector: 'app-transport-icon',
@@ -21,18 +21,7 @@ export class TransportIcon {
   showText = input<boolean>(false);
 
   get typeText() {
-    switch (this.transportType()) {
-      case TransportType.BIKE:
-        return 'Bike';
-      case TransportType.WALK:
-        return 'Walk';
-      case TransportType.CAR:
-        return 'Car';
-      case TransportType.PUBLIC:
-        // Change to 'Public Transport' once I figure out,
-        // how I make the Tour Page not cooked if it is
-        return 'Public';
-    }
+    return TransportTypeText[this.transportType()];
   }
 
   // expose as property to be accessible in template

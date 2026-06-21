@@ -7,11 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { TourService } from '../../services/tour';
-import { TransportType } from '../../enums/TransportType';
+import { TransportType, TransportTypeText } from '../../enums/TransportType';
+import { TransportIcon } from '../../components/transport-icon/transport-icon';
 
 @Component({
   selector: 'app-create-tour',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TransportIcon],
   templateUrl: './create-tour.html',
   styleUrl: './create-tour.css',
 })
@@ -19,14 +20,13 @@ export class CreateTour {
   private router = inject(Router);
   private tourService = inject(TourService);
 
-  transportTypeOptions: string[] = [
-    'Bicycle',
-    'Walking',
-    'Bus',
-    'Public transport',
-  ];
+  // Expose enum to template
+  TransportType = TransportType;
+  TransportTypeText = TransportTypeText;
 
-  transportTypeFormValue = TransportType.BIKE;
+  transportTypes = Object.values(TransportType).filter(
+    (v) => typeof v === 'number',
+  );
 
   tourForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(200)]),
@@ -34,7 +34,10 @@ export class CreateTour {
       Validators.required,
       Validators.maxLength(500),
     ]),
-    transportType: new FormControl('', [Validators.required]),
+    transportType: new FormControl(0, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
     startLocation: new FormControl('', [Validators.required]),
     endLocation: new FormControl('', [Validators.required]),
     tags: new FormControl(''),
@@ -68,23 +71,6 @@ export class CreateTour {
       return;
     }
 
-    switch (this.tourForm.value.transportType) {
-      case 'Bicycle':
-        this.transportTypeFormValue = TransportType.BIKE;
-        break;
-      case 'Walking':
-        this.transportTypeFormValue = TransportType.WALK;
-        break;
-      case 'Bus':
-        this.transportTypeFormValue = TransportType.CAR;
-        break;
-      case 'Public Transport':
-        this.transportTypeFormValue = TransportType.PUBLIC;
-        break;
-      default:
-        break;
-    }
-
     this.tourService
       .addTourServer({
         name: this.tourForm.value.name!,
@@ -96,7 +82,7 @@ export class CreateTour {
             ?.split(',')
             .map((t) => t.trim())
             .filter((t) => t.length > 0) ?? [],
-        transportType: this.transportTypeFormValue,
+        transportType: this.tourForm.value.transportType!,
       })
       .subscribe(() => {
         this.tourForm.reset();
