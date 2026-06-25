@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TourPlanner.Dal;
 
 namespace TourPlanner.Api
@@ -47,6 +50,11 @@ namespace TourPlanner.Api
                 Dal.DatabaseRepositories.TourLogRepository
             >();
 
+            builder.Services.AddScoped<
+                Dal.Interfaces.IUserRepository,
+                Dal.DatabaseRepositories.UserRepository
+            >();
+
             // Add services to the container.
             builder.Services.AddScoped<Bll.Interfaces.ITourService, Bll.Services.TourService>();
             builder.Services.AddScoped<
@@ -57,9 +65,35 @@ namespace TourPlanner.Api
                 Bll.Interfaces.IContactService,
                 Bll.Services.ContactService
             >();
+            builder.Services.AddScoped<
+                Bll.Interfaces.IUserService,
+                Bll.Services.UserService
+            >();
+            builder.Services.AddScoped<
+                Api.Services.IPasswordHashingService,
+                Api.Services.PasswordHashingService
+            >();
+            builder.Services.AddScoped<
+                Api.Services.ITokenService,
+                Api.Services.TokenService
+            >();
 
             builder.Services.AddControllers();
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "TourPlannerApi",
+                        ValidAudience = "TourPlanner",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretSigningKey123456!")) // TODO: WHEN WE ACTUALLY HAVE A KEY, DO NOT PUT IT IN THE CODE
+                    };
+                });
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())

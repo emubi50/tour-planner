@@ -1,7 +1,24 @@
 @TourPlanner.Api_HostAddress = http://localhost:5044
 
-GET {{TourPlanner.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+###
+
+POST {{TourPlanner.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "testpass"
+}
+
+###
+
+POST {{TourPlanner.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "testpass"
+}
 
 ###
 

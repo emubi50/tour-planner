@@ -8,6 +8,8 @@ namespace TourPlanner.Dal
         public DbSet<Tour> Tours { get; set; }
         public DbSet<TourLog> TourLogs { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public TourPlannerDbContext(DbContextOptions<TourPlannerDbContext> options)
             : base(options) { }
 
