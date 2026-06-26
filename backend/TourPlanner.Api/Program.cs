@@ -1,9 +1,9 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using TourPlanner.Dal;
 
 namespace TourPlanner.Api
@@ -65,22 +65,17 @@ namespace TourPlanner.Api
                 Bll.Interfaces.IContactService,
                 Bll.Services.ContactService
             >();
-            builder.Services.AddScoped<
-                Bll.Interfaces.IUserService,
-                Bll.Services.UserService
-            >();
+            builder.Services.AddScoped<Bll.Interfaces.IUserService, Bll.Services.UserService>();
             builder.Services.AddScoped<
                 Api.Services.IPasswordHashingService,
                 Api.Services.PasswordHashingService
             >();
-            builder.Services.AddScoped<
-                Api.Services.ITokenService,
-                Api.Services.TokenService
-            >();
+            builder.Services.AddScoped<Api.Services.ITokenService, Api.Services.TokenService>();
 
             builder.Services.AddControllers();
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            builder
+                .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -91,9 +86,21 @@ namespace TourPlanner.Api
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = "TourPlannerApi",
                         ValidAudience = "TourPlanner",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretSigningKey123456!")) // TODO: WHEN WE ACTUALLY HAVE A KEY, DO NOT PUT IT IN THE CODE
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretSigningKey123456!")
+                        ), // TODO: WHEN WE ACTUALLY HAVE A KEY, DO NOT PUT IT IN THE CODE
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Cookies["token"];
+                            return Task.CompletedTask;
+                        },
                     };
                 });
+
+            builder.Services.AddAuthorization();
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
