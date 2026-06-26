@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Navbar } from './navbar/navbar';
 import { AccountDropdown } from './account-dropdown/account-dropdown';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +12,8 @@ import { AccountDropdown } from './account-dropdown/account-dropdown';
   styleUrl: './header.css',
 })
 export class Header {
-  currentUser = signal<string>('');
+  private userService = inject(UserService);
+  currentUser = this.userService.user;
   isMenuOpen = signal<boolean>(false);
   toggleMenu() {
     this.isMenuOpen.update((booleanValue) => !booleanValue);

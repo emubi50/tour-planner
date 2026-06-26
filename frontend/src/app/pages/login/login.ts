@@ -45,7 +45,7 @@ export class Login {
         next: () => {
           console.log('Login successful');
 
-          this.userService.setUser = { username: this.loginForm.value.username! };
+          this.userService.setUser({ username: this.loginForm.value.username! });
           this.loginForm.reset();
           this.router.navigate(['/tours']);
         },

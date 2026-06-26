@@ -1,4 +1,4 @@
-@if (currentUser() == undefined || currentUser() == "") {
+@if (currentUser() == undefined || currentUser() == null) {
   <div class="flex w-full gap-2 justify-center md:justify-start">
     <a
       routerLink="/login"
@@ -17,7 +17,7 @@
       <p
         class="text-gray-700 hover:text-gray-950 transition-colors duration-200 px-2 py-1 text-lg"
       >
-        {{ currentUser() }}
+        {{ currentUser()?.username }}
       </p>
       <img src="https://placehold.co/20x20" alt="" />
     </button>
@@ -34,10 +34,11 @@
           >Settings</a
         >
         <a
-          routerLink="/"
+          routerLink="/login"
           class="block text-center md:text-right text-gray-700 hover:text-gray-950 transition-colors duration-200 px-2 py-1 text-lg"
+          (click)="logout()"
           >Logout</a
-        >
+        >        
       </div>
     }
   </div>

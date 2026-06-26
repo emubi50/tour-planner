@@ -9,11 +9,9 @@ import { IUser, IUserCredentials } from '../interfaces/User';
 export class UserService {
   private currentUser = signal<IUser | null>(null);
 
-  get user(): IUser | null {
-    return this.currentUser();
-  }
+  readonly user = this.currentUser.asReadonly();
 
-  set setUser(user: IUser | null) {
+  setUser(user: IUser | null): void {
     this.currentUser.set(user);
   }
 
@@ -29,6 +27,19 @@ loginUserServer(user: IUserCredentials): Observable<void> {
     return this.http.post<void>('/api/auth/login', user);
   }
 /**
+ * Sends a request to the server to remove the token cookie.
+ *
+ * @return {*}  {Observable<void>}
+ * @memberof UserService
+ */
+logoutUserServer(): Observable<void> {
+    return this.http.post<void>(
+      '/api/auth/logout',
+      {}
+    );
+  }
+
+/**
  * Sends the provided credentials to the auth endpoint for user registration.
  *
  * @param {IUserCredentials} user
@@ -37,5 +48,15 @@ loginUserServer(user: IUserCredentials): Observable<void> {
  */
 registerUserServer(user: IUserCredentials): Observable<void> {
     return this.http.post<void>('/api/auth/register', user);
+  }
+/**
+ * Fetches the user's information based on the token stored.
+ * NOT YET IMPLEMENTED: Backend support is not yet available for this.
+ *
+ * @return {Observable<IUser>}
+ * @memberof UserService
+ */
+loadCurrentUser(): Observable<IUser> {
+    return this.http.get<IUser>('/api/auth/me');
   }
 }

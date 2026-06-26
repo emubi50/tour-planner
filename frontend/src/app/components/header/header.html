@@ -27,7 +27,6 @@
     <app-navbar class="hidden md:block" />
     <app-account-dropdown
       class="hidden md:block ml-auto"
-      [currentUser]="currentUser()"
     />
   </nav>
 
@@ -37,7 +36,7 @@
       class="md:hidden absolute border-b w-full flex flex-col gap-2 z-50 bg-white"
     >
       <app-navbar />
-      <app-account-dropdown [currentUser]="currentUser()" />
+      <app-account-dropdown />
     </div>
   }
   <hr />

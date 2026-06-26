@@ -1,5 +1,6 @@
-import { Component, input, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
+import { UserService } from '../../../services/user';
 
 @Component({
   selector: 'app-account-dropdown',
@@ -9,13 +10,27 @@ import { RouterLink } from '@angular/router';
   styleUrl: './account-dropdown.css',
 })
 export class AccountDropdown {
-  currentUser = input<string>();
+  private userService = inject(UserService);
+  private router = inject(Router);
 
+  currentUser = this.userService.user;
   isOpen = signal(false);
+
   toggle() {
     this.isOpen.update((booleanValue) => !booleanValue);
   }
+
   logout() {
-    this.currentUser.apply('');
+    this.userService.logoutUserServer().subscribe({
+      next: () => {
+        console.log('Logout successful');
+        this.userService.setUser(null);
+        this.router.navigate(['/login']);
+        this.isOpen.set(false);
+      },
+      error: (error) => {
+        console.error('Logout failed:', error);
+      }
+    });
   }
 }

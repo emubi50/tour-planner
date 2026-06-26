@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using TourPlanner.Api.Dtos;
 using TourPlanner.Api.Services;
 using TourPlanner.Bll.Interfaces;
@@ -15,7 +15,11 @@ namespace TourPlanner.Api.Controllers
         private readonly IPasswordHashingService _passwordHashingService;
         private readonly IUserService _userService;
 
-        public AuthController(ITokenService tokenService, IPasswordHashingService passwordHashingService, IUserService userService)
+        public AuthController(
+            ITokenService tokenService,
+            IPasswordHashingService passwordHashingService,
+            IUserService userService
+        )
         {
             _tokenService = tokenService;
             _passwordHashingService = passwordHashingService;
@@ -44,7 +48,10 @@ namespace TourPlanner.Api.Controllers
             {
                 var user = await _userService.GetUserByUsernameAsync(credentials.Username);
 
-                var isPasswordValid = _passwordHashingService.Verify(user.HashedPassword, credentials.Password);
+                var isPasswordValid = _passwordHashingService.Verify(
+                    user.HashedPassword,
+                    credentials.Password
+                );
                 if (!isPasswordValid)
                 {
                     throw new InvalidDataException("Invalid credentials");
@@ -52,11 +59,15 @@ namespace TourPlanner.Api.Controllers
 
                 var token = new TokenDto { Token = _tokenService.GenerateToken(user) };
 
-                Response.Cookies.Append("token", token.Token, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Expires = DateTimeOffset.UtcNow.AddMinutes(60)
-                });
+                Response.Cookies.Append(
+                    "token",
+                    token.Token,
+                    new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Expires = DateTimeOffset.UtcNow.AddMinutes(60),
+                    }
+                );
 
                 return Ok();
             }
@@ -64,6 +75,20 @@ namespace TourPlanner.Api.Controllers
             {
                 return Unauthorized("Invalid credentials");
             }
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("token");
+            return Ok();
+        }
+
+        [HttpPost("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            // TODO: Implement this method to return the current user based on the token in the cookie
+            throw new NotImplementedException();
+        }
     }
-}
 }
