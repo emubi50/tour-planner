@@ -29,7 +29,7 @@ loginUserServer(user: IUserCredentials): Observable<void> {
 /**
  * Sends a request to the server to remove the token cookie.
  *
- * @return {*}  {Observable<void>}
+ * @return {Observable<void>}
  * @memberof UserService
  */
 logoutUserServer(): Observable<void> {

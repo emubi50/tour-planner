@@ -78,17 +78,26 @@ namespace TourPlanner.Api.Controllers
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             Response.Cookies.Delete("token");
             return Ok();
         }
 
         [HttpPost("me")]
-        public async Task<IActionResult> GetCurrentUser()
+        public async Task<IActionResult> Me()
         {
-            // TODO: Implement this method to return the current user based on the token in the cookie
-            throw new NotImplementedException();
+            var username = User.Identity?.Name;
+            if (username == null)
+            {
+                return Unauthorized();
+            }
+            var user = await _userService.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            return Ok(new { user.Username });
         }
     }
 }
