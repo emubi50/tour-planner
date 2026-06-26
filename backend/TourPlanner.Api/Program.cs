@@ -61,10 +61,6 @@ namespace TourPlanner.Api
                 Bll.Interfaces.ITourLogService,
                 Bll.Services.TourLogService
             >();
-            builder.Services.AddScoped<
-                Bll.Interfaces.IContactService,
-                Bll.Services.ContactService
-            >();
             builder.Services.AddScoped<Bll.Interfaces.IUserService, Bll.Services.UserService>();
             builder.Services.AddScoped<
                 Api.Services.IPasswordHashingService,
