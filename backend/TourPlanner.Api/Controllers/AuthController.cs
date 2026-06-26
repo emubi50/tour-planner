@@ -84,7 +84,7 @@ namespace TourPlanner.Api.Controllers
             return Ok();
         }
 
-        [HttpPost("me")]
+        [HttpGet("me")]
         public async Task<IActionResult> Me()
         {
             var username = User.Identity?.Name;
