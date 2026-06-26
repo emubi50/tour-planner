@@ -16,7 +16,8 @@
           "parser": "angular"
         }
       }
-    ]
+    ],
+    "plugins": ["prettier-plugin-tailwindcss"]
   },
   "private": true,
   "dependencies": {
@@ -48,6 +49,8 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.8.4",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "~5.8.2"
   }
 }
