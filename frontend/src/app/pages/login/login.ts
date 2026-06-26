@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { LoginService } from '../../services/login';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ import { LoginService } from '../../services/login';
 })
 export class Login {
   private router = inject(Router);
-  private loginService = inject(LoginService);
+  private userService = inject(UserService);
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -39,12 +39,13 @@ export class Login {
       return;
     }
 
-    this.loginService
-      .loginServer(this.loginForm.value.username!, this.loginForm.value.password!)
+    this.userService
+      .loginUserServer({ username: this.loginForm.value.username!, password: this.loginForm.value.password! })
       .subscribe({
         next: () => {
           console.log('Login successful');
 
+          this.userService.setUser = { username: this.loginForm.value.username! };
           this.loginForm.reset();
           this.router.navigate(['/tours']);
         },

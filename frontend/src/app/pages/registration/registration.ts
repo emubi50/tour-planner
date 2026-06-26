@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RegistrationService } from '../../services/registration';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-registration',
@@ -11,7 +11,7 @@ import { RegistrationService } from '../../services/registration';
 })
 export class Registration {
   private router = inject(Router);
-  private registrationService = inject(RegistrationService);
+  private userService = inject(UserService);
 
   registrationForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
@@ -35,8 +35,8 @@ export class Registration {
       return;
     }
 
-    this.registrationService
-      .registerUserServer(this.registrationForm.value.username!, this.registrationForm.value.password!)
+    this.userService
+      .registerUserServer({ username: this.registrationForm.value.username!, password: this.registrationForm.value.password! })
       .subscribe({
         next: () => {
           console.log('Registration successful');
