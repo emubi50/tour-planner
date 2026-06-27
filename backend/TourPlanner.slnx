@@ -3,4 +3,5 @@
   <Project Path="TourPlanner.Bll/TourPlanner.Bll.csproj" Id="1fcff97e-07dd-490d-9d11-3e51e434efbb" />
   <Project Path="TourPlanner.Dal/TourPlanner.Dal.csproj" Id="3ace6b4f-8e3b-413a-9854-13fd7ced4efc" />
   <Project Path="TourPlanner.Models/TourPlanner.Models.csproj" />
+  <Project Path="TourPlanner.Tests/TourPlanner.Tests.csproj" Id="20760163-466a-4d3c-a583-300b17ddb61a" />
 </Solution>

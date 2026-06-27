@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TourPlanner.Dal.Exceptions;
 using TourPlanner.Dal.Interfaces;
 using TourPlanner.Models;
 
@@ -21,9 +22,15 @@ namespace TourPlanner.Dal.DatabaseRepositories
 
         public async Task InsertUserAsync(User user)
         {
-            //! this WILL not work because User is not a table in DB.
-            _context.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) when (ex is DbUpdateException || ex is ArgumentException)
+            {
+                throw new DuplicateKeyException($"User with username {user.Username} alreaedy exists", ex);
+            }
         }
     }
-}
+}}

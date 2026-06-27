@@ -18,14 +18,19 @@ namespace TourPlanner.Bll.Services
             return await _tourRepository.GetAllAsync();
         }
 
-        public async Task<Tour?> GetByIdAsync(int id)
+        public async Task<Tour?> GetByIdAsync(int userId, int tourId)
         {
-            return await _tourRepository.GetByIdAsync(id);
+            return await _tourRepository.GetByIdAsync(userId, tourId);
         }
 
-        public async Task CreateTourAsync(Tour tour)
+        public async Task CreateTourAsync(int userId, Tour tour)
         {
-            await _tourRepository.AddAsync(tour);
+            await _tourRepository.AddAsync(userId, tour);
+        }
+
+        public async Task DeleteTourAsync(int userId, int tourId)
+        {
+            await _tourRepository.DeleteAsync(userId, tourId);
         }
     }
 }

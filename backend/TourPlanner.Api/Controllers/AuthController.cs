@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TourPlanner.Api.Dtos;
 using TourPlanner.Api.Services;
+using TourPlanner.Bll.Exceptions;
 using TourPlanner.Bll.Interfaces;
 
 namespace TourPlanner.Api.Controllers
@@ -35,7 +36,7 @@ namespace TourPlanner.Api.Controllers
                 await _userService.RegisterUserAsync(credentials.Username, hashedPassword);
                 return Created();
             }
-            catch (Exception) //TODO: Catch specific exception for user already exists
+            catch (UserAlreadyExistsException)
             {
                 return Conflict("Username already exists");
             }
@@ -71,7 +72,7 @@ namespace TourPlanner.Api.Controllers
 
                 return Ok();
             }
-            catch (Exception e) when (e is InvalidDataException) // TODO: EXPAND EXCEPTION TO INCLUDE USER NOT FOUND
+            catch (Exception e) when (e is InvalidDataException || e is UserNotFoundException)
             {
                 return Unauthorized("Invalid credentials");
             }

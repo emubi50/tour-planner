@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using TourPlanner.Dal.Exceptions;
 using TourPlanner.Dal.Interfaces;
 using TourPlanner.Models;
 
@@ -16,35 +17,42 @@ namespace TourPlanner.Dal.DatabaseRepositories
             _context = context;
         }
 
-        public async Task<List<TourLog>> GetAllByTourIdAsync(int id)
+        public async Task<List<TourLog>> GetAllByTourIdAsync(int tourId)
         {
-            return await _context.TourLogs.Where(l => l.TourId == id).ToListAsync();
+            return await _context.TourLogs.Where(l => l.TourId == tourId).ToListAsync();
         }
 
-        public async Task<TourLog?> GetByIdAsync(int id)
+        public async Task<TourLog?> GetByIdAsync(int tourId, int tourLogId)
         {
-            return await _context.TourLogs.FirstOrDefaultAsync(l => l.Id == id);
+            return await _context.TourLogs.FirstOrDefaultAsync(l => l.Id == tourLogId);
         }
 
-        public async Task AddAsync(TourLog log)
+        public async Task AddAsync(int tourId, TourLog log)
         {
-            _context.TourLogs.Add(log);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.TourLogs.Add(log);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex) when (ex is DbUpdateException || ex is ArgumentException)
+            {
+                throw new DuplicateKeyException($"TourLog with id {log.Id} already exists", ex);
+            }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int tourId, int tourLogId)
         {
-            TourLog? log = await GetByIdAsync(id);
+            TourLog? log = await GetByIdAsync(tourId, tourLogId);
             if (log != null)
             {
                 _context.TourLogs.Remove(log);
                 await _context.SaveChangesAsync();
                 return;
             }
-            throw new ArgumentException($"TourLog with id {id} not found.");
+            throw new ArgumentException($"TourLog with id {tourLogId} not found.");
         }
 
-        public async Task UpdateAsync(TourLog log)
+        public async Task UpdateAsync(int tourId, TourLog log)
         {
             if (await _context.TourLogs.AnyAsync(l => l.Id == log.Id))
             {

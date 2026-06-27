@@ -10,8 +10,10 @@ namespace TourPlanner.Bll.Interfaces
     {
         Task<List<Tour>> GetAllAsync();
 
-        Task<Tour?> GetByIdAsync(int id);
+        Task<Tour?> GetByIdAsync(int userId, int tourId);
 
-        Task CreateTourAsync(Tour tour);
+        Task CreateTourAsync(int userId, Tour tour);
+
+        Task DeleteTourAsync(int userId, int tourId);
     }
 }
