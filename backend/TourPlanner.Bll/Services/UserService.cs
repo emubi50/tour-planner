@@ -25,6 +25,8 @@ namespace TourPlanner.Bll.Services
                     throw new UserNotFoundException($"User with username '{username}' not found.");
                 }
                 return user;
+            }
+            catch (Exception ex) { throw ex; }
         }
 
         public async Task RegisterUserAsync(string username, string hashedPassword)

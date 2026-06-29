@@ -1,4 +1,5 @@
-﻿using TourPlanner.Bll.Exceptions;
+﻿using System.ComponentModel.DataAnnotations;
+using TourPlanner.Bll.Exceptions;
 using TourPlanner.Bll.Interfaces;
 using TourPlanner.Dal.Interfaces;
 using TourPlanner.Models;
@@ -36,17 +37,25 @@ namespace TourPlanner.Bll.Services
             await _tourRepository.AddAsync(tour);
         }
 
+        public async Task UpdateTourAsync(string username, Tour incomingTour)
+        {
+            int userId = await GetUserIdAsync(username);
+            var existingTour = await _tourRepository.GetByIdAsync(incomingTour.Id);
+            if (existingTour != null && existingTour.UserId == userId)
+            {
+                incomingTour.UserId = existingTour.UserId;
+                await _tourRepository.UpdateAsync(incomingTour);
+            }
+        }
+
         public async Task DeleteTourAsync(string username, int tourId)
         {
             int userId = await GetUserIdAsync(username);
             var tour = await _tourRepository.GetByIdAsync(tourId);
-            if (tour == null)
-            { return; }
-            if (tour.UserId != userId)
+            if (tour != null && tour.UserId == userId)
             {
-             throw new UnauthorizedAccessException("You do not have permission to delete this tour.");
+                await _tourRepository.DeleteAsync(tourId);
             }
-            await _tourRepository.DeleteAsync(tourId);
         }
 
         private async Task<int> GetUserIdAsync(string username)
