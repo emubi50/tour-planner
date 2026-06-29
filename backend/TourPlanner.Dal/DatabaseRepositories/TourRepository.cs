@@ -16,12 +16,17 @@ namespace TourPlanner.Dal.DatabaseRepositories
 
         public async Task<List<Tour>> GetAllByUserIdAsync(int userId)
         {
-            return await _context.Tours.Where(t => t.UserId == userId).Include(t => t.Logs).ToListAsync();
+            return await _context
+                .Tours.Where(t => t.UserId == userId)
+                .Include(t => t.Logs)
+                .ToListAsync();
         }
 
         public async Task<Tour?> GetByIdAsync(int tourId)
         {
-            return await _context.Tours.Include(t => t.Logs).FirstOrDefaultAsync(t => t.Id == tourId);
+            return await _context
+                .Tours.Include(t => t.Logs)
+                .FirstOrDefaultAsync(t => t.Id == tourId);
         }
 
         public async Task AddAsync(Tour tour)

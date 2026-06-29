@@ -5,6 +5,6 @@ namespace TourPlanner.Models
         BIKE,
         WALK,
         CAR,
-        PUBLIC
+        PUBLIC,
     }
 }

@@ -29,7 +29,10 @@ namespace TourPlanner.Dal.DatabaseRepositories
             }
             catch (Exception ex) when (ex is DbUpdateException || ex is ArgumentException)
             {
-                throw new DuplicateKeyException($"User with username {user.Username} alreaedy exists", ex);
+                throw new DuplicateKeyException(
+                    $"User with username {user.Username} alreaedy exists",
+                    ex
+                );
             }
         }
     }

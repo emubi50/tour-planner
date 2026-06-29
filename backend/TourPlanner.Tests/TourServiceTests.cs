@@ -26,7 +26,16 @@ public class TourServiceTests
         _tourRepository = Substitute.For<ITourRepository>();
         _tourService = new TourService(_tourRepository, _userRepository);
 
-        _userRepository.GetUserByUsernameAsync(Username).Returns(new User { Id = UserId, Username = Username, HashedPassword = "hash-salt" });
+        _userRepository
+            .GetUserByUsernameAsync(Username)
+            .Returns(
+                new User
+                {
+                    Id = UserId,
+                    Username = Username,
+                    HashedPassword = "hash-salt",
+                }
+            );
     }
 
     #region UserNotFound Test Cases
@@ -225,14 +234,19 @@ public class TourServiceTests
 
         // Assert
         Assert.That(tour.UserId, Is.EqualTo(UserId));
-        await _tourRepository.Received(1).AddAsync(Arg.Is<Tour>(t => t == tour && t.UserId == UserId));
+        await _tourRepository
+            .Received(1)
+            .AddAsync(Arg.Is<Tour>(t => t == tour && t.UserId == UserId));
     }
     #endregion
 
     #region UpdateTourAsync Tests
     [TestCase(UserId, true)]
     [TestCase(UserId + 1, false)]
-    public async Task UpdateTourAsync_TourExists_CallsUpdateOnlyWhenOwnedByUserr(int ownerId, bool expectUpdateCalled)
+    public async Task UpdateTourAsync_TourExists_CallsUpdateOnlyWhenOwnedByUserr(
+        int ownerId,
+        bool expectUpdateCalled
+    )
     {
         // Arrange
         var existingTour = new Tour
@@ -292,10 +306,10 @@ public class TourServiceTests
             EstimatedTime = double.Parse(TimeSpan.FromHours(1.5).TotalHours.ToString()),
         };
         _tourRepository.GetByIdAsync(1).Returns((Tour?)null);
-        
+
         // Act
         await _tourService.UpdateTourAsync(Username, incomingTour);
-        
+
         // Assert
         await _tourRepository.DidNotReceive().UpdateAsync(Arg.Any<Tour>());
     }
@@ -336,14 +350,19 @@ public class TourServiceTests
 
         // Assert
         await _tourRepository.Received(1).UpdateAsync(Arg.Is<Tour>(t => t.UserId == UserId));
-        await _tourRepository.DidNotReceive().UpdateAsync(Arg.Is<Tour>(t => t.UserId == newOwnerId && t.UserId != UserId));
+        await _tourRepository
+            .DidNotReceive()
+            .UpdateAsync(Arg.Is<Tour>(t => t.UserId == newOwnerId && t.UserId != UserId));
     }
     #endregion
 
     #region DeleteTourAsync Tests
     [TestCase(UserId, true)]
     [TestCase(UserId + 1, false)]
-    public async Task DeleteTourAsync_TourExists_CallsDeleteOnlyWhenOwnedByUser(int ownerId,bool expectDeleteCalled)
+    public async Task DeleteTourAsync_TourExists_CallsDeleteOnlyWhenOwnedByUser(
+        int ownerId,
+        bool expectDeleteCalled
+    )
     {
         // Arrange
         var tour = new Tour

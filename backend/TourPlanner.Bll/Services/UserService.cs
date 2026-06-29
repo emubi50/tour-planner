@@ -29,15 +29,16 @@ namespace TourPlanner.Bll.Services
         {
             try
             {
-                await _userRepository.InsertUserAsync(new User
-                {
-                    Username = username,
-                    HashedPassword = hashedPassword
-                });
+                await _userRepository.InsertUserAsync(
+                    new User { Username = username, HashedPassword = hashedPassword }
+                );
             }
             catch (DuplicateKeyException ex)
             {
-                throw new UserAlreadyExistsException($"User with username '{username}' already exists", ex);
+                throw new UserAlreadyExistsException(
+                    $"User with username '{username}' already exists",
+                    ex
+                );
             }
         }
     }

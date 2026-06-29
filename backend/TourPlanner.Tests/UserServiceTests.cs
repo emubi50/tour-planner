@@ -63,7 +63,9 @@ public class UserServiceTests
         _userRepository.GetUserByUsernameAsync(username).Returns((User?)null);
 
         // Act
-        var ex = Assert.ThrowsAsync<UserNotFoundException>(() => _userService.GetUserByUsernameAsync(username));
+        var ex = Assert.ThrowsAsync<UserNotFoundException>(() =>
+            _userService.GetUserByUsernameAsync(username)
+        );
 
         // Assert
         Assert.That(ex.Message, Is.EqualTo($"User with username '{username}' not found."));
@@ -72,24 +74,35 @@ public class UserServiceTests
 
     #region RegisterUserAsync Tests
     [TestCaseSource(nameof(RegisterUserCases))]
-    public async Task RegisterUserAsync_NewUser_InsertsUserWithCorrectData(string username, string hashedPassword)
+    public async Task RegisterUserAsync_NewUser_InsertsUserWithCorrectData(
+        string username,
+        string hashedPassword
+    )
     {
         // Act
         await _userService.RegisterUserAsync(username, hashedPassword);
 
         // Assert
-        await _userRepository.Received(1).InsertUserAsync(Arg.Is<User>(u => u.Username == username && u.HashedPassword == hashedPassword));
+        await _userRepository
+            .Received(1)
+            .InsertUserAsync(
+                Arg.Is<User>(u => u.Username == username && u.HashedPassword == hashedPassword)
+            );
     }
 
     [TestCaseSource(nameof(UsernamesCases))]
-    public void RegisterUserAsync_DuplicateUsername_ThrowsUserAlreadyExistsException(string username)
+    public void RegisterUserAsync_DuplicateUsername_ThrowsUserAlreadyExistsException(
+        string username
+    )
     {
         // Arrange
         var duplicateKeyException = new DuplicateKeyException();
         _userRepository.InsertUserAsync(Arg.Any<User>()).ThrowsAsync(duplicateKeyException);
 
         // Act
-        var ex = Assert.ThrowsAsync<UserAlreadyExistsException>(() => _userService.RegisterUserAsync(username, "testpass"));
+        var ex = Assert.ThrowsAsync<UserAlreadyExistsException>(() =>
+            _userService.RegisterUserAsync(username, "testpass")
+        );
 
         // Assert
         Assert.That(ex.Message, Does.Contain(username));

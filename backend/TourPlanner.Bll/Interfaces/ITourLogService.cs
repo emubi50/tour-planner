@@ -4,7 +4,5 @@ using System.Text;
 
 namespace TourPlanner.Bll.Interfaces
 {
-    public interface ITourLogService
-    {
-    }
+    public interface ITourLogService;
 }

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TourPlanner.Models.Options;
 using TourPlanner.Dal;
 using TourPlanner.Models;
+using TourPlanner.Models.Options;
 
 namespace TourPlanner.Api
 {
@@ -44,13 +44,15 @@ namespace TourPlanner.Api
             );
 
             // JWT settings
-            builder.Services.AddOptions<JwtSettings>()
+            builder
+                .Services.AddOptions<JwtSettings>()
                 .Bind(builder.Configuration.GetSection("JwtSettings"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
             // OpenRouteService settings
-            builder.Services.AddOptions<OpenRouteServiceOptions>()
+            builder
+                .Services.AddOptions<OpenRouteServiceOptions>()
                 .Bind(builder.Configuration.GetSection("OpenRouteService"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();

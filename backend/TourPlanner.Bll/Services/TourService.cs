@@ -16,7 +16,7 @@ namespace TourPlanner.Bll.Services
             _tourRepository = tourRepository;
             _userRepository = userRepository;
         }
-        
+
         public async Task<List<Tour>> GetAllAsync(string username)
         {
             int userId = await GetUserIdAsync(username);

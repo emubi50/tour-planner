@@ -2,7 +2,5 @@
 
 namespace TourPlanner.Bll.Services
 {
-    public class TourLogService : ITourLogService
-    {
-    }
+    public class TourLogService : ITourLogService { }
 }
