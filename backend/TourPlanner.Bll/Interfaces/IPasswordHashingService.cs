@@ -1,4 +1,4 @@
-﻿namespace TourPlanner.Api.Services
+﻿namespace TourPlanner.Bll.Interfaces
 {
     public interface IPasswordHashingService
     {

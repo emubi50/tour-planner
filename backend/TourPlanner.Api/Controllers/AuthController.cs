@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TourPlanner.Api.Dtos;
-using TourPlanner.Api.Services;
 using TourPlanner.Bll.Exceptions;
 using TourPlanner.Bll.Interfaces;
 

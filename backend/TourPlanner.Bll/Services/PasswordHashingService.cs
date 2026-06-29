@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
+using TourPlanner.Bll.Interfaces;
 
-namespace TourPlanner.Api.Services
+namespace TourPlanner.Bll.Services
 {
     public class PasswordHashingService : IPasswordHashingService
     {
@@ -22,7 +23,13 @@ namespace TourPlanner.Api.Services
             var hash = Convert.FromHexString(parts[0]);
             var salt = Convert.FromHexString(parts[1]);
 
-            var providedHash = Rfc2898DeriveBytes.Pbkdf2(providedPassword, salt, Iterations, Algorithm, HashSize);
+            var providedHash = Rfc2898DeriveBytes.Pbkdf2(
+                providedPassword,
+                salt,
+                Iterations,
+                Algorithm,
+                HashSize
+            );
 
             return CryptographicOperations.FixedTimeEquals(hash, providedHash);
         }

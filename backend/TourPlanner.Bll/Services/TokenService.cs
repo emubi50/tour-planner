@@ -1,16 +1,19 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using TourPlanner.Bll.Interfaces;
 using TourPlanner.Models;
 
-namespace TourPlanner.Api.Services
+namespace TourPlanner.Bll.Services
 {
     public class TokenService : ITokenService
     {
         public string GenerateToken(User user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretSigningKey123456!")); // TODO: WHEN WE ACTUALLY HAVE A KEY, DO NOT PUT IT IN THE CODE
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretSigningKey123456!")
+            ); // TODO: WHEN WE ACTUALLY HAVE A KEY, DO NOT PUT IT IN THE CODE
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[] { new Claim(ClaimTypes.Name, user.Username) };
 
@@ -20,7 +23,7 @@ namespace TourPlanner.Api.Services
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = credentials,
                 Issuer = "TourPlannerApi",
-                Audience = "TourPlanner"
+                Audience = "TourPlanner",
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

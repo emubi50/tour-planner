@@ -63,10 +63,10 @@ namespace TourPlanner.Api
             >();
             builder.Services.AddScoped<Bll.Interfaces.IUserService, Bll.Services.UserService>();
             builder.Services.AddScoped<
-                Api.Services.IPasswordHashingService,
-                Api.Services.PasswordHashingService
+                Bll.Interfaces.IPasswordHashingService,
+                Bll.Services.PasswordHashingService
             >();
-            builder.Services.AddScoped<Api.Services.ITokenService, Api.Services.TokenService>();
+            builder.Services.AddScoped<Bll.Interfaces.ITokenService, Bll.Services.TokenService>();
 
             builder.Services.AddControllers();
 
