@@ -17,16 +17,12 @@ namespace TourPlanner.Bll.Services
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-            try
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if (user == null)
             {
-                var user = await _userRepository.GetUserByUsernameAsync(username);
-                if (user == null)
-                {
-                    throw new UserNotFoundException($"User with username '{username}' not found.");
-                }
-                return user;
+                throw new UserNotFoundException($"User with username '{username}' not found.");
             }
-            catch (Exception ex) { throw ex; }
+            return user;
         }
 
         public async Task RegisterUserAsync(string username, string hashedPassword)
