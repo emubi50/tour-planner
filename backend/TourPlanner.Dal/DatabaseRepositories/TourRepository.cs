@@ -14,17 +14,17 @@ namespace TourPlanner.Dal.DatabaseRepositories
             _context = context;
         }
 
-        public async Task<List<Tour>> GetAllAsync()
+        public async Task<List<Tour>> GetAllByUserIdAsync(int userId)
         {
-            return await _context.Tours.Include(t => t.Logs).ToListAsync();
+            return await _context.Tours.Where(t => t.UserId == userId).Include(t => t.Logs).ToListAsync();
         }
 
-        public async Task<Tour?> GetByIdAsync(int userId, int tourId)
+        public async Task<Tour?> GetByIdAsync(int tourId)
         {
             return await _context.Tours.Include(t => t.Logs).FirstOrDefaultAsync(t => t.Id == tourId);
         }
 
-        public async Task AddAsync(int userId, Tour tour)
+        public async Task AddAsync(Tour tour)
         {
             try
             {
@@ -37,9 +37,9 @@ namespace TourPlanner.Dal.DatabaseRepositories
             }
         }
 
-        public async Task DeleteAsync(int userId, int tourId)
+        public async Task DeleteAsync(int tourId)
         {
-            Tour? tour = await GetByIdAsync(userId, tourId);
+            Tour? tour = await GetByIdAsync(tourId);
             if (tour != null)
             {
                 _context.Tours.Remove(tour);
@@ -49,7 +49,7 @@ namespace TourPlanner.Dal.DatabaseRepositories
             throw new KeyNotFoundException($"Tour with id {tourId} not found.");
         }
 
-        public async Task UpdateAsync(int userId, Tour tour)
+        public async Task UpdateAsync(Tour tour)
         {
             if (await _context.Tours.AnyAsync(t => t.Id == tour.Id))
             {

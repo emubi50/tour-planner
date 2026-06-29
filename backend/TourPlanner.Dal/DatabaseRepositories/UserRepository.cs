@@ -33,4 +33,4 @@ namespace TourPlanner.Dal.DatabaseRepositories
             }
         }
     }
-}}
+}

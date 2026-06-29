@@ -21,14 +21,14 @@ namespace TourPlanner.Api.Controllers
         public async Task<IActionResult> GetTours()
         {
             var username = User.Identity!.Name!; // TODO: filter tours by user
-            return Ok(await _tourService.GetAllAsync());
+            return Ok(await _tourService.GetAllAsync(username));
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetTour(int id)
         {
             var username = User.Identity!.Name!; // TODO: check that tour belongs to user
-            var tour = await _tourService.GetByIdAsync(id);
+            var tour = await _tourService.GetByIdAsync(username, id);
             if (tour == null)
                 return NotFound();
             return Ok(tour);
@@ -38,7 +38,7 @@ namespace TourPlanner.Api.Controllers
         public async Task<IActionResult> CreateTour([FromBody] Tour tour)
         {
             var username = User.Identity!.Name!; // TODO: assign tour to the user
-            await _tourService.CreateTourAsync(tour);
+            await _tourService.CreateTourAsync(username, tour);
             return Created();
         }
     }

@@ -22,12 +22,12 @@ namespace TourPlanner.Dal.DatabaseRepositories
             return await _context.TourLogs.Where(l => l.TourId == tourId).ToListAsync();
         }
 
-        public async Task<TourLog?> GetByIdAsync(int tourId, int tourLogId)
+        public async Task<TourLog?> GetByIdAsync(int tourLogId)
         {
             return await _context.TourLogs.FirstOrDefaultAsync(l => l.Id == tourLogId);
         }
 
-        public async Task AddAsync(int tourId, TourLog log)
+        public async Task AddAsync(TourLog log)
         {
             try
             {
@@ -40,9 +40,9 @@ namespace TourPlanner.Dal.DatabaseRepositories
             }
         }
 
-        public async Task DeleteAsync(int tourId, int tourLogId)
+        public async Task DeleteAsync(int tourLogId)
         {
-            TourLog? log = await GetByIdAsync(tourId, tourLogId);
+            TourLog? log = await GetByIdAsync(tourLogId);
             if (log != null)
             {
                 _context.TourLogs.Remove(log);
@@ -52,7 +52,7 @@ namespace TourPlanner.Dal.DatabaseRepositories
             throw new ArgumentException($"TourLog with id {tourLogId} not found.");
         }
 
-        public async Task UpdateAsync(int tourId, TourLog log)
+        public async Task UpdateAsync(TourLog log)
         {
             if (await _context.TourLogs.AnyAsync(l => l.Id == log.Id))
             {

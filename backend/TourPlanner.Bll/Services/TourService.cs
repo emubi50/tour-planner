@@ -1,4 +1,5 @@
-﻿using TourPlanner.Bll.Interfaces;
+﻿using TourPlanner.Bll.Exceptions;
+using TourPlanner.Bll.Interfaces;
 using TourPlanner.Dal.Interfaces;
 using TourPlanner.Models;
 
@@ -7,30 +8,55 @@ namespace TourPlanner.Bll.Services
     public class TourService : ITourService
     {
         private readonly ITourRepository _tourRepository;
+        private readonly IUserRepository _userRepository;
 
-        public TourService(ITourRepository tourRepository)
+        public TourService(ITourRepository tourRepository, IUserRepository userRepository)
         {
             _tourRepository = tourRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<List<Tour>> GetAllAsync()
+        public async Task<List<Tour>> GetAllAsync(string username)
         {
-            return await _tourRepository.GetAllAsync();
+            int userId = await GetUserIdAsync(username);
+            return await _tourRepository.GetAllByUserIdAsync(userId);
         }
 
-        public async Task<Tour?> GetByIdAsync(int userId, int tourId)
+        public async Task<Tour?> GetByIdAsync(string username, int tourId)
         {
-            return await _tourRepository.GetByIdAsync(userId, tourId);
+            int userId = await GetUserIdAsync(username);
+            var tour = await _tourRepository.GetByIdAsync(tourId);
+            return (tour != null && tour.UserId == userId) ? tour : null; // If tour does not belong to user, user does not need to know that tour exists --> pretend there is no tour
         }
 
-        public async Task CreateTourAsync(int userId, Tour tour)
+        public async Task CreateTourAsync(string username, Tour tour)
         {
-            await _tourRepository.AddAsync(userId, tour);
+            int userId = await GetUserIdAsync(username);
+            tour.UserId = userId;
+            await _tourRepository.AddAsync(tour);
         }
 
-        public async Task DeleteTourAsync(int userId, int tourId)
+        public async Task DeleteTourAsync(string username, int tourId)
         {
-            await _tourRepository.DeleteAsync(userId, tourId);
+            int userId = await GetUserIdAsync(username);
+            var tour = await _tourRepository.GetByIdAsync(tourId);
+            if (tour == null)
+            { return; }
+            if (tour.UserId != userId)
+            {
+             throw new UnauthorizedAccessException("You do not have permission to delete this tour.");
+            }
+                await _tourRepository.DeleteAsync(tourId);
+        }
+
+        private async Task<int> GetUserIdAsync(string username)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(username);
+            if (user == null)
+            {
+                throw new UserNotFoundException($"User with username '{username}' not found.");
+            }
+            return user.Id;
         }
     }
 }

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TourPlanner.Dal.Interfaces;
-using TourPlanner.Models;
+﻿using TourPlanner.Models;
 
 namespace TourPlanner.Bll.Interfaces
 {
     public interface ITourService
     {
-        Task<List<Tour>> GetAllAsync();
+        Task<List<Tour>> GetAllAsync(string username);
 
-        Task<Tour?> GetByIdAsync(int userId, int tourId);
+        Task<Tour?> GetByIdAsync(string username, int tourId);
 
-        Task CreateTourAsync(int userId, Tour tour);
+        Task CreateTourAsync(string username, Tour tour);
 
-        Task DeleteTourAsync(int userId, int tourId);
+        Task DeleteTourAsync(string username, int tourId);
     }
 }
