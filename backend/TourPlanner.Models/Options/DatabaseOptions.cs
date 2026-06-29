@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TourPlanner.Api.Configuration;
+namespace TourPlanner.Models.Options;
 
 public class DatabaseOptions
 {
     [Required]
-    public required string DBConn {get; init;}
+    public string DBConn { get; set; } = string.Empty;
 }

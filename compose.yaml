@@ -9,6 +9,11 @@ services:
 
     environment:
       ASPNETCORE_ENVIRONMENT: "Docker"
+      Jwt__SigningKey: ${JWT_SIGNING_KEY}
+      Jwt__Issuer: "TourPlannerApi"
+      Jwt__Audience: "TourPlanner"
+      ConnectionStrings__DBConn: "Host=db;Port=5432;Database=tour-planner;Username=postgres;Password=${DB_PASSWORD}"
+      OpenRouteService__ApiKey: ${ORS_API_KEY}
 
     depends_on:
       db:
@@ -18,7 +23,7 @@ services:
     image: postgres:16
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: tour-planner
 
     ports:

@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TourPlanner.Models.Options;
 using TourPlanner.Dal;
+using TourPlanner.Models;
 
 namespace TourPlanner.Api
 {
@@ -25,7 +27,7 @@ namespace TourPlanner.Api
             // Add db context + repos
 
             builder
-                .Services.AddOptions<Configuration.DatabaseOptions>()
+                .Services.AddOptions<DatabaseOptions>()
                 .Bind(builder.Configuration.GetSection("ConnectionStrings"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
@@ -33,13 +35,25 @@ namespace TourPlanner.Api
             builder.Services.AddDbContext<TourPlannerDbContext>(
                 (serviceProvider, options) =>
                 {
-                    Configuration.DatabaseOptions dbOptions = serviceProvider
-                        .GetRequiredService<IOptions<Configuration.DatabaseOptions>>()
+                    DatabaseOptions dbOptions = serviceProvider
+                        .GetRequiredService<IOptions<DatabaseOptions>>()
                         .Value;
 
                     options.UseNpgsql(dbOptions.DBConn);
                 }
             );
+
+            // JWT settings
+            builder.Services.AddOptions<JwtSettings>()
+                .Bind(builder.Configuration.GetSection("JwtSettings"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
+            // OpenRouteService settings
+            builder.Services.AddOptions<OpenRouteServiceOptions>()
+                .Bind(builder.Configuration.GetSection("OpenRouteService"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
 
             builder.Services.AddScoped<
                 Dal.Interfaces.ITourRepository,
@@ -74,17 +88,22 @@ namespace TourPlanner.Api
                 .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    var jwtSection = builder.Configuration.GetSection("JWT");
+                    var signingKey = jwtSection["SigningKey"]!;
+                    var issuer = jwtSection["Issuer"]!;
+                    var audience = jwtSection["Audience"]!;
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "TourPlannerApi",
-                        ValidAudience = "TourPlanner",
+                        ValidIssuer = issuer,
+                        ValidAudience = audience,
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes("ThisIsAReallyLongSuperSecretSigningKey123456!")
-                        ), // TODO: WHEN WE ACTUALLY HAVE A KEY, DO NOT PUT IT IN THE CODE
+                            Encoding.UTF8.GetBytes(signingKey)
+                        ),
                     };
                     options.Events = new JwtBearerEvents
                     {
