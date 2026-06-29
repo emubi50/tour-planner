@@ -10,8 +10,8 @@
         public required string From { get; set; }
         public required string To { get; set; }
         public required TransportType TransportType { get; set; }
-        public required int Distance { get; set; }
-        public required int EstimatedTime { get; set; }
+        public required int Distance { get; set; } // provided by openrouteservice.org
+        public required int EstimatedTime { get; set; } // provided by openrouteservice.org
 
         public List<TourLog> Logs { get; set; } = new List<TourLog>();
     }

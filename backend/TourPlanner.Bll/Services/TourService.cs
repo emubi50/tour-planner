@@ -15,7 +15,7 @@ namespace TourPlanner.Bll.Services
             _tourRepository = tourRepository;
             _userRepository = userRepository;
         }
-
+        
         public async Task<List<Tour>> GetAllAsync(string username)
         {
             int userId = await GetUserIdAsync(username);
@@ -46,7 +46,7 @@ namespace TourPlanner.Bll.Services
             {
              throw new UnauthorizedAccessException("You do not have permission to delete this tour.");
             }
-                await _tourRepository.DeleteAsync(tourId);
+            await _tourRepository.DeleteAsync(tourId);
         }
 
         private async Task<int> GetUserIdAsync(string username)
