@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -71,8 +70,14 @@ public class TokenServiceTests
         // Arrange & Act
         var jwt = new JwtSecurityTokenHandler().ReadJwtToken(GenerateTestToken(username));
 
+        // Debug
+        foreach (var claim in jwt.Claims)
+        {
+            Console.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
+        }
+
         // Assert
-        var nameClaim = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+        var nameClaim = jwt.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
         Assert.That(nameClaim, Is.Not.Null);
         Assert.That(nameClaim!.Value, Is.EqualTo(username));
     }

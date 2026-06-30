@@ -22,7 +22,7 @@ namespace TourPlanner.Bll.Services
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SigningKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var claims = new[] { new Claim(ClaimTypes.Name, user.Username) };
+            var claims = new[] { new Claim(JwtRegisteredClaimNames.Sub, user.Username) };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
