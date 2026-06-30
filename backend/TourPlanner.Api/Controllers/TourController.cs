@@ -29,9 +29,7 @@ namespace TourPlanner.Api.Controllers
         {
             var username = User.Identity!.Name!;
             var tour = await _tourService.GetByIdAsync(username, id);
-            if (tour == null)
-                return NotFound();
-            return Ok(tour);
+            return (tour == null) ? NotFound() : Ok(tour);
         }
 
         [HttpPost]
@@ -40,6 +38,23 @@ namespace TourPlanner.Api.Controllers
             var username = User.Identity!.Name!;
             await _tourService.CreateTourAsync(username, tour);
             return Created();
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateTour(int id, [FromBody] Tour tour)
+        {
+            var username = User.Identity!.Name!;
+            tour.Id = id;
+            var updated = await _tourService.UpdateTourAsync(username, tour);
+            return updated ? NoContent() : NotFound();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteTour(int id)
+        {
+            var username = User.Identity!.Name!;
+            var deleted = await _tourService.DeleteTourAsync(username, id);
+            return deleted ? NoContent() : NotFound();
         }
     }
 }

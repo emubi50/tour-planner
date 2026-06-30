@@ -1,5 +1,6 @@
 ﻿using System.IO.IsolatedStorage;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using TourPlanner.Bll.Exceptions;
@@ -14,6 +15,7 @@ public class TourServiceTests
 {
     private IUserRepository _userRepository;
     private ITourRepository _tourRepository;
+    private ILogger<TourService> _logger;
     private TourService _tourService;
 
     private const string Username = "backfisch";
@@ -24,7 +26,8 @@ public class TourServiceTests
     {
         _userRepository = Substitute.For<IUserRepository>();
         _tourRepository = Substitute.For<ITourRepository>();
-        _tourService = new TourService(_tourRepository, _userRepository);
+        _logger = Substitute.For<ILogger<TourService>>();
+        _tourService = new TourService(_tourRepository, _userRepository, _logger);
 
         _userRepository
             .GetUserByUsernameAsync(Username)
@@ -276,9 +279,10 @@ public class TourServiceTests
         _tourRepository.GetByIdAsync(1).Returns(existingTour);
 
         // Act
-        await _tourService.UpdateTourAsync(Username, incomingTour);
+        var result = await _tourService.UpdateTourAsync(Username, incomingTour);
 
         // Assert
+        Assert.That(result, Is.EqualTo(expectUpdateCalled));
         if (expectUpdateCalled)
         {
             await _tourRepository.Received(1).UpdateAsync(incomingTour);
@@ -308,9 +312,10 @@ public class TourServiceTests
         _tourRepository.GetByIdAsync(1).Returns((Tour?)null);
 
         // Act
-        await _tourService.UpdateTourAsync(Username, incomingTour);
+        var result = await _tourService.UpdateTourAsync(Username, incomingTour);
 
         // Assert
+        Assert.That(result, Is.False);
         await _tourRepository.DidNotReceive().UpdateAsync(Arg.Any<Tour>());
     }
 
@@ -346,9 +351,10 @@ public class TourServiceTests
         _tourRepository.GetByIdAsync(1).Returns(existingTour);
 
         // Act
-        await _tourService.UpdateTourAsync(Username, incomingTour);
+        var result = await _tourService.UpdateTourAsync(Username, incomingTour);
 
         // Assert
+        Assert.That(result, Is.True);
         await _tourRepository.Received(1).UpdateAsync(Arg.Is<Tour>(t => t.UserId == UserId));
         await _tourRepository
             .DidNotReceive()
@@ -380,9 +386,10 @@ public class TourServiceTests
         _tourRepository.GetByIdAsync(1).Returns(tour);
 
         // Act
-        await _tourService.DeleteTourAsync(Username, 1);
+        var result = await _tourService.DeleteTourAsync(Username, 1);
 
         // Assert
+        Assert.That(result, Is.EqualTo(expectDeleteCalled));
         if (expectDeleteCalled)
         {
             await _tourRepository.Received(1).DeleteAsync(1);
@@ -398,9 +405,12 @@ public class TourServiceTests
     {
         // Arrange
         _tourRepository.GetByIdAsync(1).Returns((Tour?)null);
+
         // Act
-        await _tourService.DeleteTourAsync(Username, 1);
+        var result = await _tourService.DeleteTourAsync(Username, 1);
+
         // Assert
+        Assert.That(result, Is.False);
         await _tourRepository.DidNotReceive().DeleteAsync(Arg.Any<int>());
     }
     #endregion

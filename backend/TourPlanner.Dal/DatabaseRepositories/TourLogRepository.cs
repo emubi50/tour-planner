@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TourPlanner.Dal.Exceptions;
 using TourPlanner.Dal.Interfaces;
 using TourPlanner.Models;
@@ -49,7 +46,7 @@ namespace TourPlanner.Dal.DatabaseRepositories
                 await _context.SaveChangesAsync();
                 return;
             }
-            throw new ArgumentException($"TourLog with id {tourLogId} not found.");
+            throw new KeyNotFoundException($"TourLog with id {tourLogId} not found.");
         }
 
         public async Task UpdateAsync(TourLog log)
@@ -60,7 +57,7 @@ namespace TourPlanner.Dal.DatabaseRepositories
                 await _context.SaveChangesAsync();
                 return;
             }
-            throw new ArgumentException($"TourLog with id {log.Id} not found.");
+            throw new KeyNotFoundException($"TourLog with id {log.Id} not found.");
         }
     }
 }

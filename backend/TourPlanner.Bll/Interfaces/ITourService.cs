@@ -10,8 +10,8 @@ namespace TourPlanner.Bll.Interfaces
 
         Task CreateTourAsync(string username, Tour tour);
 
-        Task UpdateTourAsync(string username, Tour tour);
+        Task<bool> UpdateTourAsync(string username, Tour tour);
 
-        Task DeleteTourAsync(string username, int tourId);
+        Task<bool> DeleteTourAsync(string username, int tourId);
     }
 }

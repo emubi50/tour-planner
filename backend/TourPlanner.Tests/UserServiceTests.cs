@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using Microsoft.Extensions.Logging;
+using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using TourPlanner.Bll.Exceptions;
 using TourPlanner.Bll.Services;
@@ -11,13 +12,15 @@ namespace TourPlanner.Tests;
 public class UserServiceTests
 {
     private IUserRepository _userRepository;
+    private ILogger<UserService> _logger;
     private UserService _userService;
 
     [SetUp]
     public void Setup()
     {
         _userRepository = Substitute.For<IUserRepository>();
-        _userService = new UserService(_userRepository);
+        _logger = Substitute.For<ILogger<UserService>>();
+        _userService = new UserService(_userRepository, _logger);
     }
 
     #region TestCaseData Sources

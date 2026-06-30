@@ -1,15 +1,19 @@
-﻿using TourPlanner.Bll.Services;
+﻿using Microsoft.Extensions.Logging;
+using NSubstitute;
+using TourPlanner.Bll.Services;
 
 namespace TourPlanner.Tests;
 
 public class PasswordHashingServiceTests
 {
     private PasswordHashingService _passwordHashingService;
+    private ILogger<PasswordHashingService> _logger;
 
     [SetUp]
     public void Setup()
     {
-        _passwordHashingService = new PasswordHashingService();
+        _logger = Substitute.For<ILogger<PasswordHashingService>>();
+        _passwordHashingService = new PasswordHashingService(_logger);
     }
 
     #region Hash Tests

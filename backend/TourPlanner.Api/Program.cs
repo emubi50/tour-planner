@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using TourPlanner.Api.Middleware;
 using TourPlanner.Dal;
-using TourPlanner.Models;
 using TourPlanner.Models.Options;
 
 namespace TourPlanner.Api
@@ -19,6 +19,15 @@ namespace TourPlanner.Api
             );
 
             builder.WebHost.UseWebRoot("public");
+
+            // Global Exception Handler
+            builder.Services.AddProblemDetails();
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+            // Log4Net Magic
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddLog4Net("log4net.config");
 
             // Health checks
 
@@ -46,7 +55,7 @@ namespace TourPlanner.Api
             // JWT settings
             builder
                 .Services.AddOptions<JwtSettings>()
-                .Bind(builder.Configuration.GetSection("JwtSettings"))
+                .Bind(builder.Configuration.GetSection("Jwt"))
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
@@ -118,6 +127,7 @@ namespace TourPlanner.Api
                 });
 
             builder.Services.AddAuthorization();
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -125,6 +135,8 @@ namespace TourPlanner.Api
                 var dbContext = scope.ServiceProvider.GetRequiredService<TourPlannerDbContext>();
                 dbContext.Database.Migrate();
             }
+
+            app.UseExceptionHandler();
 
             // Configure the HTTP request pipeline.
 
@@ -140,6 +152,7 @@ namespace TourPlanner.Api
 
             app.MapFallbackToFile("index.html");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

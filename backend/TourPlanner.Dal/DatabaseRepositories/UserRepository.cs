@@ -14,7 +14,6 @@ namespace TourPlanner.Dal.DatabaseRepositories
             _context = context;
         }
 
-        // TODO: Add Users Table to DB
         public async Task<User?> GetUserByUsernameAsync(string username)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);

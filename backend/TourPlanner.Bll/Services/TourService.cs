@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Extensions.Logging;
 using TourPlanner.Bll.Exceptions;
 using TourPlanner.Bll.Interfaces;
 using TourPlanner.Dal.Interfaces;
@@ -10,11 +10,17 @@ namespace TourPlanner.Bll.Services
     {
         private readonly ITourRepository _tourRepository;
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<TourService> _logger;
 
-        public TourService(ITourRepository tourRepository, IUserRepository userRepository)
+        public TourService(
+            ITourRepository tourRepository,
+            IUserRepository userRepository,
+            ILogger<TourService> logger
+        )
         {
             _tourRepository = tourRepository;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task<List<Tour>> GetAllAsync(string username)
@@ -27,7 +33,24 @@ namespace TourPlanner.Bll.Services
         {
             int userId = await GetUserIdAsync(username);
             var tour = await _tourRepository.GetByIdAsync(tourId);
-            return (tour != null && tour.UserId == userId) ? tour : null; // If tour does not belong to user, user does not need to know that tour exists --> pretend there is no tour
+
+            if (tour == null)
+            {
+                _logger.LogDebug("Tour {TourId} does not exist", tourId);
+                return null;
+            }
+
+            if (tour.UserId != userId)
+            {
+                _logger.LogWarning(
+                    "User {Username} attempted to access tour {TourId} owned by a different user",
+                    username,
+                    tourId
+                );
+                return null;
+            }
+
+            return tour;
         }
 
         public async Task CreateTourAsync(string username, Tour tour)
@@ -35,27 +58,81 @@ namespace TourPlanner.Bll.Services
             int userId = await GetUserIdAsync(username);
             tour.UserId = userId;
             await _tourRepository.AddAsync(tour);
+            _logger.LogInformation(
+                "User {Username} created tour {TourId} ({TourName})",
+                username,
+                tour.Id,
+                tour.Name
+            );
         }
 
-        public async Task UpdateTourAsync(string username, Tour incomingTour)
+        public async Task<bool> UpdateTourAsync(string username, Tour incomingTour)
         {
             int userId = await GetUserIdAsync(username);
             var existingTour = await _tourRepository.GetByIdAsync(incomingTour.Id);
-            if (existingTour != null && existingTour.UserId == userId)
+
+            if (existingTour == null || existingTour.UserId != userId)
             {
-                incomingTour.UserId = existingTour.UserId;
+                _logger.LogWarning(
+                    "User {Username} attempted to update tour {TourId} that does not exist or is not theirs",
+                    username,
+                    incomingTour.Id
+                );
+                return false;
+            }
+
+            incomingTour.UserId = existingTour.UserId;
+
+            try
+            {
                 await _tourRepository.UpdateAsync(incomingTour);
             }
+            catch (KeyNotFoundException)
+            {
+                _logger.LogWarning(
+                    "Tour {TourId} was deleted concurrently while user {Username}was updating it",
+                    incomingTour.Id,
+                    username
+                );
+                return false;
+            }
+            _logger.LogInformation(
+                "User {Username} updated tour {TourId}",
+                username,
+                incomingTour.Id
+            );
+            return true;
         }
 
-        public async Task DeleteTourAsync(string username, int tourId)
+        public async Task<bool> DeleteTourAsync(string username, int tourId)
         {
             int userId = await GetUserIdAsync(username);
             var tour = await _tourRepository.GetByIdAsync(tourId);
-            if (tour != null && tour.UserId == userId)
+            if (tour == null || tour.UserId != userId)
+            {
+                _logger.LogWarning(
+                    "User {Username} attempted to delete tour {TourId} that does not exist or is not theirs",
+                    username,
+                    tourId
+                );
+                return false;
+            }
+
+            try
             {
                 await _tourRepository.DeleteAsync(tourId);
             }
+            catch (KeyNotFoundException)
+            {
+                _logger.LogWarning(
+                    "Tour {TourId} was already deleted concurrently when user {Username} attempted to delete it",
+                    tourId,
+                    username
+                );
+                return false;
+            }
+            _logger.LogInformation("User {Username} deleted tour {TourId}", username, tourId);
+            return true;
         }
 
         private async Task<int> GetUserIdAsync(string username)
@@ -63,6 +140,10 @@ namespace TourPlanner.Bll.Services
             var user = await _userRepository.GetUserByUsernameAsync(username);
             if (user == null)
             {
+                _logger.LogWarning(
+                    "Authenticated request for username {Username} but no matching user record exists",
+                    username
+                );
                 throw new UserNotFoundException($"User with username '{username}' not found.");
             }
             return user.Id;

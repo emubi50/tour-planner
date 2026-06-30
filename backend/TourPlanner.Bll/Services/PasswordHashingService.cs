@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 using TourPlanner.Bll.Interfaces;
 
 namespace TourPlanner.Bll.Services
@@ -9,6 +10,13 @@ namespace TourPlanner.Bll.Services
         private const int HashSize = 32;
         private const int Iterations = 100000;
         private static readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA512;
+
+        private readonly ILogger<PasswordHashingService> _logger;
+
+        public PasswordHashingService(ILogger<PasswordHashingService> logger)
+        {
+            _logger = logger;
+        }
 
         public string Hash(string password)
         {
@@ -24,6 +32,7 @@ namespace TourPlanner.Bll.Services
                 string[] parts = hashedPassword.Split('-');
                 if (parts.Length != 2)
                 {
+                    _logger.LogWarning("Stored password hash is not in the expected format");
                     return false;
                 }
 
@@ -42,6 +51,7 @@ namespace TourPlanner.Bll.Services
             }
             catch (FormatException ex) // ex for logging purposes in the future
             {
+                _logger.LogWarning(ex, "Stored password hash could not be parsed as valid hex");
                 return false;
             }
         }

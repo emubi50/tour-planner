@@ -14,16 +14,19 @@ namespace TourPlanner.Api.Controllers
         private readonly ITokenService _tokenService;
         private readonly IPasswordHashingService _passwordHashingService;
         private readonly IUserService _userService;
+        private readonly ILogger<AuthController> _logger;
 
         public AuthController(
             ITokenService tokenService,
             IPasswordHashingService passwordHashingService,
-            IUserService userService
+            IUserService userService,
+            ILogger<AuthController> logger
         )
         {
             _tokenService = tokenService;
             _passwordHashingService = passwordHashingService;
             _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -54,6 +57,11 @@ namespace TourPlanner.Api.Controllers
                 );
                 if (!isPasswordValid)
                 {
+                    _logger.LogWarning(
+                        "Failed login attempt (invalid password) for username {Username} from {RemoteIp}",
+                        credentials.Username,
+                        HttpContext.Connection.RemoteIpAddress
+                    );
                     throw new InvalidDataException("Invalid credentials");
                 }
 
@@ -68,6 +76,12 @@ namespace TourPlanner.Api.Controllers
                         Expires = DateTimeOffset.UtcNow.AddMinutes(60),
                     }
                 );
+                _logger.LogDebug(
+                    "Auth cookie set for user {Username}, expires {Expiry}",
+                    user.Username,
+                    DateTimeOffset.UtcNow.AddMinutes(60)
+                );
+                _logger.LogInformation("User {Username} logged in successfully", user.Username);
 
                 return Ok();
             }
@@ -80,7 +94,9 @@ namespace TourPlanner.Api.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
+            var username = User.Identity?.Name;
             Response.Cookies.Delete("token");
+            _logger.LogInformation("User {Username} logged out", username ?? "unknown");
             return Ok();
         }
 
@@ -90,14 +106,22 @@ namespace TourPlanner.Api.Controllers
             var username = User.Identity?.Name;
             if (username == null)
             {
+                _logger.LogDebug("Me endpoint called with no authenticated identity");
                 return Unauthorized();
             }
-            var user = await _userService.GetUserByUsernameAsync(username);
-            if (user == null)
+            try
             {
+                var user = await _userService.GetUserByUsernameAsync(username);
+                return Ok(new { user.Username });
+            }
+            catch (UserNotFoundException)
+            {
+                _logger.LogWarning(
+                    "Authenticated request for username {Username} but no matching user record exists",
+                    username
+                );
                 return Unauthorized();
             }
-            return Ok(new { user.Username });
         }
     }
 }
