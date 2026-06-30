@@ -19,19 +19,31 @@ namespace TourPlanner.Bll.Services
 
         public bool Verify(string hashedPassword, string providedPassword)
         {
-            string[] parts = hashedPassword.Split('-');
-            var hash = Convert.FromHexString(parts[0]);
-            var salt = Convert.FromHexString(parts[1]);
+            try
+            {
+                string[] parts = hashedPassword.Split('-');
+                if (parts.Length != 2)
+                {
+                    return false;
+                }
 
-            var providedHash = Rfc2898DeriveBytes.Pbkdf2(
-                providedPassword,
-                salt,
-                Iterations,
-                Algorithm,
-                HashSize
-            );
+                var salt = Convert.FromHexString(parts[1]);
+                var hash = Convert.FromHexString(parts[0]);
 
-            return CryptographicOperations.FixedTimeEquals(hash, providedHash);
+                var providedHash = Rfc2898DeriveBytes.Pbkdf2(
+                    providedPassword,
+                    salt,
+                    Iterations,
+                    Algorithm,
+                    HashSize
+                );
+
+                return CryptographicOperations.FixedTimeEquals(hash, providedHash);
+            }
+            catch (FormatException ex) // ex for logging purposes in the future
+            {
+                return false;
+            }
         }
     }
 }
