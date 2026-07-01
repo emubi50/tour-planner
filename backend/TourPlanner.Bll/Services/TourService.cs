@@ -66,32 +66,32 @@ namespace TourPlanner.Bll.Services
             );
         }
 
-        public async Task<bool> UpdateTourAsync(string username, Tour incomingTour)
+        public async Task<bool> UpdateTourAsync(string username, Tour tour)
         {
             int userId = await GetUserIdAsync(username);
-            var existingTour = await _tourRepository.GetByIdAsync(incomingTour.Id);
+            var existingTour = await _tourRepository.GetByIdAsync(tour.Id);
 
             if (existingTour == null || existingTour.UserId != userId)
             {
                 _logger.LogWarning(
                     "User {Username} attempted to update tour {TourId} that does not exist or is not theirs",
                     username,
-                    incomingTour.Id
+                    tour.Id
                 );
                 return false;
             }
 
-            incomingTour.UserId = existingTour.UserId;
+            tour.UserId = existingTour.UserId;
 
             try
             {
-                await _tourRepository.UpdateAsync(incomingTour);
+                await _tourRepository.UpdateAsync(tour);
             }
             catch (KeyNotFoundException)
             {
                 _logger.LogWarning(
                     "Tour {TourId} was deleted concurrently while user {Username}was updating it",
-                    incomingTour.Id,
+                    tour.Id,
                     username
                 );
                 return false;
@@ -99,7 +99,7 @@ namespace TourPlanner.Bll.Services
             _logger.LogInformation(
                 "User {Username} updated tour {TourId}",
                 username,
-                incomingTour.Id
+                tour.Id
             );
             return true;
         }
