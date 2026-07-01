@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TourPlanner.Api.Dtos;
@@ -92,6 +93,7 @@ namespace TourPlanner.Api.Controllers
         }
 
         [HttpPost("logout")]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             var username = User.Identity?.Name;
@@ -101,6 +103,7 @@ namespace TourPlanner.Api.Controllers
         }
 
         [HttpGet("me")]
+        [Authorize]
         public async Task<IActionResult> Me()
         {
             var username = User.Identity?.Name;
@@ -120,6 +123,7 @@ namespace TourPlanner.Api.Controllers
                     "Authenticated request for username {Username} but no matching user record exists",
                     username
                 );
+                Response.Cookies.Delete("token");
                 return Unauthorized();
             }
         }

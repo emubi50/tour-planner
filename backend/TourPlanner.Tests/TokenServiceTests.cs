@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -78,7 +79,11 @@ public class TokenServiceTests
         }
 
         // Assert
-        var nameClaim = jwt.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+        var subClaim = jwt.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+        Assert.That(subClaim, Is.Not.Null);
+        Assert.That(subClaim!.Value, Is.EqualTo(username));
+
+        var nameClaim = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
         Assert.That(nameClaim, Is.Not.Null);
         Assert.That(nameClaim!.Value, Is.EqualTo(username));
     }
