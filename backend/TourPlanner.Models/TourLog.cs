@@ -12,8 +12,8 @@ namespace TourPlanner.Models
         public required DateTime DateAndTime { get; set; }
         public required string Comment { get; set; }
         public required int Difficulty { get; set; }
-        public required int TotalDistance { get; set; }
-        public required int TotalTime { get; set; }
+        public required double TotalDistance { get; set; }
+        public required double TotalTime { get; set; }
         public required int Rating { get; set; }
 
         public Tour Tour { get; set; } = null!;

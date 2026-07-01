@@ -74,9 +74,7 @@ public class TourServiceTests
                             To = "End",
                             TransportType = TransportType.CAR,
                             Distance = 10.0,
-                            EstimatedTime = double.Parse(
-                                TimeSpan.FromHours(1).TotalHours.ToString()
-                            ),
+                            EstimatedTime = TimeSpan.FromHours(1).TotalHours
                         }
                     );
                     break;
@@ -93,9 +91,7 @@ public class TourServiceTests
                             To = "Updated End",
                             TransportType = TransportType.BIKE,
                             Distance = 15.0,
-                            EstimatedTime = double.Parse(
-                                TimeSpan.FromHours(1.5).TotalHours.ToString()
-                            ),
+                            EstimatedTime = TimeSpan.FromHours(1.5).TotalHours
                         }
                     );
                     break;
@@ -125,7 +121,7 @@ public class TourServiceTests
                 To = "End 1",
                 TransportType = TransportType.CAR,
                 Distance = 10.0,
-                EstimatedTime = double.Parse(TimeSpan.FromHours(1).TotalHours.ToString()),
+                EstimatedTime = TimeSpan.FromHours(1).TotalHours,
             },
             new Tour
             {
@@ -137,7 +133,7 @@ public class TourServiceTests
                 To = "End 2",
                 TransportType = TransportType.BIKE,
                 Distance = 15.0,
-                EstimatedTime = double.Parse(TimeSpan.FromHours(1.5).TotalHours.ToString()),
+                EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
             },
         };
         _tourRepository.GetAllByUserIdAsync(UserId).Returns(expectedTours);
@@ -165,7 +161,7 @@ public class TourServiceTests
             To = "End",
             TransportType = TransportType.CAR,
             Distance = 10.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1).TotalHours,
         };
         _tourRepository.GetByIdAsync(1).Returns(tour);
 
@@ -190,7 +186,7 @@ public class TourServiceTests
             To = "End",
             TransportType = TransportType.CAR,
             Distance = 10.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1).TotalHours,
         };
         _tourRepository.GetByIdAsync(1).Returns(tour);
 
@@ -229,7 +225,7 @@ public class TourServiceTests
             To = "End",
             TransportType = TransportType.CAR,
             Distance = 20.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(2).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(2).TotalHours,
         };
 
         // Act
@@ -262,7 +258,7 @@ public class TourServiceTests
             To = "End",
             TransportType = TransportType.CAR,
             Distance = 10.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1).TotalHours,
         };
         var incomingTour = new Tour
         {
@@ -274,7 +270,7 @@ public class TourServiceTests
             To = "Updated End",
             TransportType = TransportType.BIKE,
             Distance = 15.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1.5).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
         };
         _tourRepository.GetByIdAsync(1).Returns(existingTour);
 
@@ -307,7 +303,7 @@ public class TourServiceTests
             To = "Updated End",
             TransportType = TransportType.BIKE,
             Distance = 15.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1.5).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
         };
         _tourRepository.GetByIdAsync(1).Returns((Tour?)null);
 
@@ -334,7 +330,7 @@ public class TourServiceTests
             To = "End",
             TransportType = TransportType.CAR,
             Distance = 10.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1).TotalHours,
         };
         var incomingTour = new Tour
         {
@@ -346,7 +342,7 @@ public class TourServiceTests
             To = "Updated End",
             TransportType = TransportType.BIKE,
             Distance = 15.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1.5).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
         };
         _tourRepository.GetByIdAsync(1).Returns(existingTour);
 
@@ -381,7 +377,7 @@ public class TourServiceTests
             To = "End",
             TransportType = TransportType.CAR,
             Distance = 10.0,
-            EstimatedTime = double.Parse(TimeSpan.FromHours(1).TotalHours.ToString()),
+            EstimatedTime = TimeSpan.FromHours(1).TotalHours,
         };
         _tourRepository.GetByIdAsync(1).Returns(tour);
 
