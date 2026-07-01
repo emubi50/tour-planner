@@ -83,7 +83,7 @@ public class TokenServiceTests
         Assert.That(subClaim, Is.Not.Null);
         Assert.That(subClaim!.Value, Is.EqualTo(username));
 
-        var nameClaim = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+        var nameClaim = jwt.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName);
         Assert.That(nameClaim, Is.Not.Null);
         Assert.That(nameClaim!.Value, Is.EqualTo(username));
     }
