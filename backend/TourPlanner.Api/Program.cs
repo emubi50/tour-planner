@@ -99,10 +99,10 @@ namespace TourPlanner.Api
                 .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    var jwtSection = builder.Configuration.GetSection("JWT");
-                    var signingKey = jwtSection["SigningKey"]!;
-                    var issuer = jwtSection["Issuer"]!;
-                    var audience = jwtSection["Audience"]!;
+                    var jwtSettings =
+                        builder.Configuration.GetSection("Jwt").Get<JwtSettings>()
+                        ?? throw new InvalidOperationException("JWT settings are not configured.");
+                    ;
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -110,10 +110,10 @@ namespace TourPlanner.Api
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = issuer,
-                        ValidAudience = audience,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(signingKey)
+                            Encoding.UTF8.GetBytes(jwtSettings.SigningKey)
                         ),
                     };
                     options.Events = new JwtBearerEvents
