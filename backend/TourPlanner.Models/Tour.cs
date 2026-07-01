@@ -12,7 +12,7 @@
         public required TransportType TransportType { get; set; }
         public required double Distance { get; set; } // provided by openrouteservice.org
         public required double EstimatedTime { get; set; } // provided by openrouteservice.org
-
+        public required string RouteInformation { get; set; } // provided by openrouteservice.org
         public List<TourLog> Logs { get; set; } = new List<TourLog>();
     }
 }

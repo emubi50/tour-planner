@@ -56,5 +56,22 @@ namespace TourPlanner.Api.Controllers
             var deleted = await _tourService.DeleteTourAsync(username, id);
             return deleted ? NoContent() : NotFound();
         }
+
+        // SEARCH ENDPOINT
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchTours([FromQuery] string? searchTerm)
+        {
+            var username = User.Identity!.Name!;
+            // TODO: Remove try-catch block once search functionality is implemented
+            try
+            {
+                var tours = await _tourService.SearchToursAsync(username, searchTerm);
+                return Ok(tours);
+            }
+            catch (NotImplementedException)
+            {
+                return StatusCode(501, "Search functionality is not implemented yet.");
+            }
+        }
     }
 }

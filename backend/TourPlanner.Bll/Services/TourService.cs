@@ -96,11 +96,7 @@ namespace TourPlanner.Bll.Services
                 );
                 return false;
             }
-            _logger.LogInformation(
-                "User {Username} updated tour {TourId}",
-                username,
-                tour.Id
-            );
+            _logger.LogInformation("User {Username} updated tour {TourId}", username, tour.Id);
             return true;
         }
 
@@ -133,6 +129,13 @@ namespace TourPlanner.Bll.Services
             }
             _logger.LogInformation("User {Username} deleted tour {TourId}", username, tourId);
             return true;
+        }
+
+        public async Task<List<Tour>> SearchToursAsync(string username, string? searchTerm)
+        {
+            // TODO: Implement search functionality (idk how to do this yet)
+            int userId = await GetUserIdAsync(username);
+            throw new NotImplementedException("SearchToursAsync is not implemented yet.");
         }
 
         private async Task<int> GetUserIdAsync(string username)
