@@ -5,6 +5,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TourPlanner.Api.Middleware;
+using TourPlanner.Bll.Services;
+using TourPlanner.Bll.Strategies;
 using TourPlanner.Dal;
 using TourPlanner.Models.Options;
 
@@ -105,7 +107,8 @@ namespace TourPlanner.Api
                 Bll.Services.PasswordHashingService
             >();
             builder.Services.AddScoped<Bll.Interfaces.ITokenService, Bll.Services.TokenService>();
-
+            builder.Services.AddScoped<Bll.Interfaces.ITourExportStrategy, JsonExportStrategy>();
+            builder.Services.AddScoped<Bll.Interfaces.ITourDataTransferService, TourDataTransferService>();
             builder.Services.AddControllers();
 
             builder

@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using TourPlanner.Bll.Interfaces;
 using TourPlanner.Models;
+using TourPlanner.Models.Enums;
 using TourPlanner.Models.ORS.Direction;
 using TourPlanner.Models.ORS.Geocode;
 

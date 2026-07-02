@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TourPlanner.Models;
+using TourPlanner.Models.Enums;
 
 namespace TourPlanner.Bll.Interfaces
 {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TourPlanner.Bll.Interfaces;
 using TourPlanner.Models;
+using TourPlanner.Models.Enums;
 
 namespace TourPlanner.Api.Controllers
 {
