@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TourPlanner.Models.ORS.Geocode
 {
@@ -12,6 +13,7 @@ namespace TourPlanner.Models.ORS.Geocode
     /// </summary>
     public class Geometry
     {
+        [JsonPropertyName("coordinates")]
         public double[] Coordinates { get; set; } = [];
     }
 }

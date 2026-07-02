@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TourPlanner.Models.ORS.Geocode
 {
@@ -12,7 +13,10 @@ namespace TourPlanner.Models.ORS.Geocode
     /// </summary>
     public class GeocodeResponse
     {
-        public required GeoCoding Geocoding { get; set; }
-        public required IReadOnlyList<Feature> Features { get; set; }
+        [JsonPropertyName("geocoding")]
+        public GeoCoding Geocoding { get; set; } = new GeoCoding();
+
+        [JsonPropertyName("features")]
+        public List<Feature> Features { get; set; } = [];
     }
 }

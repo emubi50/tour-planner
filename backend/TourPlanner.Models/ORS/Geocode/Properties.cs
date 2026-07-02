@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TourPlanner.Models.ORS.Geocode
 {
@@ -12,10 +13,19 @@ namespace TourPlanner.Models.ORS.Geocode
     /// </summary>
     public class Properties
     {
+        [JsonPropertyName("layer")]
         public string Layer { get; set; } = string.Empty;
-        public required string Name { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = string.Empty;
+
+        [JsonPropertyName("confidence")]
         public int Confidence { get; set; }
+
+        [JsonPropertyName("match_type")]
         public string MatchType { get; set; } = string.Empty;
-        public required string Label { get; set; }
+
+        [JsonPropertyName("label")]
+        public string Label { get; set; } = string.Empty;
     }
 }

@@ -5,7 +5,7 @@ using TourPlanner.Models;
 
 namespace TourPlanner.Bll.Interfaces
 {
-    internal interface IOpenRouteService
+    public interface IOpenRouteService
     {
         Task<LocationSearchResult> SearchDestinations(string query);
         Task<LocationSearchResult> AutocompleteDestinations(string query);

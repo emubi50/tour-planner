@@ -80,6 +80,19 @@ namespace TourPlanner.Api
                 Dal.DatabaseRepositories.UserRepository
             >();
 
+            builder.Services.AddHttpClient<
+                Bll.Interfaces.IOpenRouteService,
+                Bll.Services.OpenRouteService
+            >(client =>
+            {
+                client.BaseAddress = new Uri("https://api.openrouteservice.org/");
+                client.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue(
+                        "Bearer",
+                        builder.Configuration["OpenRouteService:ApiKey"]
+                    );
+            });
+
             // Add services to the container.
             builder.Services.AddScoped<Bll.Interfaces.ITourService, Bll.Services.TourService>();
             builder.Services.AddScoped<

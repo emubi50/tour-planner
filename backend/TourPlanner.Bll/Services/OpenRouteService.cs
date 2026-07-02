@@ -9,7 +9,7 @@ using TourPlanner.Models.ORS.Geocode;
 
 namespace TourPlanner.Bll.Services
 {
-    internal class OpenRouteService : IOpenRouteService
+    public class OpenRouteService : IOpenRouteService
     {
         private readonly HttpClient _httpClient;
 
@@ -19,20 +19,18 @@ namespace TourPlanner.Bll.Services
         public OpenRouteService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-
-            _httpClient.BaseAddress = new Uri("https://api.openrouteservice.org/");
-            _httpClient.DefaultRequestHeaders.Add("Authorization", "ORS_API_KEY");
         }
 
         public async Task<LocationSearchResult> SearchDestinations(string query)
         {
-            var uri = $"geocode/search?text={query}&size={searchSize}";
+            var uri = $"geocode/search?text={Uri.EscapeDataString(query)}&size={searchSize}";
             return await FetchSearchResults(uri);
         }
 
         public async Task<LocationSearchResult> AutocompleteDestinations(string query)
         {
-            var uri = $"geocode/autocomplete?text={query}&size={autocompleteSize}";
+            var uri =
+                $"geocode/autocomplete?text={Uri.EscapeDataString(query)}&size={autocompleteSize}";
             return await FetchSearchResults(uri);
         }
 
@@ -78,6 +76,7 @@ namespace TourPlanner.Bll.Services
             var response = await _httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
+
             GeocodeResponse? result =
                 JsonSerializer.Deserialize<GeocodeResponse>(json)
                 ?? throw new InvalidOperationException("Failed to deserialize geocode response.");
