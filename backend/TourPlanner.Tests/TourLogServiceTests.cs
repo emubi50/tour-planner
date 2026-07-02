@@ -5,6 +5,7 @@ using TourPlanner.Bll.Exceptions;
 using TourPlanner.Bll.Services;
 using TourPlanner.Dal.Interfaces;
 using TourPlanner.Models;
+using TourPlanner.Models.Enums;
 
 namespace TourPlanner.Tests;
 
@@ -87,6 +88,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var tourLogs = new List<TourLog>
         {
@@ -126,6 +128,7 @@ public class TourLogServiceTests
     #endregion
 
     #region GetByIdAsync Tests
+    [Test]
     public async Task GetByIdAsync_TourMissingOrNotOwned_ReturnsNull()
     {
         // Arrange
@@ -140,9 +143,11 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
 
         _tourRepository.GetByIdAsync(TourId).Returns(tour);
+        _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
 
         // Act
         var result = await _tourLogService.GetByIdAsync(User.Username, TourId, TourLogId);
@@ -152,6 +157,7 @@ public class TourLogServiceTests
         await _tourLogRepository.DidNotReceive().GetByIdAsync(Arg.Any<int>());
     }
 
+    [Test]
     public async Task GetByIdAsync_TourLogMissingOrWrongTour_ReturnsNull()
     {
         // Arrange
@@ -166,6 +172,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var tourLog = new TourLog
         {
@@ -181,6 +188,7 @@ public class TourLogServiceTests
 
         _tourRepository.GetByIdAsync(TourId).Returns(tour);
         _tourLogRepository.GetByIdAsync(TourLogId).Returns(tourLog);
+        _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
 
         // Act
         var result = await _tourLogService.GetByIdAsync(User.Username, TourId, TourLogId);
@@ -190,6 +198,7 @@ public class TourLogServiceTests
         await _tourLogRepository.Received(1).GetByIdAsync(TourLogId);
     }
 
+    [Test]
     public async Task GetByIdAsync_ValidTourAndTourLog_ReturnsTourLog()
     {
         // Arrange
@@ -204,6 +213,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var tourLog = new TourLog
         {
@@ -219,6 +229,7 @@ public class TourLogServiceTests
 
         _tourRepository.GetByIdAsync(TourId).Returns(tour);
         _tourLogRepository.GetByIdAsync(TourLogId).Returns(tourLog);
+        _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
 
         // Act
         var result = await _tourLogService.GetByIdAsync(User.Username, TourId, TourLogId);
@@ -229,6 +240,7 @@ public class TourLogServiceTests
     #endregion
 
     #region CreateTourLogAsync Tests
+    [Test]
     public async Task CreateTourLogAsync_TourMissingOrNotOwned_ThrowsTourNotFoundException()
     {
         // Arrange
@@ -245,6 +257,7 @@ public class TourLogServiceTests
         };
 
         _tourRepository.GetByIdAsync(TourId).Returns((Tour?)null);
+        _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
 
         // Act & Assert
         Assert.ThrowsAsync<TourNotFoundException>(async () =>
@@ -268,6 +281,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var tourLog = new TourLog
         {
@@ -293,6 +307,7 @@ public class TourLogServiceTests
     #endregion
 
     #region UpdateTourLogAsync Tests
+    [Test]
     public async Task UpdateTourLogAsync_TourMissingOrNotOwned_ReturnsFalse()
     {
         // Arrange
@@ -309,6 +324,7 @@ public class TourLogServiceTests
         };
 
         _tourRepository.GetByIdAsync(TourId).Returns((Tour?)null);
+        _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
 
         // Act
         var result = await _tourLogService.UpdateTourLogAsync(User.Username, tourLog);
@@ -333,8 +349,20 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
-        var tourLog = new TourLog
+        var oldTourLog = new TourLog
+        {
+            Id = TourLogId,
+            TourId = TourId,
+            DateAndTime = DateTime.Now,
+            Comment = "Great tour!",
+            Difficulty = 3,
+            TotalDistance = 10,
+            TotalTime = TimeSpan.FromHours(1).TotalHours,
+            Rating = 5,
+        };
+        var newTourLog = new TourLog
         {
             Id = TourLogId,
             TourId = TourId + 1, // Different tour
@@ -347,11 +375,12 @@ public class TourLogServiceTests
         };
 
         _tourRepository.GetByIdAsync(TourId).Returns(tour);
-        _tourLogRepository.GetByIdAsync(TourLogId).Returns(tourLog);
+        _tourRepository.GetByIdAsync(TourId + 1).Returns((Tour?)null);
+        _tourLogRepository.GetByIdAsync(TourLogId).Returns(oldTourLog);
         _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
 
         // Act
-        var result = await _tourLogService.UpdateTourLogAsync(User.Username, tourLog);
+        var result = await _tourLogService.UpdateTourLogAsync(User.Username, newTourLog);
 
         // Assert
         Assert.That(result, Is.False);
@@ -373,6 +402,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var oldTourLog = new TourLog
         {
@@ -424,6 +454,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var oldTourLog = new TourLog
         {
@@ -461,10 +492,12 @@ public class TourLogServiceTests
     #endregion
 
     #region DeleteTourLogAsync Tests
+    [Test]
     public async Task DeleteTourLogAsync_TourMissingOrNotOwned_ReturnsFalse()
     {
         // Arrange
         _tourRepository.GetByIdAsync(TourId).Returns((Tour?)null);
+        _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
 
         // Act
         var result = await _tourLogService.DeleteTourLogAsync(User.Username, TourId, TourLogId);
@@ -474,6 +507,7 @@ public class TourLogServiceTests
         await _tourLogRepository.DidNotReceive().DeleteAsync(Arg.Any<int>());
     }
 
+    [Test]
     public async Task DeleteTourLogAsync_LogMissingOrWrongTour_ReturnsFalse()
     {
         // Arrange
@@ -488,6 +522,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var tourLog = new TourLog
         {
@@ -502,8 +537,10 @@ public class TourLogServiceTests
         };
 
         _tourRepository.GetByIdAsync(TourId).Returns(tour);
+        _tourRepository.GetByIdAsync(TourId + 1).Returns((Tour?)null);
         _tourLogRepository.GetByIdAsync(TourLogId).Returns(tourLog);
         _userRepository.GetUserByUsernameAsync(User.Username).Returns(User);
+
         // Act
         var result = await _tourLogService.DeleteTourLogAsync(User.Username, TourId, TourLogId);
 
@@ -527,6 +564,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
 
         _tourRepository.GetByIdAsync(TourId).Returns(tour);
@@ -540,6 +578,7 @@ public class TourLogServiceTests
         Assert.That(result, Is.False);
     }
 
+    [Test]
     public async Task DeleteTourLogAsync_ValidDelete_ReturnsTrue()
     {
         // Arrange
@@ -554,6 +593,7 @@ public class TourLogServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var tourLog = new TourLog
         {

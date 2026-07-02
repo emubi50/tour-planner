@@ -106,30 +106,42 @@ namespace TourPlanner.Bll.Services
             );
         }
 
-        public async Task<bool> UpdateTourLogAsync(string username, TourLog tourLog)
+        public async Task<bool> UpdateTourLogAsync(string username, TourLog newTourLog)
         {
             int userId = await GetUserIdAsync(username);
-            var tour = await _tourRepository.GetByIdAsync(tourLog.TourId);
+            var tour = await _tourRepository.GetByIdAsync(newTourLog.TourId);
 
             if (tour == null || tour.UserId != userId)
             {
                 _logger.LogWarning(
                     "User {Username} attempted to update a tour log for tour {TourId} that does not exist or is not theirs",
                     username,
-                    tourLog.TourId
+                    newTourLog.TourId
+                );
+                return false;
+            }
+
+            var oldTourLog = await _tourLogRepository.GetByIdAsync(newTourLog.Id);
+            if (oldTourLog == null || oldTourLog.TourId != newTourLog.TourId)
+            {
+                _logger.LogWarning(
+                    "User {Username} attempted to update tour log {TourLogId} that does not exist or does not belong to tour {TourId}",
+                    username,
+                    newTourLog.Id,
+                    newTourLog.TourId
                 );
                 return false;
             }
 
             try
             {
-                await _tourLogRepository.UpdateAsync(tourLog);
+                await _tourLogRepository.UpdateAsync(newTourLog);
             }
             catch (KeyNotFoundException)
             {
                 _logger.LogWarning(
                     "TourLog {TourLogId} was deleted concurrently while user {Username} was updating it",
-                    tourLog.Id,
+                    newTourLog.Id,
                     username
                 );
                 return false;
@@ -138,7 +150,7 @@ namespace TourPlanner.Bll.Services
             _logger.LogInformation(
                 "User {Username} updated tour log {TourLogId}",
                 username,
-                tourLog.Id
+                newTourLog.Id
             );
             return true;
         }
@@ -153,6 +165,18 @@ namespace TourPlanner.Bll.Services
                 _logger.LogWarning(
                     "User {Username} attempted to delete a tour log for tour {TourId} that does not exist or is not theirs",
                     username,
+                    tourId
+                );
+                return false;
+            }
+
+            var tourLog = await _tourLogRepository.GetByIdAsync(tourLogId);
+            if (tourLog == null || tourLog.TourId != tourId)
+            {
+                _logger.LogWarning(
+                    "User {Username} attempted to delete tour log {TourLogId} that does not exist or does not belong to tour {TourId}",
+                    username,
+                    tourLogId,
                     tourId
                 );
                 return false;
