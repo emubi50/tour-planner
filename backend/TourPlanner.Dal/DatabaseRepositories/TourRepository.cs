@@ -64,5 +64,15 @@ namespace TourPlanner.Dal.DatabaseRepositories
             }
             throw new KeyNotFoundException($"Tour with id {tour.Id} not found.");
         }
+
+        public async Task<List<Tour>> SearchAsync(int userId, string query)
+        {
+            return await _context.Tours
+                .Where(t => t.UserId == userId)
+                .Include(t => t.Logs)
+                .Where(t => t.SearchVector.Matches(EF.Functions.WebSearchToTsQuery("english", query)))
+                .OrderByDescending(t => t.SearchVector.Rank(EF.Functions.WebSearchToTsQuery("english", query)))
+                .ToListAsync();
+        }
     }
 }

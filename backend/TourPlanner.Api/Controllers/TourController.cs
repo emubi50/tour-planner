@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TourPlanner.Api.Dtos;
 using TourPlanner.Bll.Interfaces;
 using TourPlanner.Models;
 
@@ -33,10 +34,10 @@ namespace TourPlanner.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTour([FromBody] Tour tour)
+        public async Task<IActionResult> CreateTour([FromBody] TourCreateDto tourCreateDto)
         {
             var username = User.Identity!.Name!;
-            await _tourService.CreateTourAsync(username, tour);
+            await _tourService.CreateTourAsync(username, tourCreateDto.toTour());
             return Created();
         }
 
@@ -57,21 +58,13 @@ namespace TourPlanner.Api.Controllers
             return deleted ? NoContent() : NotFound();
         }
 
-        // SEARCH ENDPOINT
         [HttpGet("search")]
         public async Task<IActionResult> SearchTours([FromQuery] string? searchTerm)
         {
             var username = User.Identity!.Name!;
-            // TODO: Remove try-catch block once search functionality is implemented
-            try
-            {
-                var tours = await _tourService.SearchToursAsync(username, searchTerm);
-                return Ok(tours);
-            }
-            catch (NotImplementedException)
-            {
-                return StatusCode(501, "Search functionality is not implemented yet.");
-            }
+            var tours = await _tourService.SearchToursAsync(username, searchTerm);
+            var results = tours.Select(t => new TourSearchResultDto(t)).ToList();
+            return Ok(results);
         }
     }
 }

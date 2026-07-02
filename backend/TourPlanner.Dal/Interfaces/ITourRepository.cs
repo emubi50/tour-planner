@@ -9,6 +9,7 @@ namespace TourPlanner.Dal.Interfaces
     {
         Task<List<Tour>> GetAllByUserIdAsync(int userId);
         Task<Tour?> GetByIdAsync(int tourId);
+        Task<List<Tour>> SearchAsync(int userId, string query);
         Task AddAsync(Tour tour);
         Task UpdateAsync(Tour tour);
         Task DeleteAsync(int tourId);

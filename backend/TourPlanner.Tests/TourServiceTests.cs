@@ -8,6 +8,7 @@ using TourPlanner.Bll.Interfaces;
 using TourPlanner.Bll.Services;
 using TourPlanner.Dal.Interfaces;
 using TourPlanner.Models;
+using TourPlanner.Models.Enums;
 
 namespace TourPlanner.Tests;
 
@@ -47,6 +48,7 @@ public class TourServiceTests
     [TestCase("CreateTourAsync")]
     [TestCase("UpdateTourAsync")]
     [TestCase("DeleteTourAsync")]
+    [TestCase("SearchToursAsync")]
     public void Methods_UserDoesNotExist_ThrowUserNotFoundException(string methodName)
     {
         _userRepository.GetUserByUsernameAsync(Username).Returns((User?)null);
@@ -74,7 +76,8 @@ public class TourServiceTests
                             To = "End",
                             TransportType = TransportType.CAR,
                             Distance = 10.0,
-                            EstimatedTime = TimeSpan.FromHours(1).TotalHours
+                            EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+                            RouteInformation = String.Empty,
                         }
                     );
                     break;
@@ -91,12 +94,16 @@ public class TourServiceTests
                             To = "Updated End",
                             TransportType = TransportType.BIKE,
                             Distance = 15.0,
-                            EstimatedTime = TimeSpan.FromHours(1.5).TotalHours
+                            EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
+                            RouteInformation = String.Empty,
                         }
                     );
                     break;
                 case "DeleteTourAsync":
                     await _tourService.DeleteTourAsync(Username, 1);
+                    break;
+                case "SearchToursAsync":
+                    await _tourService.SearchToursAsync(Username, "query");
                     break;
             }
         });
@@ -122,6 +129,7 @@ public class TourServiceTests
                 TransportType = TransportType.CAR,
                 Distance = 10.0,
                 EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+                RouteInformation = String.Empty,
             },
             new Tour
             {
@@ -134,6 +142,7 @@ public class TourServiceTests
                 TransportType = TransportType.BIKE,
                 Distance = 15.0,
                 EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
+                RouteInformation = String.Empty,
             },
         };
         _tourRepository.GetAllByUserIdAsync(UserId).Returns(expectedTours);
@@ -162,6 +171,7 @@ public class TourServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         _tourRepository.GetByIdAsync(1).Returns(tour);
 
@@ -187,6 +197,7 @@ public class TourServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         _tourRepository.GetByIdAsync(1).Returns(tour);
 
@@ -226,6 +237,7 @@ public class TourServiceTests
             TransportType = TransportType.CAR,
             Distance = 20.0,
             EstimatedTime = TimeSpan.FromHours(2).TotalHours,
+            RouteInformation = String.Empty,
         };
 
         // Act
@@ -259,6 +271,7 @@ public class TourServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         var incomingTour = new Tour
         {
@@ -271,6 +284,7 @@ public class TourServiceTests
             TransportType = TransportType.BIKE,
             Distance = 15.0,
             EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
+            RouteInformation = String.Empty,
         };
         _tourRepository.GetByIdAsync(1).Returns(existingTour);
 
@@ -304,6 +318,7 @@ public class TourServiceTests
             TransportType = TransportType.BIKE,
             Distance = 15.0,
             EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
+            RouteInformation = String.Empty,
         };
         _tourRepository.GetByIdAsync(1).Returns((Tour?)null);
 
@@ -331,6 +346,7 @@ public class TourServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation= String.Empty,
         };
         var incomingTour = new Tour
         {
@@ -343,6 +359,7 @@ public class TourServiceTests
             TransportType = TransportType.BIKE,
             Distance = 15.0,
             EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
+            RouteInformation = String.Empty,
         };
         _tourRepository.GetByIdAsync(1).Returns(existingTour);
 
@@ -378,6 +395,7 @@ public class TourServiceTests
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+            RouteInformation = String.Empty,
         };
         _tourRepository.GetByIdAsync(1).Returns(tour);
 
@@ -408,6 +426,101 @@ public class TourServiceTests
         // Assert
         Assert.That(result, Is.False);
         await _tourRepository.DidNotReceive().DeleteAsync(Arg.Any<int>());
+    }
+    #endregion
+
+    #region SearchToursAsync Tests
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("   ")]
+    public async Task SearchTourAsync_NullOrEmptyOrWhitespaceSearchTerm_ReturnsAllToursForUser(string? searchTerm)
+    {
+        // Arrange
+        var expectedTours = new List<Tour>
+        {
+            new Tour
+            {
+                Id = 1,
+                UserId = UserId,
+                Name = "Tour 1",
+                Description = "Description 1",
+                From = "Start 1",
+                To = "End 1",
+                TransportType = TransportType.CAR,
+                Distance = 10.0,
+                EstimatedTime = TimeSpan.FromHours(1).TotalHours,
+                RouteInformation = String.Empty,
+            },
+            new Tour
+            {
+                Id = 2,
+                UserId = UserId,
+                Name = "Tour 2",
+                Description = "Description 2",
+                From = "Start 2",
+                To = "End 2",
+                TransportType = TransportType.BIKE,
+                Distance = 15.0,
+                EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
+                RouteInformation = String.Empty,
+            },
+        };
+        _tourRepository.GetAllByUserIdAsync(UserId).Returns(expectedTours);
+
+        // Act
+        var result = await _tourService.SearchToursAsync(Username, searchTerm);
+
+        // Assert
+        Assert.That(result, Is.SameAs(expectedTours));
+        await _tourRepository.Received(1).GetAllByUserIdAsync(UserId);
+        await _tourRepository.DidNotReceive().SearchAsync(Arg.Any<int>(), Arg.Any<string>());
+    }
+
+    [Test]
+    public async Task SearchToursAsync_SearchTermProvided_CallsRepositoryWithUserIdAndTerm()
+    {
+        // Arrange
+        const string searchTerm = "mountain bike trail";
+        var expectedTours = new List<Tour>
+        {
+            new Tour
+            {
+                Id = 1,
+                UserId = UserId,
+                Name = "Mountain Bike Trail",
+                Description = "A challenging mountain bike trail.",
+                From = "Trailhead",
+                To = "Summit",
+                TransportType = TransportType.BIKE,
+                Distance = 25.0,
+                EstimatedTime = TimeSpan.FromHours(2).TotalHours,
+                RouteInformation = String.Empty,
+            },
+        };
+        _tourRepository.SearchAsync(UserId, searchTerm).Returns(expectedTours);
+
+        // Act
+        var result = await _tourService.SearchToursAsync(Username, searchTerm);
+
+        // Assert
+        Assert.That(result, Is.SameAs(expectedTours));
+        await _tourRepository.Received(1).SearchAsync(UserId, searchTerm);
+        await _tourRepository.DidNotReceive().GetAllByUserIdAsync(Arg.Any<int>());
+    }
+
+    [Test]
+    public async Task SearchToursAsync_NoMatches_ReturnsEmptyList()
+    {
+        // Arrange
+        const string searchTerm = "nonexistent";
+        _tourRepository.SearchAsync(UserId, searchTerm).Returns(new List<Tour>());
+        
+        // Act
+        var result = await _tourService.SearchToursAsync(Username, searchTerm);
+        
+        // Assert
+        Assert.That(result, Is.Empty);
+        await _tourRepository.Received(1).SearchAsync(UserId, searchTerm);
     }
     #endregion
 }

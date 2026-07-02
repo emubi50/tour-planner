@@ -1,4 +1,4 @@
-namespace TourPlanner.Models
+namespace TourPlanner.Models.Enums
 {
     public enum TransportType
     {

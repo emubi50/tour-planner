@@ -133,9 +133,14 @@ namespace TourPlanner.Bll.Services
 
         public async Task<List<Tour>> SearchToursAsync(string username, string? searchTerm)
         {
-            // TODO: Implement search functionality (idk how to do this yet)
             int userId = await GetUserIdAsync(username);
-            throw new NotImplementedException("SearchToursAsync is not implemented yet.");
+            
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return await _tourRepository.GetAllByUserIdAsync(userId);
+            }
+
+            return await _tourRepository.SearchAsync(userId, searchTerm);
         }
 
         private async Task<int> GetUserIdAsync(string username)

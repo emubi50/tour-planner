@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using TourPlanner.Models;
 
 namespace TourPlanner.Dal
@@ -21,6 +22,31 @@ namespace TourPlanner.Dal
                 .WithOne(l => l.Tour)
                 .HasForeignKey(l => l.TourId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder
+                .Entity<Tour>(entity =>
+                {
+                    entity.Property(t => t.Popularity)
+                        .HasConversion<string>()
+                        .HasMaxLength(20)
+                        .ValueGeneratedOnAddOrUpdate()
+                        .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+
+                    entity.Property(t => t.ChildFriendliness)
+                        .HasConversion<string>()
+                        .HasMaxLength(20)
+                        .ValueGeneratedOnAddOrUpdate()
+                        .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+
+                    entity.Property(t => t.SearchVector)
+                        .HasColumnType("tsvector")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+
+                    entity.Property(t => t.TransportType)
+                        .HasConversion<string>()
+                        .HasMaxLength(20);
+                });
         }
     }
 }
