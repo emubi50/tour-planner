@@ -52,7 +52,15 @@ export class TourService {
    * @param updatedTour The new data of the tour
    */
   updateTourServer(updatedTour: ITour): Observable<void> {
-    return this.http.put<void>(`/api/tours/${updatedTour.id}`, updatedTour).pipe(tap(() => this.getToursServer().subscribe()));
+    let updatedTourCreate: ITourCreate = {
+      name: updatedTour.name,
+      description: updatedTour.description,
+      from: updatedTour.from,
+      to: updatedTour.to,
+      tags: updatedTour.tags,
+      transportType: updatedTour.transportType,
+    };
+    return this.http.put<void>(`/api/tours/${updatedTour.id}`, updatedTourCreate).pipe(tap(() => this.getToursServer().subscribe()));
   }
 
   /**

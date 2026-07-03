@@ -63,10 +63,9 @@ namespace TourPlanner.Api.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateTour(int id, [FromBody] Tour tour)
+        public async Task<IActionResult> UpdateTour(int id, [FromBody] TourCreateDto newTourDto)
         {
             var username = User.Identity!.Name!;
-            tour.Id = id;
 
             // Get old tour to see if any of the locations have changed
             Tour? oldTour = await _tourService.GetByIdAsync(username, id);
@@ -74,28 +73,41 @@ namespace TourPlanner.Api.Controllers
             {
                 return NotFound();
             }
+            
+            var newTour = newTourDto.toTour();
+            newTour.Id = id;
 
-            if (
-                oldTour.From != tour.From
-                || oldTour.To != tour.To
-                || oldTour.TransportType != tour.TransportType
-            )
+            bool needsRouteUpdate = (
+                oldTour.From != newTour.From
+                || oldTour.To != newTour.To
+                || oldTour.TransportType != newTour.TransportType
+            );
+
+            
+            if (needsRouteUpdate)
             {
                 // Get duration and distance from OpenRouteService
-                Models.Route routeInfo = await _openRouteService.GetRoute(
-                    tour.From.Coordinates,
-                    tour.To.Coordinates,
-                    tour.TransportType
+                var route = await _openRouteService.GetRoute(
+                    newTourDto.From.Coordinates,
+                    newTourDto.To.Coordinates,
+                    newTourDto.TransportType
                 );
-                tour.Distance = routeInfo.Distance;
-                tour.EstimatedTime = routeInfo.Duration;
-                tour.RouteInformation = routeInfo.Path.Aggregate(
+
+                newTour.Distance = route.Distance;
+                newTour.EstimatedTime = route.Duration;
+                newTour.RouteInformation = route.Path.Aggregate(
                     "",
                     (acc, point) => acc + $"{point[0]},{point[1]};"
                 );
             }
+            else
+            {
+                newTour.Distance = oldTour.Distance;
+                newTour.EstimatedTime = oldTour.EstimatedTime;
+                newTour.RouteInformation = oldTour.RouteInformation;
+            }
 
-            var updated = await _tourService.UpdateTourAsync(username, tour);
+            var updated = await _tourService.UpdateTourAsync(username, newTour);
             return updated ? NoContent() : NotFound();
         }
 

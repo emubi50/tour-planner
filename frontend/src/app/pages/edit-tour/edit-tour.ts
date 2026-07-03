@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { TourService } from '../../services/tour';
-import { ITour } from '../../interfaces/Tour';
+import { ITour, ITourCreate } from '../../interfaces/Tour';
 import { TransportType, TransportTypeText } from '../../enums/TransportType';
 import { UserService } from '../../services/user';
 import { LocationSuggestion } from '../../components/location-suggestion/location-suggestion';

@@ -56,13 +56,25 @@ namespace TourPlanner.Dal.DatabaseRepositories
 
         public async Task UpdateAsync(Tour tour)
         {
-            if (await _context.Tours.AnyAsync(t => t.Id == tour.Id))
+            var trackedTour = await _context.Tours.FirstOrDefaultAsync(t => t.Id == tour.Id);
+
+            if (trackedTour == null)
             {
-                _context.Tours.Update(tour);
-                await _context.SaveChangesAsync();
-                return;
+                throw new KeyNotFoundException($"Tour with id {tour.Id} not found.");
             }
-            throw new KeyNotFoundException($"Tour with id {tour.Id} not found.");
+
+            // set the properties individually because it screams at me when i use update
+
+            trackedTour.Name = tour.Name;
+            trackedTour.Description = tour.Description;
+            trackedTour.TransportType = tour.TransportType;
+            trackedTour.From = tour.From;
+            trackedTour.To = tour.To;
+            trackedTour.Distance = tour.Distance;
+            trackedTour.EstimatedTime = tour.EstimatedTime;
+            trackedTour.RouteInformation = tour.RouteInformation;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Tour>> SearchAsync(int userId, string query)

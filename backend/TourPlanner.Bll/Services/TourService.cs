@@ -81,8 +81,8 @@ namespace TourPlanner.Bll.Services
                 return false;
             }
 
-            tour.UserId = existingTour.UserId;
-
+            tour.UserId = userId;
+            
             try
             {
                 await _tourRepository.UpdateAsync(tour);
