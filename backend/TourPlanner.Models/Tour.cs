@@ -10,6 +10,7 @@ namespace TourPlanner.Models
 
         public required string Name { get; set; }
         public required string Description { get; set; }
+        public List<string> Tags { get; set; } = new List<string>();
         public required Location From { get; set; }
         public required Location To { get; set; }
         public required TransportType TransportType { get; set; }

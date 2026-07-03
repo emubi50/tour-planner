@@ -11,6 +11,7 @@ namespace TourPlanner.Api.Dtos
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public List<string> Tags { get; set; } = new List<string>();
         public Location From { get; set; }
         public Location To { get; set; }
         public TransportType TransportType { get; set; }
@@ -25,6 +26,7 @@ namespace TourPlanner.Api.Dtos
             UserId = tour.UserId;
             Name = tour.Name;
             Description = tour.Description;
+            Tags = tour.Tags;
             From = tour.From;
             To = tour.To;
             TransportType = tour.TransportType;

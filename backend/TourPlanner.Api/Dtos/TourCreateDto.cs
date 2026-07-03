@@ -12,6 +12,8 @@ namespace TourPlanner.Api.Dtos
         [Required]
         public string Description { get; set; } = string.Empty;
 
+        public List<string> Tags { get; set; } = new List<string>();
+
         [Required]
         public TransportType TransportType { get; set; }
 
@@ -28,7 +30,12 @@ namespace TourPlanner.Api.Dtos
                 UserId = 0, // Placeholder value to be set in TourService
                 Name = this.Name,
                 Description = this.Description,
-                From = new Location(this.From.Coordinates[0], this.From.Coordinates[1], this.From.Label),
+                From = new Location(
+                    this.From.Coordinates[0],
+                    this.From.Coordinates[1],
+                    this.From.Label
+                ),
+                Tags = this.Tags,
                 To = new Location(this.To.Coordinates[0], this.To.Coordinates[1], this.To.Label),
                 TransportType = this.TransportType,
                 Distance = 0, // Placeholder value to be set in TourService
