@@ -56,6 +56,8 @@ namespace TourPlanner.Api.Controllers
             tourData.Distance = routeInfo.Distance;
             tourData.EstimatedTime = routeInfo.Duration;
 
+            tourData.RouteInformation = routeInfo.Path.Aggregate("", (acc, point) => acc + $"{point[0]},{point[1]};");
+
             await _tourService.CreateTourAsync(username, tourData);
             return Created();
         }
