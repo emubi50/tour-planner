@@ -10,10 +10,12 @@ import { TourService } from '../../services/tour';
 import { TransportType, TransportTypeText } from '../../enums/TransportType';
 import { TransportIcon } from '../../components/transport-icon/transport-icon';
 import { UserService } from '../../services/user';
+import { LocationSuggestion } from '../../components/location-suggestion/location-suggestion';
+import { ILocation } from '../../interfaces/Location';
 
 @Component({
   selector: 'app-create-tour',
-  imports: [ReactiveFormsModule, TransportIcon],
+  imports: [ReactiveFormsModule, TransportIcon, LocationSuggestion],
   templateUrl: './create-tour.html',
   styleUrl: './create-tour.css',
 })
@@ -47,8 +49,8 @@ export class CreateTour {
       validators: [Validators.required],
       nonNullable: true,
     }),
-    startLocation: new FormControl('', [Validators.required]),
-    endLocation: new FormControl('', [Validators.required]),
+    startLocation: new FormControl<ILocation | null>(null, [Validators.required]),
+    endLocation: new FormControl<ILocation | null>(null, [Validators.required]),
     tags: new FormControl(''),
   });
 

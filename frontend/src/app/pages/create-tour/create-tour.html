@@ -60,32 +60,30 @@
     />
 
     <div
-      class="flex flex-col gap-2 text-sm md:text-base w-full overflow-hidden"
+      class="flex flex-col gap-2 text-sm md:text-base w-full"
     >
-      <input
-        type="text"
-        name="start-location"
-        formControlName="startLocation"
-        placeholder="Start location"
-        [class]="
-          startLocation?.touched && startLocation?.invalid
-            ? 'border-red-500'
-            : 'border-gray-300'
-        "
-        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
-      />
-      <input
-        type="text"
-        name="end-location"
-        formControlName="endLocation"
-        placeholder="End location"
-        [class]="
-          endLocation?.touched && endLocation?.invalid
-            ? 'border-red-500'
-            : 'border-gray-300'
-        "
-        class="w-full bg-transparent border-b focus:outline-none focus:border-gray-500 text-gray-700 placeholder-gray-400"
-      />
+      <div class="flex flex-col gap-2 test-sm md:text-base w-full">
+        <app-location-suggestion
+          name="start-location"
+          formControlName="startLocation"
+          placeholder="Start location"
+          [inputClass]="
+            startLocation?.touched && startLocation?.invalid
+              ? 'border-red-500'
+              : 'border-gray-300'
+          "
+        />
+        <app-location-suggestion
+          name="end-location"
+          formControlName="endLocation"
+          placeholder="End location"
+          [inputClass]="
+            endLocation?.touched && endLocation?.invalid
+              ? 'border-red-500'
+              : 'border-gray-300'
+          "
+        />
+      </div>
     </div>
   </div>
 

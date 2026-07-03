@@ -66,12 +66,12 @@
           >
             <app-location-start
               class="w-full"
-              [location]="tour()!.from"
+              [location]="tour()!.from.label"
               [labelClass]="'text-black'"
             />
             <app-location-end
               class="w-full"
-              [location]="tour()!.to"
+              [location]="tour()!.to.label"
               [labelClass]="'text-black'"
             />
           </div>

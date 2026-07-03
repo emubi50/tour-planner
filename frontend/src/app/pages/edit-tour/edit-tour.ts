@@ -10,10 +10,11 @@ import { TourService } from '../../services/tour';
 import { ITour } from '../../interfaces/Tour';
 import { TransportType, TransportTypeText } from '../../enums/TransportType';
 import { UserService } from '../../services/user';
+import { LocationSuggestion } from '../../components/location-suggestion/location-suggestion';
 
 @Component({
   selector: 'app-edit-tour',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LocationSuggestion],
   templateUrl: './edit-tour.html',
   styleUrl: './edit-tour.css',
 })

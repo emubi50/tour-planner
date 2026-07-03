@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TourPlanner.Models
 {
     public class Location
     {
-        public required double Longitude { get; set; }
-        public required double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
 
-        public required string Label { get; set; }
+        public string Label { get; set; }
 
         public double[] Coordinates => [Longitude, Latitude];
 
@@ -20,6 +21,7 @@ namespace TourPlanner.Models
             Label = label;
         }
 
+        [JsonConstructor]
         public Location(double[] coordinates, string label)
         {
             if (coordinates.Length < 2)

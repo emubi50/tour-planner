@@ -16,10 +16,10 @@ namespace TourPlanner.Api.Dtos
         public TransportType TransportType { get; set; }
 
         [Required]
-        public Location From { get; set; } = null!;
+        public LocationDto From { get; set; } = default!;
 
         [Required]
-        public Location To { get; set; } = null!;
+        public LocationDto To { get; set; } = default!;
 
         public Tour toTour()
         {
@@ -28,8 +28,8 @@ namespace TourPlanner.Api.Dtos
                 UserId = 0, // Placeholder value to be set in TourService
                 Name = this.Name,
                 Description = this.Description,
-                From = this.From,
-                To = this.To,
+                From = new Location(this.From.Coordinates[0], this.From.Coordinates[1], this.From.Label),
+                To = new Location(this.To.Coordinates[0], this.To.Coordinates[1], this.To.Label),
                 TransportType = this.TransportType,
                 Distance = 0, // Placeholder value to be set in TourService
                 EstimatedTime = 0, // Placeholder value to be set in TourService

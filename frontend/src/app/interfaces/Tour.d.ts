@@ -15,8 +15,8 @@ export interface ITour {
   description: string;
   estimatedTime: number; // in seconds
   distance: number; // in meters
-  from: string;
-  to: string;
+  from: ILocation;
+  to: ILocation;
   tags: string[];
   transportType: TransportType;
   rating: number; // from 0 to 5
@@ -27,8 +27,8 @@ export interface ITour {
 export interface ITourCreate {
   name: string;
   description: string;
-  from: string;
-  to: string;
+  from: ILocation;
+  to: ILocation;
   tags: string[];
   transportType: TransportType;
 }

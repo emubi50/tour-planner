@@ -78,7 +78,7 @@ export class TourPage {
   durationInHours = computed(() => {
     const tour = this.tour();
     if (!tour) return '00:00';
-    return (tour.estimatedTime / 3600).toFixed(2).replace('.', ':');
+    return (tour.estimatedTime / 3600).toFixed(2);
   });
 
   distanceInKm = computed(() => {

@@ -1,0 +1,28 @@
+<div class="relative w-full">
+    <input
+        type="text"
+        [placeholder]="placeholder()"
+        [value]="query()"
+        [class]="inputClass() + ' w-full bg-transparent border-b focus:outline-none focus:border-gray-500 placeholder-gray-400 text-gray-700'"
+        [disabled]="disabled()"
+        (input)="onInput($event)"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+    />
+    @if (isOpen()) {
+        <ul class="absolute z-10 w-full bg-white border border-gray-300 rounded shadow max-h-48 overflow-y-auto mt-1">
+            @if (suggestions().length === 0) {
+                <li class="px-2 py-1 text-sm text-gray-500">No suggestions found</li>
+            } @else {
+                @for (suggestion of suggestions(); track suggestion.label) {
+                    <li
+                        class="px-2 py-1 hover:bg-cyan-50 cursor-pointer text-sm text-gray-700"
+                        (mousedown)="$event.preventDefault(); selectSuggestion(suggestion)"
+                    >
+                    {{ suggestion.label }}
+                    </li>
+                }
+            }
+        </ul>
+    }
+</div>
