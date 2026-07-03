@@ -32,8 +32,7 @@ namespace TourPlanner.Api.Controllers
         {
             var username = User.Identity!.Name!;
             var tour = await _tourService.GetByIdAsync(username, id);
-            var tourDto = (tour == null) ? null : new TourResponseDto(tour);
-            return (tour == null) ? NotFound() : Ok(tourDto);
+            return (tour == null) ? NotFound() : Ok(new TourResponseDto(tour));
         }
 
         [HttpPost]
