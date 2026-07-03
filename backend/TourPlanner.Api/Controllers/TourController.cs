@@ -67,6 +67,34 @@ namespace TourPlanner.Api.Controllers
         {
             var username = User.Identity!.Name!;
             tour.Id = id;
+
+            // Get old tour to see if any of the locations have changed
+            Tour? oldTour = await _tourService.GetByIdAsync(username, id);
+            if (oldTour == null)
+            {
+                return NotFound();
+            }
+
+            if (
+                oldTour.From != tour.From
+                || oldTour.To != tour.To
+                || oldTour.TransportType != tour.TransportType
+            )
+            {
+                // Get duration and distance from OpenRouteService
+                Models.Route routeInfo = await _openRouteService.GetRoute(
+                    tour.From.Coordinates,
+                    tour.To.Coordinates,
+                    tour.TransportType
+                );
+                tour.Distance = routeInfo.Distance;
+                tour.EstimatedTime = routeInfo.Duration;
+                tour.RouteInformation = routeInfo.Path.Aggregate(
+                    "",
+                    (acc, point) => acc + $"{point[0]},{point[1]};"
+                );
+            }
+
             var updated = await _tourService.UpdateTourAsync(username, tour);
             return updated ? NoContent() : NotFound();
         }
