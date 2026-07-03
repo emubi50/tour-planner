@@ -7,6 +7,6 @@ namespace TourPlanner.Models
     public class LocationSearchResult
     {
         public long Timestamp { get; set; }
-        public List<Location> Locations { get; set; } = [];
+        public List<SearchLocation> Locations { get; set; } = [];
     }
 }

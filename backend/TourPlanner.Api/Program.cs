@@ -108,8 +108,11 @@ namespace TourPlanner.Api
             >();
             builder.Services.AddScoped<Bll.Interfaces.ITokenService, Bll.Services.TokenService>();
             builder.Services.AddScoped<Bll.Interfaces.ITourExportStrategy, JsonExportStrategy>();
-            builder.Services.AddScoped<Bll.Interfaces.ITourDataTransferService, TourDataTransferService>();
-            
+            builder.Services.AddScoped<
+                Bll.Interfaces.ITourDataTransferService,
+                TourDataTransferService
+            >();
+
             builder.Services.AddControllers();
 
             builder

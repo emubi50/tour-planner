@@ -14,12 +14,12 @@ namespace TourPlanner.Api.Dtos
 
         [Required]
         public TransportType TransportType { get; set; }
-        
-        [Required]
-        public string From { get; set; } = string.Empty;
 
         [Required]
-        public string To { get; set; } = string.Empty;
+        public Location From { get; set; } = null!;
+
+        [Required]
+        public Location To { get; set; } = null!;
 
         public Tour toTour()
         {

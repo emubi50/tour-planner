@@ -43,20 +43,20 @@ namespace TourPlanner.Api.Controllers
             var username = User.Identity!.Name!;
             Tour tourData = tourCreateDto.toTour();
 
-            // TEMPORARY
-            LocationSearchResult startSearchRes = await _openRouteService.SearchDestinations(tourData.From);
-            double[] startLoc = startSearchRes.Locations[0].Coordinates;
-
-            LocationSearchResult endSearchRes = await _openRouteService.SearchDestinations(tourData.To);
-            double[] endLoc = endSearchRes.Locations[0].Coordinates;
-
             // Get duration and distance from OpenRouteService
-            Models.Route routeInfo = await _openRouteService.GetRoute(startLoc, endLoc, tourData.TransportType);
+            Models.Route routeInfo = await _openRouteService.GetRoute(
+                tourData.From.Coordinates,
+                tourData.To.Coordinates,
+                tourData.TransportType
+            );
 
             tourData.Distance = routeInfo.Distance;
             tourData.EstimatedTime = routeInfo.Duration;
 
-            tourData.RouteInformation = routeInfo.Path.Aggregate("", (acc, point) => acc + $"{point[0]},{point[1]};");
+            tourData.RouteInformation = routeInfo.Path.Aggregate(
+                "",
+                (acc, point) => acc + $"{point[0]},{point[1]};"
+            );
 
             await _tourService.CreateTourAsync(username, tourData);
             return Created();

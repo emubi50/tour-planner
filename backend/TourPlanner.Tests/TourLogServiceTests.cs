@@ -76,6 +76,8 @@ public class TourLogServiceTests
     [Test]
     public async Task GetAllAsync_TourOwnedByUser_ReturnsLogsFromRepository()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -83,8 +85,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -96,7 +98,7 @@ public class TourLogServiceTests
             {
                 Id = TourLogId,
                 TourId = TourId,
-                DateAndTime = DateTime.Now,
+                Date = DateOnly.FromDateTime(DateTime.Now),
                 Comment = "Great tour!",
                 Difficulty = 3,
                 TotalDistance = 10,
@@ -107,7 +109,7 @@ public class TourLogServiceTests
             {
                 Id = TourLogId + 1,
                 TourId = TourId,
-                DateAndTime = DateTime.Now,
+                Date = DateOnly.FromDateTime(DateTime.Now),
                 Comment = "Not bad.",
                 Difficulty = 2,
                 TotalDistance = 5,
@@ -131,6 +133,8 @@ public class TourLogServiceTests
     [Test]
     public async Task GetByIdAsync_TourMissingOrNotOwned_ReturnsNull()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -138,8 +142,8 @@ public class TourLogServiceTests
             UserId = UserId + 1, // Different user
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -160,6 +164,8 @@ public class TourLogServiceTests
     [Test]
     public async Task GetByIdAsync_TourLogMissingOrWrongTour_ReturnsNull()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -167,8 +173,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -178,7 +184,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId + 1, // Different tour
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -201,6 +207,8 @@ public class TourLogServiceTests
     [Test]
     public async Task GetByIdAsync_ValidTourAndTourLog_ReturnsTourLog()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -208,8 +216,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -219,7 +227,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -248,7 +256,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -269,6 +277,8 @@ public class TourLogServiceTests
     [Test]
     public async Task CreateTourLogAsync_ValidTour_AddsLogViaRepository()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -276,8 +286,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -287,7 +297,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -315,7 +325,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -337,6 +347,8 @@ public class TourLogServiceTests
     [Test]
     public async Task UpdateTourLogAsync_ExistingLogMissingOrWrongTour_ReturnsFalse()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -344,8 +356,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -355,7 +367,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -366,7 +378,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId + 1, // Different tour
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -390,6 +402,8 @@ public class TourLogServiceTests
     [Test]
     public async Task UpdateTourLogAsync_RepositoryThrowsKeyNotFound_ReturnsFalse()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -397,8 +411,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -408,7 +422,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -419,7 +433,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Updated comment",
             Difficulty = 4,
             TotalDistance = 12,
@@ -442,6 +456,8 @@ public class TourLogServiceTests
     [Test]
     public async Task UpdateTourLogAsync_ValidUpdate_ReturnsTrue()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -449,8 +465,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -460,7 +476,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -471,7 +487,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Updated comment",
             Difficulty = 4,
             TotalDistance = 12,
@@ -510,6 +526,8 @@ public class TourLogServiceTests
     [Test]
     public async Task DeleteTourLogAsync_LogMissingOrWrongTour_ReturnsFalse()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -517,8 +535,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -528,7 +546,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId + 1, // Different tour
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,
@@ -552,6 +570,8 @@ public class TourLogServiceTests
     [Test]
     public async Task DeleteTourLogAsync_RepositoryThrowsKeyNotFound_ReturnsFalse()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -559,8 +579,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -581,6 +601,8 @@ public class TourLogServiceTests
     [Test]
     public async Task DeleteTourLogAsync_ValidDelete_ReturnsTrue()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -588,8 +610,8 @@ public class TourLogServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -599,7 +621,7 @@ public class TourLogServiceTests
         {
             Id = TourLogId,
             TourId = TourId,
-            DateAndTime = DateTime.Now,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Comment = "Great tour!",
             Difficulty = 3,
             TotalDistance = 10,

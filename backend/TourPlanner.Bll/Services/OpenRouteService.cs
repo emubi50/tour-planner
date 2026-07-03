@@ -87,11 +87,11 @@ namespace TourPlanner.Bll.Services
 
         private LocationSearchResult MapToLocationSearchResult(GeocodeResponse result)
         {
-            var locations = new List<Location>();
+            var locations = new List<SearchLocation>();
             foreach (var feature in result.Features)
             {
                 locations.Add(
-                    new Location
+                    new SearchLocation
                     {
                         Coordinates = feature.Geometry.Coordinates,
                         Label = feature.Properties.Label,

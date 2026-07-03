@@ -35,7 +35,10 @@ namespace TourPlanner.Api.Controllers
             var username = User.Identity!.Name!;
             using var memoryStream = new MemoryStream();
             file.CopyTo(memoryStream);
-            var result = await _tourDataTransferService.ImportToursAsync(username, memoryStream.ToArray());
+            var result = await _tourDataTransferService.ImportToursAsync(
+                username,
+                memoryStream.ToArray()
+            );
             return Ok(result);
         }
     }

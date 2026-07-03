@@ -24,7 +24,9 @@ public class TourDataTransferServiceTests
     }
 
     #region Helper Methods
-    private TourDataTransferService CreateServiceWithStrategies(IEnumerable<ITourExportStrategy> strategies)
+    private TourDataTransferService CreateServiceWithStrategies(
+        IEnumerable<ITourExportStrategy> strategies
+    )
     {
         return new TourDataTransferService(_logger, _tourService, strategies);
     }
@@ -38,8 +40,9 @@ public class TourDataTransferServiceTests
         var service = CreateServiceWithStrategies(new List<ITourExportStrategy>());
 
         // Act & Assert
-        Assert.ThrowsAsync<UnsupportedFormatException>(
-            () => service.ExportToursAsync("alice", "xml"));
+        Assert.ThrowsAsync<UnsupportedFormatException>(() =>
+            service.ExportToursAsync("alice", "xml")
+        );
     }
 
     public async Task ExportToursAsync_ValidFormat_CallsCorrectStrategy()
@@ -49,8 +52,29 @@ public class TourDataTransferServiceTests
         strategy.FileExtension.Returns("json");
         strategy.Export(Arg.Any<List<Tour>>()).Returns(new byte[] { 1, 2, 3 });
 
-        _tourService.GetAllAsync("alice").Returns(new List<Tour> { new Tour { Id = 1, UserId = 1, Name = "Tour1", Description = "Tour Desc", From = "Start", To = "End", Distance = 10.0, EstimatedTime = 300.0, TransportType = Models.Enums.TransportType.BIKE, RouteInformation = String.Empty } });
-        
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
+        _tourService
+            .GetAllAsync("alice")
+            .Returns(
+                new List<Tour>
+                {
+                    new Tour
+                    {
+                        Id = 1,
+                        UserId = 1,
+                        Name = "Tour1",
+                        Description = "Tour Desc",
+                        From = location,
+                        To = location,
+                        Distance = 10.0,
+                        EstimatedTime = 300.0,
+                        TransportType = Models.Enums.TransportType.BIKE,
+                        RouteInformation = String.Empty,
+                    },
+                }
+            );
+
         var service = CreateServiceWithStrategies(new List<ITourExportStrategy> { strategy });
 
         // Act
@@ -95,7 +119,9 @@ public class TourDataTransferServiceTests
 
         _tourService.GetAllAsync("alice").Returns(new List<Tour>());
 
-        var service = CreateServiceWithStrategies(new List<ITourExportStrategy> { jsonStrategy, csvStrategy });
+        var service = CreateServiceWithStrategies(
+            new List<ITourExportStrategy> { jsonStrategy, csvStrategy }
+        );
 
         // Act
         var result = await service.ExportToursAsync("alice", "csv");
@@ -138,7 +164,37 @@ public class TourDataTransferServiceTests
     [Test]
     public async Task ImportToursAsync_AllToursValid_AllImportsSucceed()
     {
-        var tours = new List<Tour> { new () { Id = 1, UserId = 1, Name = "Tour1", Description = "Tour Desc", From = "Start", To = "End", Distance = 10.0, EstimatedTime = 300.0, TransportType = Models.Enums.TransportType.BIKE, RouteInformation = String.Empty }, new () { Id = 2, UserId = 1, Name = "Tour2", Description = "Tour Desc", From = "Start", To = "End", Distance = 20.0, EstimatedTime = 600.0, TransportType = Models.Enums.TransportType.CAR, RouteInformation = String.Empty } };
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
+        var tours = new List<Tour>
+        {
+            new()
+            {
+                Id = 1,
+                UserId = 1,
+                Name = "Tour1",
+                Description = "Tour Desc",
+                From = location,
+                To = location,
+                Distance = 10.0,
+                EstimatedTime = 300.0,
+                TransportType = Models.Enums.TransportType.BIKE,
+                RouteInformation = String.Empty,
+            },
+            new()
+            {
+                Id = 2,
+                UserId = 1,
+                Name = "Tour2",
+                Description = "Tour Desc",
+                From = location,
+                To = location,
+                Distance = 20.0,
+                EstimatedTime = 600.0,
+                TransportType = Models.Enums.TransportType.CAR,
+                RouteInformation = String.Empty,
+            },
+        };
         var json = JsonSerializer.SerializeToUtf8Bytes(tours);
 
         _tourService.CreateTourAsync("alice", Arg.Any<Tour>()).Returns(Task.CompletedTask);
@@ -157,11 +213,45 @@ public class TourDataTransferServiceTests
     [Test]
     public async Task ImportToursAsync_MixOfValidAndInvalid_TracksCountsAndErrors()
     {
-        var tours = new List<Tour> { new () { Id = 1, UserId = 1, Name = "Tour1", Description = "Tour Desc", From = "Start", To = "End", Distance = 10.0, EstimatedTime = 300.0, TransportType = Models.Enums.TransportType.BIKE, RouteInformation = String.Empty }, new () { Id = 2, UserId = 1, Name = "Tour2", Description = "Tour Desc", From = "Start", To = "End", Distance = 20.0, EstimatedTime = 600.0, TransportType = Models.Enums.TransportType.CAR, RouteInformation = String.Empty } };
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
+        var tours = new List<Tour>
+        {
+            new()
+            {
+                Id = 1,
+                UserId = 1,
+                Name = "Tour1",
+                Description = "Tour Desc",
+                From = location,
+                To = location,
+                Distance = 10.0,
+                EstimatedTime = 300.0,
+                TransportType = Models.Enums.TransportType.BIKE,
+                RouteInformation = String.Empty,
+            },
+            new()
+            {
+                Id = 2,
+                UserId = 1,
+                Name = "Tour2",
+                Description = "Tour Desc",
+                From = location,
+                To = location,
+                Distance = 20.0,
+                EstimatedTime = 600.0,
+                TransportType = Models.Enums.TransportType.CAR,
+                RouteInformation = String.Empty,
+            },
+        };
         var json = JsonSerializer.SerializeToUtf8Bytes(tours);
 
-        _tourService.CreateTourAsync("alice", Arg.Is<Tour>(t => t.Id == 1)).Returns(Task.CompletedTask);
-        _tourService.CreateTourAsync("alice", Arg.Is<Tour>(t => t.Id == 2)).ThrowsAsync(new TourValidationException("Simulated failure"));
+        _tourService
+            .CreateTourAsync("alice", Arg.Is<Tour>(t => t.Id == 1))
+            .Returns(Task.CompletedTask);
+        _tourService
+            .CreateTourAsync("alice", Arg.Is<Tour>(t => t.Id == 2))
+            .ThrowsAsync(new TourValidationException("Simulated failure"));
 
         var service = CreateServiceWithStrategies(new List<ITourExportStrategy>());
 

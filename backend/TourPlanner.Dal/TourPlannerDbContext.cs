@@ -51,6 +51,9 @@ namespace TourPlanner.Dal
             modelBuilder.Entity<TourLog>()
                 .Property(t => t.Date)
                 .HasColumnType("date");
+
+            modelBuilder.Entity<Tour>().OwnsOne(t => t.From);
+            modelBuilder.Entity<Tour>().OwnsOne(t => t.To);
         }
     }
 }

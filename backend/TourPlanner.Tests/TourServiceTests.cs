@@ -53,6 +53,8 @@ public class TourServiceTests
     {
         _userRepository.GetUserByUsernameAsync(Username).Returns((User?)null);
 
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         var exception = Assert.ThrowsAsync<UserNotFoundException>(async () =>
         {
             switch (methodName)
@@ -72,8 +74,8 @@ public class TourServiceTests
                             UserId = 0,
                             Name = "New Tour",
                             Description = "Description",
-                            From = "Start",
-                            To = "End",
+                            From = location,
+                            To = location,
                             TransportType = TransportType.CAR,
                             Distance = 10.0,
                             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -90,8 +92,8 @@ public class TourServiceTests
                             UserId = 0,
                             Name = "Updated Tour",
                             Description = "Updated Description",
-                            From = "Updated Start",
-                            To = "Updated End",
+                            From = location,
+                            To = location,
                             TransportType = TransportType.BIKE,
                             Distance = 15.0,
                             EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
@@ -116,6 +118,8 @@ public class TourServiceTests
     [Test]
     public async Task GetAllAsync_UserExists_ReturnsToursForUser()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         var expectedTours = new List<Tour>
         {
             new Tour
@@ -124,8 +128,8 @@ public class TourServiceTests
                 UserId = UserId,
                 Name = "Tour 1",
                 Description = "Description 1",
-                From = "Start 1",
-                To = "End 1",
+                From = location,
+                To = location,
                 TransportType = TransportType.CAR,
                 Distance = 10.0,
                 EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -137,8 +141,8 @@ public class TourServiceTests
                 UserId = UserId,
                 Name = "Tour 2",
                 Description = "Description 2",
-                From = "Start 2",
-                To = "End 2",
+                From = location,
+                To = location,
                 TransportType = TransportType.BIKE,
                 Distance = 15.0,
                 EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
@@ -159,6 +163,8 @@ public class TourServiceTests
     [Test]
     public async Task GetByIdAsync_TourBelongsToUser_ReturnsTour()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -166,8 +172,8 @@ public class TourServiceTests
             UserId = UserId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -185,6 +191,8 @@ public class TourServiceTests
     [Test]
     public async Task GetByIdAsync_TourBelongsToDifferentUser_ReturnsNull()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -192,8 +200,8 @@ public class TourServiceTests
             UserId = UserId + 1, // Different user
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -225,6 +233,8 @@ public class TourServiceTests
     [Test]
     public async Task CreateTourAsync_SetsUserIdAndCallsAddAsync()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -232,8 +242,8 @@ public class TourServiceTests
             UserId = 0, // This should be overridden
             Name = "New Tour",
             Description = "New Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 20.0,
             EstimatedTime = TimeSpan.FromHours(2).TotalHours,
@@ -259,6 +269,8 @@ public class TourServiceTests
         bool expectUpdateCalled
     )
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var existingTour = new Tour
         {
@@ -266,8 +278,8 @@ public class TourServiceTests
             UserId = ownerId,
             Name = "Existing Tour",
             Description = "Existing Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -279,8 +291,8 @@ public class TourServiceTests
             UserId = UserId,
             Name = "Updated Tour",
             Description = "Updated Description",
-            From = "Updated Start",
-            To = "Updated End",
+            From = location,
+            To = location,
             TransportType = TransportType.BIKE,
             Distance = 15.0,
             EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
@@ -306,6 +318,8 @@ public class TourServiceTests
     [Test]
     public async Task UpdateTourAsync_TourDoesNotExist_DoesNotCallUpdateAndReturns()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var incomingTour = new Tour
         {
@@ -313,8 +327,8 @@ public class TourServiceTests
             UserId = UserId,
             Name = "Updated Tour",
             Description = "Updated Description",
-            From = "Updated Start",
-            To = "Updated End",
+            From = location,
+            To = location,
             TransportType = TransportType.BIKE,
             Distance = 15.0,
             EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
@@ -335,18 +349,20 @@ public class TourServiceTests
     [TestCase(9999)]
     public async Task UpdateTourAsync_CallerTriesToChangeUserId_UserIdIsNotChanged(int newOwnerId)
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         var existingTour = new Tour
         {
             Id = 1,
             UserId = UserId,
             Name = "Existing Tour",
             Description = "Existing Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
-            RouteInformation= String.Empty,
+            RouteInformation = String.Empty,
         };
         var incomingTour = new Tour
         {
@@ -354,8 +370,8 @@ public class TourServiceTests
             UserId = newOwnerId, // Attempt to change UserId
             Name = "Updated Tour",
             Description = "Updated Description",
-            From = "Updated Start",
-            To = "Updated End",
+            From = location,
+            To = location,
             TransportType = TransportType.BIKE,
             Distance = 15.0,
             EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
@@ -383,6 +399,8 @@ public class TourServiceTests
         bool expectDeleteCalled
     )
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var tour = new Tour
         {
@@ -390,8 +408,8 @@ public class TourServiceTests
             UserId = ownerId,
             Name = "Test Tour",
             Description = "Test Description",
-            From = "Start",
-            To = "End",
+            From = location,
+            To = location,
             TransportType = TransportType.CAR,
             Distance = 10.0,
             EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -433,8 +451,12 @@ public class TourServiceTests
     [TestCase(null)]
     [TestCase("")]
     [TestCase("   ")]
-    public async Task SearchTourAsync_NullOrEmptyOrWhitespaceSearchTerm_ReturnsAllToursForUser(string? searchTerm)
+    public async Task SearchTourAsync_NullOrEmptyOrWhitespaceSearchTerm_ReturnsAllToursForUser(
+        string? searchTerm
+    )
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         var expectedTours = new List<Tour>
         {
@@ -444,8 +466,8 @@ public class TourServiceTests
                 UserId = UserId,
                 Name = "Tour 1",
                 Description = "Description 1",
-                From = "Start 1",
-                To = "End 1",
+                From = location,
+                To = location,
                 TransportType = TransportType.CAR,
                 Distance = 10.0,
                 EstimatedTime = TimeSpan.FromHours(1).TotalHours,
@@ -457,8 +479,8 @@ public class TourServiceTests
                 UserId = UserId,
                 Name = "Tour 2",
                 Description = "Description 2",
-                From = "Start 2",
-                To = "End 2",
+                From = location,
+                To = location,
                 TransportType = TransportType.BIKE,
                 Distance = 15.0,
                 EstimatedTime = TimeSpan.FromHours(1.5).TotalHours,
@@ -479,6 +501,8 @@ public class TourServiceTests
     [Test]
     public async Task SearchToursAsync_SearchTermProvided_CallsRepositoryWithUserIdAndTerm()
     {
+        Location location = Substitute.For<Location>(10, 20, "Tomatotown");
+
         // Arrange
         const string searchTerm = "mountain bike trail";
         var expectedTours = new List<Tour>
@@ -489,8 +513,8 @@ public class TourServiceTests
                 UserId = UserId,
                 Name = "Mountain Bike Trail",
                 Description = "A challenging mountain bike trail.",
-                From = "Trailhead",
-                To = "Summit",
+                From = location,
+                To = location,
                 TransportType = TransportType.BIKE,
                 Distance = 25.0,
                 EstimatedTime = TimeSpan.FromHours(2).TotalHours,
@@ -514,10 +538,10 @@ public class TourServiceTests
         // Arrange
         const string searchTerm = "nonexistent";
         _tourRepository.SearchAsync(UserId, searchTerm).Returns(new List<Tour>());
-        
+
         // Act
         var result = await _tourService.SearchToursAsync(Username, searchTerm);
-        
+
         // Assert
         Assert.That(result, Is.Empty);
         await _tourRepository.Received(1).SearchAsync(UserId, searchTerm);
