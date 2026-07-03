@@ -6,7 +6,7 @@
     >
       Login
     </a>
-    <img src="https://placehold.co/20x20" alt="" />
+    <svg lucideLogIn size="20" class="self-center"></svg>
   </div>
 } @else {
   <div class="relative">
@@ -19,7 +19,7 @@
       >
         {{ currentUser()?.username }}
       </p>
-      <img src="https://placehold.co/20x20" alt="" />
+      <svg lucideUser size="20" class="self-center"></svg>
     </button>
     @if (isOpen()) {
       <div class="md:absolute md:right-0 bg-white border">

@@ -1,11 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { UserService } from '../../../services/user';
+import { LucideLogIn, LucideUser} from '@lucide/angular';
 
 @Component({
   selector: 'app-account-dropdown',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, LucideLogIn, LucideUser],
   templateUrl: './account-dropdown.html',
   styleUrl: './account-dropdown.css',
 })

@@ -2,11 +2,12 @@ import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Navbar } from './navbar/navbar';
 import { AccountDropdown } from './account-dropdown/account-dropdown';
+import { LucideRoute } from '@lucide/angular';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, Navbar, AccountDropdown],
+  imports: [RouterLink, Navbar, AccountDropdown, LucideRoute],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
