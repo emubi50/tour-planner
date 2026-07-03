@@ -137,6 +137,8 @@ export class EditTour {
       estimatedTime: this.tourData.estimatedTime,
       distance: this.tourData.distance,
       rating: this.tourData.rating,
+      popularity: this.tourData.popularity,
+      childFriendliness: this.tourData.childFriendliness,
     };
 
     this.isSubmitting = true;

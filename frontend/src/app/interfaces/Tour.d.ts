@@ -20,6 +20,8 @@ export interface ITour {
   tags: string[];
   transportType: TransportType;
   rating: number; // from 0 to 5
+  popularity: number; // derive from number of logs
+  childFriendliness: number; // derived from recorded difficulty values, total time and distance
 }
 
 export interface ITourCreate {

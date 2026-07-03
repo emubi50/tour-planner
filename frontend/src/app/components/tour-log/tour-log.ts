@@ -28,8 +28,8 @@ export class TourLog {
 
   durationInHours = computed(() => {
     const tourLog = this.tourLog();
-    if (!tourLog) return '00:00';
-    return (tourLog.duration / 3600).toFixed(2).replace('.', ':');
+    if (!tourLog) return '0';
+    return (tourLog.duration / 3600).toFixed(2);
   });
 
   distanceInKm = computed(() => {
