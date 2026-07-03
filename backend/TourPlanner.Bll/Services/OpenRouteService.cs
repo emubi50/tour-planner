@@ -46,7 +46,7 @@ namespace TourPlanner.Bll.Services
                 TransportType.CAR => "driving-car",
                 TransportType.BIKE => "cycling-regular",
                 TransportType.WALK => "foot-walking",
-                TransportType.PUBLIC => "driving-car", // OpenRouteService does not support public transport, so we use driving-car as a fallback
+                TransportType.BUS => "driving-hgv",
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(transportType),
                     transportType,

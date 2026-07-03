@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { TourService } from '../../services/tour';
 import { ITour } from '../../interfaces/Tour';
-import { TransportType } from '../../enums/TransportType';
+import { TransportType, TransportTypeText } from '../../enums/TransportType';
 import { UserService } from '../../services/user';
 
 @Component({
@@ -29,13 +29,6 @@ export class EditTour {
   tourData!: ITour;
   tourForm!: FormGroup;
 
-  transportTypeOptions: string[] = [
-    'Bicycle',
-    'Walking',
-    'Bus',
-    'Public transport',
-  ];
-
   transportTypeFormValue = TransportType.BIKE;
 
   isLoading = true;
@@ -53,6 +46,14 @@ export class EditTour {
       this.loadTour();
     });
   }
+
+    // Expose enum to template
+    TransportType = TransportType;
+    TransportTypeText = TransportTypeText;
+
+      transportTypes = Object.values(TransportType).filter(
+    (v) => typeof v === 'number',
+  );
 
   private loadTour(): void {
     this.isLoading = true;
@@ -81,7 +82,7 @@ export class EditTour {
         Validators.required,
         Validators.maxLength(500),
       ]),
-      transportType: new FormControl(this.tourData.transportType, [Validators.required]),
+      transportType: new FormControl(this.tourData.transportType, {validators: [Validators.required], nonNullable: true}),
       startLocation: new FormControl(this.tourData.from, [Validators.required]),
       endLocation: new FormControl(this.tourData.to, [Validators.required]),
       tags: new FormControl(this.tourData.tags),
@@ -116,23 +117,6 @@ export class EditTour {
       return;
     }
 
-    switch (this.tourForm.value.TransportType) {
-      case 'Bicycle':
-        this.transportTypeFormValue = TransportType.BIKE;
-        break;
-      case 'Walking':
-        this.transportTypeFormValue = TransportType.WALK;
-        break;
-      case 'Bus':
-        this.transportTypeFormValue = TransportType.CAR;
-        break;
-      case 'Public transport':
-        this.transportTypeFormValue = TransportType.PUBLIC;
-        break;
-      default:
-        break;
-    }
-
     const updatedTour: ITour = {
       id: this.tourData.id,
       name: this.tourForm.value.name ?? this.tourData.name,
@@ -140,7 +124,7 @@ export class EditTour {
       from: this.tourForm.value.startLocation ?? this.tourData.from,
       to: this.tourForm.value.endLocation ?? this.tourData.to,
       tags: this.tourForm.value.tags ?? this.tourData.tags,
-      transportType: this.transportTypeFormValue,
+      transportType: this.tourForm.value.transportType ?? this.tourData.transportType,
       estimatedTime: this.tourData.estimatedTime,
       distance: this.tourData.distance,
       rating: this.tourData.rating,

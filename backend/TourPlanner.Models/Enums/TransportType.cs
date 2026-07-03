@@ -5,6 +5,6 @@ namespace TourPlanner.Models.Enums
         BIKE,
         WALK,
         CAR,
-        PUBLIC,
+        BUS,
     }
 }

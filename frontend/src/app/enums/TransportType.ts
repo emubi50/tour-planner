@@ -2,12 +2,12 @@ export enum TransportType {
   BIKE,
   WALK,
   CAR,
-  PUBLIC,
+  BUS,
 }
 
 export const TransportTypeText: String[] = [
   'Bicycle',
   'Walk',
   'Car',
-  'Public Transport',
+  'Bus',
 ];
