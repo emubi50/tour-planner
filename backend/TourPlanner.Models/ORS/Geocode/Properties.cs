@@ -20,7 +20,7 @@ namespace TourPlanner.Models.ORS.Geocode
         public string Name { get; set; } = string.Empty;
 
         [JsonPropertyName("confidence")]
-        public int Confidence { get; set; }
+        public float Confidence { get; set; }
 
         [JsonPropertyName("match_type")]
         public string MatchType { get; set; } = string.Empty;
