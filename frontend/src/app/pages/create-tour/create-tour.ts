@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   FormGroup,
@@ -9,6 +9,7 @@ import {
 import { TourService } from '../../services/tour';
 import { TransportType, TransportTypeText } from '../../enums/TransportType';
 import { TransportIcon } from '../../components/transport-icon/transport-icon';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-create-tour',
@@ -19,6 +20,14 @@ import { TransportIcon } from '../../components/transport-icon/transport-icon';
 export class CreateTour {
   private router = inject(Router);
   private tourService = inject(TourService);
+
+  private userService = inject(UserService);
+
+  ngOnInit() {
+    if (!this.userService.user()) {
+      this.router.navigate(['/login']);
+    }
+  }
 
   // Expose enum to template
   TransportType = TransportType;

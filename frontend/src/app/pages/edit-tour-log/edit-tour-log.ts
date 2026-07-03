@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { TourLogService } from '../../services/tour-log';
 import { ITourLog } from '../../interfaces/TourLog';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-edit-tour-log',
@@ -20,6 +21,8 @@ export class EditTourLog {
   private activatedRoute = inject(ActivatedRoute);
   private tourLogService = inject(TourLogService);
 
+private userService = inject(UserService);
+
   private tourId: number = -1;
   private tourLogId: number = -1;
 
@@ -30,6 +33,10 @@ export class EditTourLog {
   loadError = false;
 
   ngOnInit() {
+    if (!this.userService.user()) {
+      this.router.navigate(['/login']);
+    }
+
     this.activatedRoute.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
       this.tourLogId = Number.parseInt(params['tourLogId']);

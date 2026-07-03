@@ -1,4 +1,4 @@
-import { Component, computed, effect, Signal, signal } from '@angular/core';
+import { Component, computed, effect, inject, Signal, signal } from '@angular/core';
 import { TourService } from '../../services/tour';
 import { TourLogService } from '../../services/tour-log';
 import { ITour } from '../../interfaces/Tour';
@@ -10,13 +10,14 @@ import { LocationEnd } from '../../components/DataDisplay/Tour/Location/location
 import { LocationStart } from '../../components/DataDisplay/Tour/Location/location-start/location-start';
 import { StarRating } from '../../components/star-rating/star-rating';
 import { TourLog } from '../../components/tour-log/tour-log';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TransportIcon } from '../../components/transport-icon/transport-icon';
 import { MapFacadeService } from '../../services/map-facade';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { ITourLog } from '../../interfaces/TourLog';
 import { of } from 'rxjs';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-tour',
@@ -39,6 +40,15 @@ import { of } from 'rxjs';
 export class TourPage {
   readonly selectedTour = signal<number | null>(null);
   readonly tour = signal<ITour | null>(null);
+
+  private userService = inject(UserService);
+  private router = inject(Router);
+
+  ngOnInit() {
+    if (!this.userService.user()) {
+      this.router.navigate(['/login']);
+    }
+  }
 
   tourEffect = effect(() => {
     const tourId = this.selectedTour();

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { TourLogService } from '../../services/tour-log';
 import { ITourLogCreate } from '../../interfaces/TourLog';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-create-tour-log',
@@ -20,6 +21,8 @@ export class CreateTourLog {
   private activatedRoute = inject(ActivatedRoute);
   private tourLogService = inject(TourLogService);
 
+private userService = inject(UserService);
+
   tourId!: number;
   tourLogForm!: FormGroup;
 
@@ -29,6 +32,10 @@ export class CreateTourLog {
   submitError = false;
 
   ngOnInit() {
+    if (!this.userService.user()) {
+      this.router.navigate(['/login']);
+    }
+
     this.activatedRoute.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
 

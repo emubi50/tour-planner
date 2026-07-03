@@ -9,6 +9,7 @@ import {
 import { TourService } from '../../services/tour';
 import { ITour } from '../../interfaces/Tour';
 import { TransportType } from '../../enums/TransportType';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-edit-tour',
@@ -20,6 +21,8 @@ export class EditTour {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private tourService = inject(TourService);
+
+  private userService = inject(UserService);
 
   private tourId: number = -1;
 
@@ -41,6 +44,10 @@ export class EditTour {
   submitError = false;
 
   ngOnInit() {
+    if (!this.userService.user()) {
+      this.router.navigate(['/login']);
+    }
+
     this.activatedRoute.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
       this.loadTour();
