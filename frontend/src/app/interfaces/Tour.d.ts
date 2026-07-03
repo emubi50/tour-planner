@@ -22,6 +22,7 @@ export interface ITour {
   rating: number; // from 0 to 5
   popularity: number; // derive from number of logs
   childFriendliness: number; // derived from recorded difficulty values, total time and distance
+  routeInformation: string; // "lon,lat;lon,lat;lon,lat;..."
 }
 
 export interface ITourCreate {

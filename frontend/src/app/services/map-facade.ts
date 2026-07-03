@@ -1,5 +1,6 @@
 import * as L from 'leaflet';
 import { Injectable } from '@angular/core';
+import { ILocation } from '../interfaces/Location';
 
 @Injectable({
   providedIn: 'root',
@@ -7,10 +8,12 @@ import { Injectable } from '@angular/core';
 export class MapFacadeService {
   private map: L.Map | null = null;
 
-  initMap(containerId: string): void {
+  private route?: L.Polyline;
+
+  initMap(container: HTMLElement): void {
     if (this.map) return;
 
-    this.map = L.map(containerId, {
+    this.map = L.map(container, {
       zoomControl: true,
       attributionControl: true,
     });
@@ -30,5 +33,25 @@ export class MapFacadeService {
   setMarker(lat: number, lng: number): void {
     if (!this.map) return;
     L.marker([lat, lng]).addTo(this.map);
+  }
+
+  setRoute(routePathStr: string): void {
+    if (!this.map) return;
+
+    this.route?.remove();
+
+    const latLngs = routePathStr.split(";").filter(p => p.length > 0).map(point => {
+    const [lon, lat] = point.split(",").map(Number);
+    return L.latLng(lat, lon);
+  });
+
+  this.route = L.polyline(latLngs, {
+        weight: 5,
+        opacity: 0.8
+    }).addTo(this.map);
+
+    this.map.fitBounds(this.route.getBounds(), {
+        padding: [25, 25]
+    });
   }
 }

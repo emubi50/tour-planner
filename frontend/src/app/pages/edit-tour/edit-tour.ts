@@ -131,6 +131,7 @@ export class EditTour {
       rating: this.tourData.rating,
       popularity: this.tourData.popularity,
       childFriendliness: this.tourData.childFriendliness,
+      routeInformation: this.tourData.routeInformation,
     };
 
     this.isSubmitting = true;

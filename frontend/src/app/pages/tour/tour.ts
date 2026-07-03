@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, Signal, signal } from '@angular/core';
+import { Component, computed, effect, inject, Signal, signal, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { TourService } from '../../services/tour';
 import { TourLogService } from '../../services/tour-log';
 import { ITour } from '../../interfaces/Tour';
@@ -44,10 +44,33 @@ export class TourPage {
   private userService = inject(UserService);
   private router = inject(Router);
 
+  @ViewChild('map', { static: false })
+  set mapElement(el: ElementRef<HTMLDivElement> | null) {
+    if(!el) return;
+
+    this.mapElementRef = el;
+
+    this.tryInitMap();
+
+    // Weird timing issue so trying to set the route here as well
+    const tour = this.tour();
+    if (!tour) return;
+
+    this.mapFacadeService.setRoute(tour.routeInformation);
+  }
+
+  private mapElementRef?: ElementRef<HTMLDivElement>;
+
+  private isMapInit = false;
+
   ngOnInit() {
     if (!this.userService.user()) {
       this.router.navigate(['/login']);
     }
+  }
+
+  ngOnDestroy() {
+    this.isMapInit = false;
   }
 
   tourEffect = effect(() => {
@@ -59,13 +82,30 @@ export class TourPage {
 
     this.tourService
       .getTourByIdServer(tourId)
-      .subscribe((tour) => this.tour.set(tour));
+      .subscribe((tour) => {
+        this.tour.set(tour);
+      });
   });
+
+  changeMap = effect(() => {
+  const tour = this.tour();
+  if (!tour) return;
+
+  this.tryInitMap();
+
+  this.mapFacadeService.setRoute(tour.routeInformation);
+});
+
+  private tryInitMap() {
+    if (!this.isMapInit && this.mapElementRef) {
+      this.mapFacadeService.initMap(this.mapElementRef.nativeElement);
+      this.isMapInit = true;
+    }
+  }
 
   get setTourFn() {
     return (id: number) => {
       this.selectedTour.set(id);
-      this.mapFacadeService.initMap('map');
     };
   }
 
