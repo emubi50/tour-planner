@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { ITour, ITourCreate } from '../interfaces/Tour';
 import { TourLogService } from './tour-log';
 import { TransportType } from '../enums/TransportType';
@@ -90,6 +90,9 @@ export class TourService {
   // Would need to make a pipe out of this or smth idk
   tours = this.toursSubject.asObservable();
 
+  private toursServerSubject = new BehaviorSubject<ITour[]>([]);
+  toursServer = this.toursServerSubject.asObservable();
+
   private http = inject(HttpClient);
 
   constructor(private tourLogService: TourLogService) {
@@ -111,13 +114,13 @@ export class TourService {
    */
   getTours(): ITour[] {
     return this.toursSubject.value.map((tour) => {
-      tour.rating = this.tourLogService.getRatingAvgByTourId(tour.id);
+      tour.rating = this.tourLogService.getRatingAvgByTourIdServer(tour.id);
       return tour;
     });
   }
 
   getToursServer(): Observable<ITour[]> {
-    return this.http.get<ITour[]>('/api/tours');
+    return this.http.get<ITour[]>('/api/tours').pipe(tap((tours) => this.toursServerSubject.next(tours)));
   }
 
   /**
@@ -130,7 +133,7 @@ export class TourService {
     if (!tour) {
       return undefined;
     }
-    tour.rating = this.tourLogService.getRatingAvgByTourId(tour.id);
+    tour.rating = this.tourLogService.getRatingAvgByTourIdServer(tour.id);
     return tour;
   }
 
@@ -168,7 +171,7 @@ export class TourService {
       distance: 0,
     };
 
-    return this.http.post<ITour>('/api/tours', newTour);
+    return this.http.post<ITour>('/api/tours', newTour).pipe(tap(() => this.getToursServer().subscribe()));
   }
 
   /**
@@ -184,6 +187,10 @@ export class TourService {
     }
   }
 
+  updateTourServer(updatedTour: ITour): Observable<void> {
+    return this.http.put<void>(`/api/tours/${updatedTour.id}`, updatedTour).pipe(tap(() => this.getToursServer().subscribe()));
+  }
+
   /**
    * Removes a tour from the list by its ID.
    * @param id The ID of the tour to remove
@@ -191,5 +198,9 @@ export class TourService {
   deleteTour(id: number): void {
     const tours = this.toursSubject.value.filter((tour) => tour.id !== id);
     this.toursSubject.next([...tours]);
+  }
+
+  deleteTourServer(id: number): Observable<void> {
+    return this.http.delete<void>(`/api/tours/${id}`).pipe(tap(() => this.getToursServer().subscribe()));
   }
 }

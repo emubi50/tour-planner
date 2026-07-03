@@ -15,6 +15,8 @@ import { TransportIcon } from '../../components/transport-icon/transport-icon';
 import { MapFacadeService } from '../../services/map-facade';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { ITourLog } from '../../interfaces/TourLog';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-tour',
@@ -77,10 +79,27 @@ export class TourPage {
 
   // TourLog stuff
 
-  tourLogs = computed(() => {
+  /*tourLogs = computed(() => {
     const tour = this.tour();
     if (!tour) return [];
     return this.tourLogService.getTourLogsByTourId(tour.id);
+  });*/
+
+  tourLogs: Signal<ITourLog[]> = toSignal(
+    toObservable(this.tour).pipe(
+      switchMap((tour) => {
+        if (!tour) return of([]);
+        return this.tourLogService.getTourLogsByTourIdServer(tour.id);
+      })
+    ),
+    { initialValue: [] }
+  );
+
+  avgRating = computed(() => {
+    const logs = this.tourLogs();
+    if (!logs || logs.length === 0) return 0;
+    const totalRating = logs.reduce((sum, log) => sum + log.rating, 0);
+    return totalRating / logs.length;
   });
 
   constructor(

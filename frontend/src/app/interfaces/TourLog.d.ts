@@ -12,10 +12,10 @@ export interface ITourLog {
 // Copy of ITourLog without id
 export interface ITourLogCreate {
   tourId: number;
-  date: Date;
+  date: DateTime;
   comment: string;
   difficulty: number;
-  distance: number;
-  duration: number;
+  totalDistance: number;
+  totalTime: number;
   rating: number;
 }

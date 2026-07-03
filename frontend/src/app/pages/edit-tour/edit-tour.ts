@@ -35,14 +35,36 @@ export class EditTour {
 
   transportTypeFormValue = TransportType.BIKE;
 
+  isLoading = true;
+  loadError = false;
+  isSubmitting = false;
+  submitError = false;
+
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
+      this.loadTour();
     });
+  }
 
-    this.tourData = this.tourService.getTourById(this.tourId)!;
-    this.transportTypeFormValue = this.tourData.transportType;
+  private loadTour(): void {
+    this.isLoading = true;
+    this.loadError = false;
+    this.tourService.getTourByIdServer(this.tourId).subscribe({
+      next: (tours) => {
+        this.tourData = tours;
+        this.initializeForm();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.loadError = true;
+        console.error('Error loading tour:', err);
+      }
+    });
+  }
 
+  private initializeForm(): void {
     this.tourForm = new FormGroup({
       name: new FormControl(this.tourData.name, [
         Validators.required,
@@ -52,7 +74,7 @@ export class EditTour {
         Validators.required,
         Validators.maxLength(500),
       ]),
-      transportType: new FormControl('Bicycle', [Validators.required]),
+      transportType: new FormControl(this.tourData.transportType, [Validators.required]),
       startLocation: new FormControl(this.tourData.from, [Validators.required]),
       endLocation: new FormControl(this.tourData.to, [Validators.required]),
       tags: new FormControl(this.tourData.tags),
@@ -117,13 +139,31 @@ export class EditTour {
       rating: this.tourData.rating,
     };
 
-    this.tourService.updateTour(updatedTour);
-    this.tourForm.markAsPristine();
-    this.tourForm.markAsUntouched();
+    this.isSubmitting = true;
+    this.submitError = false;
+    this.tourService.updateTourServer(updatedTour).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.tourData = updatedTour;
+        this.tourForm.markAsPristine();
+        this.tourForm.markAsUntouched();
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.submitError = true;
+        console.error('Error updating tour:', err);
+      }
+    });
   }
 
   deleteTour(): void {
-    this.tourService.deleteTour(this.tourId);
-    this.router.navigate(['/tours']);
+    this.tourService.deleteTourServer(this.tourId).subscribe({
+      next: () => {
+        this.router.navigate(['/tours']);
+      },
+      error: (err) => {
+        console.error('Error deleting tour:', err);
+      }
+    });
   }
 }

@@ -26,16 +26,40 @@ export class EditTourLog {
   tourLogData!: ITourLog;
   tourLogForm!: FormGroup;
 
+  isLoading = true;
+  loadError = false;
+
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this.tourId = Number.parseInt(params['tourId']);
       this.tourLogId = Number.parseInt(params['tourLogId']);
     });
+    this.loadTourLog();
+  }
 
-    this.tourLogData = this.tourLogService
-      .getTourLogsByTourId(this.tourId)
-      .find((tourLog) => tourLog.id === this.tourLogId)!;
+  private loadTourLog(): void {
+    this.isLoading = true;
+    this.loadError = false;
+    this.tourLogService.getTourLogsByTourIdServer(this.tourId).subscribe({
+      next: (tourLogs) => {
+        const tourLog = tourLogs.find((log) => log.id === this.tourLogId);
+        if (!tourLog) {
+          this.loadError = true;
+          this.isLoading = false;
+          return;
+        }
+        this.tourLogData = tourLog;
+        this.initializeForm();
+        this.isLoading = false;
+      },
+      error: () => {
+        this.loadError = true;
+        this.isLoading = false;
+      }
+    });
+  }
 
+  private initializeForm(): void {
     this.tourLogForm = new FormGroup({
       date: new FormControl(this.tourLogData.date.toISOString().split('T')[0], [
         Validators.required,
@@ -108,12 +132,24 @@ export class EditTourLog {
       rating: this.tourLogForm.value.rating,
     };
 
-    this.tourLogService.updateTourLog(updatedTourLog);
-    this.tourLogForm.markAsPristine();
-    this.tourLogForm.markAsUntouched();
+    this.tourLogService.updateTourLogServer(this.tourId, updatedTourLog).subscribe({
+      next: () => {
+        this.tourLogForm.markAsPristine();
+        this.tourLogForm.markAsUntouched();
+      },
+      error: (err) => {
+        console.error('Error updating tour log:', err);
+      }
+    });
   }
   deleteTourLog(): void {
-    this.tourLogService.deleteTourLog(this.tourLogId);
-    this.router.navigate(['/tours', this.tourId]);
+    this.tourLogService.deleteTourLogServer(this.tourId, this.tourLogId).subscribe({
+      next: () => {
+        this.router.navigate(['/tours', this.tourId]);
+      },
+      error: (err) => {
+        console.error('Error deleting tour log:', err);
+      }
+    });
   }
 }

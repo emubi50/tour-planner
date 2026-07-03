@@ -47,6 +47,10 @@ namespace TourPlanner.Dal
                         .HasConversion<string>()
                         .HasMaxLength(20);
                 });
+
+            modelBuilder.Entity<TourLog>()
+                .Property(t => t.Date)
+                .HasColumnType("date");
         }
     }
 }

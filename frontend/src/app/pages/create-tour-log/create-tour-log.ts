@@ -25,6 +25,8 @@ export class CreateTourLog {
 
   difficultyOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   ratingOptions = [1, 2, 3, 4, 5];
+  isSubmitting = false;
+  submitError = false;
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
@@ -89,13 +91,23 @@ export class CreateTourLog {
       date: this.tourLogForm.value.date,
       comment: this.tourLogForm.value.comment,
       difficulty: this.tourLogForm.value.difficulty,
-      distance: this.tourLogForm.value.distance,
-      duration: this.tourLogForm.value.duration,
+      totalDistance: this.tourLogForm.value.distance,
+      totalTime: this.tourLogForm.value.duration,
       rating: this.tourLogForm.value.rating,
     };
-
-    this.tourLogService.addTourLog(newTourLog);
-    this.tourLogForm.reset();
-    this.router.navigate(['/tours']);
+    this.isSubmitting = true;
+    this.submitError = false;
+    this.tourLogService.addTourLogServer(this.tourId, newTourLog).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        this.tourLogForm.reset();
+        this.router.navigate(['/tours']);
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        this.submitError = true;
+        console.error('Error adding tour log:', err);
+      }
+    });
   }
 }

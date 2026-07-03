@@ -37,7 +37,7 @@ namespace TourPlanner.Api.Dtos
                 .Select(l => new TourLogSummaryDto
                 {
                     Id = l.Id,
-                    DateAndTime = l.DateAndTime,
+                    Date = l.Date,
                     Comment = l.Comment,
                     Difficulty = l.Difficulty,
                     Rating = l.Rating,
@@ -49,7 +49,7 @@ namespace TourPlanner.Api.Dtos
     public class TourLogSummaryDto
     {
         public required int Id { get; set; }
-        public required DateTime DateAndTime { get; set; }
+        public required DateOnly Date { get; set; }
         public required string Comment { get; set; }
         public required int Difficulty { get; set; }
         public required int Rating { get; set; }

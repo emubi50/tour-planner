@@ -22,7 +22,9 @@ namespace TourPlanner.Api.Controllers
         public async Task<IActionResult> GetTours()
         {
             var username = User.Identity!.Name!;
-            return Ok(await _tourService.GetAllAsync(username));
+            var tours = await _tourService.GetAllAsync(username);
+            var tourDtos = tours.Select(t => new TourResponseDto(t)).ToList();
+            return Ok(tourDtos);
         }
 
         [HttpGet("{id:int}")]
@@ -30,7 +32,8 @@ namespace TourPlanner.Api.Controllers
         {
             var username = User.Identity!.Name!;
             var tour = await _tourService.GetByIdAsync(username, id);
-            return (tour == null) ? NotFound() : Ok(tour);
+            var tourDto = (tour == null) ? null : new TourResponseDto(tour);
+            return (tour == null) ? NotFound() : Ok(tourDto);
         }
 
         [HttpPost]

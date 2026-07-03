@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TourPlanner.Api.Dtos;
 using TourPlanner.Bll.Interfaces;
 using TourPlanner.Models;
 
@@ -22,7 +23,9 @@ namespace TourPlanner.Api.Controllers
         public async Task<IActionResult> GetTourLogs(int tourId)
         {
             var username = User.Identity!.Name!;
-            return Ok(await _tourLogService.GetAllAsync(username, tourId));
+            var tourLogs = await _tourLogService.GetAllAsync(username, tourId);
+            var tourLogDtos = tourLogs.Select(tl => new TourLogResponseDto(tl)).ToList();
+            return Ok(tourLogDtos);
         }
 
         [HttpGet("{id:int}")]
@@ -34,10 +37,10 @@ namespace TourPlanner.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTourLog(int tourId, [FromBody] TourLog tourLog)
+        public async Task<IActionResult> CreateTourLog(int tourId, [FromBody] TourLogCreateDto tourLogCreateDto)
         {
             var username = User.Identity!.Name!;
-            await _tourLogService.CreateTourLogAsync(username, tourLog);
+            await _tourLogService.CreateTourLogAsync(username, tourLogCreateDto.ToTourLog());
             return Created();
         }
 
