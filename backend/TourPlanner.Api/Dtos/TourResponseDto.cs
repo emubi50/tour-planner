@@ -23,6 +23,7 @@ namespace TourPlanner.Api.Dtos
         {
             Id = tour.Id;
             UserId = tour.UserId;
+            Name = tour.Name;
             Description = tour.Description;
             From = tour.From;
             To = tour.To;

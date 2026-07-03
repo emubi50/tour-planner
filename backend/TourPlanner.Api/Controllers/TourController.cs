@@ -84,7 +84,7 @@ namespace TourPlanner.Api.Controllers
         {
             var username = User.Identity!.Name!;
             var tours = await _tourService.SearchToursAsync(username, searchTerm);
-            var results = tours.Select(t => new TourSearchResultDto(t)).ToList();
+            var results = tours.Select(t => new TourResponseDto(t)).ToList();
             return Ok(results);
         }
     }
