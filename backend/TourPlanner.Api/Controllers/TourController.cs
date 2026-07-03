@@ -12,10 +12,12 @@ namespace TourPlanner.Api.Controllers
     public class TourController : ControllerBase
     {
         private readonly ITourService _tourService;
+        private readonly IOpenRouteService _openRouteService;
 
-        public TourController(ITourService tourService)
+        public TourController(ITourService tourService, IOpenRouteService openRouteService)
         {
             _tourService = tourService;
+            _openRouteService = openRouteService;
         }
 
         [HttpGet]
@@ -39,7 +41,22 @@ namespace TourPlanner.Api.Controllers
         public async Task<IActionResult> CreateTour([FromBody] TourCreateDto tourCreateDto)
         {
             var username = User.Identity!.Name!;
-            await _tourService.CreateTourAsync(username, tourCreateDto.toTour());
+            Tour tourData = tourCreateDto.toTour();
+
+            // TEMPORARY
+            LocationSearchResult startSearchRes = await _openRouteService.SearchDestinations(tourData.From);
+            double[] startLoc = startSearchRes.Locations[0].Coordinates;
+
+            LocationSearchResult endSearchRes = await _openRouteService.SearchDestinations(tourData.To);
+            double[] endLoc = endSearchRes.Locations[0].Coordinates;
+
+            // Get duration and distance from OpenRouteService
+            Models.Route routeInfo = await _openRouteService.GetRoute(startLoc, endLoc, tourData.TransportType);
+
+            tourData.Distance = routeInfo.Distance;
+            tourData.EstimatedTime = routeInfo.Duration;
+
+            await _tourService.CreateTourAsync(username, tourData);
             return Created();
         }
 

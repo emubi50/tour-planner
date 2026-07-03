@@ -110,11 +110,7 @@ namespace TourPlanner.Api
             builder.Services.AddScoped<Bll.Interfaces.ITourExportStrategy, JsonExportStrategy>();
             builder.Services.AddScoped<Bll.Interfaces.ITourDataTransferService, TourDataTransferService>();
             
-            builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter(namingPolicy: null));
-                });
+            builder.Services.AddControllers();
 
             builder
                 .Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
