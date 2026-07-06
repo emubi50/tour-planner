@@ -10,9 +10,7 @@ import { NavItem } from '../nav-item/nav-item';
 export class Navbar {
   navItems = [
     { label: 'Tours', routerLink: 'tours' },
-    { label: 'My Tours', routerLink: 'my-tours' },
     { label: 'Create Tour', routerLink: 'tours/new' },
-    { label: 'Go to Tour List Test', routerLink: 'tourListTest' },
   ];
 
   isMenuOpen = signal(false);

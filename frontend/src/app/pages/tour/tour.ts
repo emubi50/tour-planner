@@ -1,4 +1,13 @@
-import { Component, computed, effect, inject, Signal, signal, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  Signal,
+  signal,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { TourService } from '../../services/tour';
 import { TourLogService } from '../../services/tour-log';
 import { ITour } from '../../interfaces/Tour';
@@ -46,7 +55,7 @@ export class TourPage {
 
   @ViewChild('map', { static: false })
   set mapElement(el: ElementRef<HTMLDivElement> | null) {
-    if(!el) return;
+    if (!el) return;
 
     this.mapElementRef = el;
 
@@ -70,6 +79,7 @@ export class TourPage {
   }
 
   ngOnDestroy() {
+    this.mapFacadeService.removeMap();
     this.isMapInit = false;
   }
 
@@ -80,21 +90,19 @@ export class TourPage {
       return;
     }
 
-    this.tourService
-      .getTourByIdServer(tourId)
-      .subscribe((tour) => {
-        this.tour.set(tour);
-      });
+    this.tourService.getTourByIdServer(tourId).subscribe((tour) => {
+      this.tour.set(tour);
+    });
   });
 
   changeMap = effect(() => {
-  const tour = this.tour();
-  if (!tour) return;
+    const tour = this.tour();
+    if (!tour) return;
 
-  this.tryInitMap();
+    this.tryInitMap();
 
-  this.mapFacadeService.setRoute(tour.routeInformation);
-});
+    this.mapFacadeService.setRoute(tour.routeInformation);
+  });
 
   private tryInitMap() {
     if (!this.isMapInit && this.mapElementRef) {
@@ -140,9 +148,9 @@ export class TourPage {
       switchMap((tour) => {
         if (!tour) return of([]);
         return this.tourLogService.getTourLogsByTourIdServer(tour.id);
-      })
+      }),
     ),
-    { initialValue: [] }
+    { initialValue: [] },
   );
 
   avgRating = computed(() => {

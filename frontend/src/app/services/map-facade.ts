@@ -26,6 +26,13 @@ export class MapFacadeService {
     this.map.setView([48.2082, 16.3738], 12); // Vienna
   }
 
+  removeMap(): void {
+    if (this.map) {
+      this.map.remove();
+      this.map = null;
+    }
+  }
+
   setCenter(lat: number, lng: number, zoom = 13): void {
     this.map?.setView([lat, lng], zoom);
   }
@@ -40,18 +47,21 @@ export class MapFacadeService {
 
     this.route?.remove();
 
-    const latLngs = routePathStr.split(";").filter(p => p.length > 0).map(point => {
-    const [lon, lat] = point.split(",").map(Number);
-    return L.latLng(lat, lon);
-  });
+    const latLngs = routePathStr
+      .split(';')
+      .filter((p) => p.length > 0)
+      .map((point) => {
+        const [lon, lat] = point.split(',').map(Number);
+        return L.latLng(lat, lon);
+      });
 
-  this.route = L.polyline(latLngs, {
-        weight: 5,
-        opacity: 0.8
+    this.route = L.polyline(latLngs, {
+      weight: 5,
+      opacity: 0.8,
     }).addTo(this.map);
 
     this.map.fitBounds(this.route.getBounds(), {
-        padding: [25, 25]
+      padding: [25, 25],
     });
   }
 }
