@@ -9,6 +9,23 @@ export class MapFacadeService {
   private map: L.Map | null = null;
 
   private route?: L.Polyline;
+  private markers: L.Marker[] = [];
+
+  private TargetMarkerOpt: L.MarkerOptions = {
+    icon: L.icon({
+      iconUrl: 'flag-triangle-right.png',
+      iconSize: [32, 32],
+      iconAnchor: [8, 32],
+    }),
+  };
+
+  private StartMarkerOpt: L.MarkerOptions = {
+    icon: L.icon({
+      iconUrl: 'map-pin.png',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+    }),
+  };
 
   initMap(container: HTMLElement): void {
     if (this.map) return;
@@ -37,15 +54,17 @@ export class MapFacadeService {
     this.map?.setView([lat, lng], zoom);
   }
 
-  setMarker(lat: number, lng: number): void {
+  setMarker(lat: number, lng: number, options?: L.MarkerOptions): void {
     if (!this.map) return;
-    L.marker([lat, lng]).addTo(this.map);
+    const marker = L.marker([lat, lng], options).addTo(this.map);
+    this.markers.push(marker);
   }
 
   setRoute(routePathStr: string): void {
     if (!this.map) return;
 
     this.route?.remove();
+    this.markers.forEach((marker) => marker.remove());
 
     const latLngs = routePathStr
       .split(';')
@@ -59,6 +78,13 @@ export class MapFacadeService {
       weight: 5,
       opacity: 0.8,
     }).addTo(this.map);
+
+    this.setMarker(latLngs[0].lat, latLngs[0].lng, this.StartMarkerOpt);
+    this.setMarker(
+      latLngs[latLngs.length - 1].lat,
+      latLngs[latLngs.length - 1].lng,
+      this.TargetMarkerOpt,
+    );
 
     this.map.fitBounds(this.route.getBounds(), {
       padding: [25, 25],
